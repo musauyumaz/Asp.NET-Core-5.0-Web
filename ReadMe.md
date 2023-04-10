@@ -1,7 +1,8 @@
----
-modified: 2023-04-10T11:27:03.082Z
-title: 1) Asp.NET Core 5.0 Eğitimi
----
+# Özel Ders Formatında A'dan Z'ye Asp.NET Core 5.0 Web
+
+***
+# [Bu notları Gençay Yıldız hocamın sayesinde izlediğim bu playlistten öğrendim.](https://www.youtube.com/playlist?list=PLQVXoXFVVtp33KHoTkWklAo72l5bcjPVL)  Herkesin izlemesini tavsiye ederim. Mükemmel bir anlatım. Böyle mükemmel bir içerikli [Türkçe kaynağı](https://www.youtube.com/c/Gen%C3%A7ayY%C4%B1ld%C4%B1z) hiçbir yerde bulamazsınız.
+***
 
 ***
 # 1) Asp.NET Core 5.0 Eğitimi
