@@ -5,3 +5,4 @@
 ***
 
 - ## [BAŞLARKEN](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/1-BA%C5%9ELARKEN/ReadMe.md)
+- ## [WEB MANTIĞI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/2-WEB%20MANTI%C4%9EI/ReadMe.md)
