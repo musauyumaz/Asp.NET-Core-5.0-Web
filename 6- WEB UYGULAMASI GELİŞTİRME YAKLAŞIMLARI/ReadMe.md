@@ -41,3 +41,30 @@
 - Yani bir olay gerçekleşecek ve olayın neticesinde bir iş yapılacaktır.
 
 <img src="3.png" width="auto">
+
+***
+# 10) Asp.NET Core 5.0 - Model - View - Controller(MVC) Yaklaşımı
+- MVC pattern'ını kullanan bir yaklaşımdır.
+
+- Üretilen veri ile gösterim yani sunum katmanı arasında bir soyutlama esas alınmıştır.
+
+- MVC pattern'ı Microsoft tarafından üretilmemiştir. Böyle bir yanlış algı vardır.
+
+- MVC, Microsoft'un kurulduğu yıllardan (1979 yılından) beri tasarlanmış bir kalıptır.
+
+- MVC Model, View ve Controller olarak 3 katmandan oluşan stratejiden ibarettir.
+
+- MVC esasında bir framework değildir. MVC esasında bir design pattern.
+
+- Belirli bir senaryoya uygun uygulanabilir tasarım desenidir. Asp.NET bu tasarım deseninin üzerine oturtulmuş bir mimari/framework bize sunmaktadır.
+
+- 3 katmandan oluşur;
+  * Model => Veritabanı işlemlerini yaptığımız katman
+  * View => Görsellik sunum işlerini yaptığımız katman
+  * Controller => Bu süreçte istekleri karşılayan gerekli işlemlerin gerçekleştirildiği Model ile View arasında köprüsel işlemlerin üstlenildiği bir katman.
+
+- Kullanıcı ilgili web sitesine bir istek gönderdiği zaman bu Controller tarafından karşılanır. Eğer ki Controller varsa veritabanı işlemi Model'a gider ilgili veritabanı işlemini yapar elde ettiği ürettiği veriyi View'a gönderir. View'de ilgili veriyi görsel bir şekilde HTML CSS'e çevirecek şekilde basar ve sonucu yeniden User'a döndürür.
+
+- Asp.NET Core yapılanmasında API ile MVC tasarımı birleştirilmiştir yani aynı altyapıda çalıştırılmaktadır.
+
+<img src="4.png" width="auto">
