@@ -67,4 +67,37 @@
 
 - Asp.NET Core yapılanmasında API ile MVC tasarımı birleştirilmiştir yani aynı altyapıda çalıştırılmaktadır.
 
+- !!!!!!! Her türlü kavgaya girdiğinizde bilin ki kaybeden siz olursunuz !!!!!!!
+
 <img src="4.png" width="auto">
+
+***
+# 11) Asp.NET Core 5.0 - Application Programming Interface(API) Yaklaşımı
+-  Application Programming Interface(Uygulama Programlama Arayüzü)
+ 
+- Web'de çalışabilen ve web uygulamaları, işletim sistemleri, veritabanları, donanımlar yahut yazılım kütüphaneleri ile iletişim kurabilen bir arayüzdür.
+
+- Direkt olarak Web Uygulaması yaklaşımıdır diyemeyiz. Lakin genellikle web tabanlı uygulamalarda client ve server arasındaki iletişimi sağlayan bir sözleşme olarak kullanılmaktadırlar. Bu forma Web API ismi verilmektedir
+
+- Web uygulamasının dışında da kullanılan bir yapılanmadır. Her yerde kullanabilirsiniz.
+
+- API web üzerinde çalışan bir backend. 
+ 
+- HTTP protokolü üzerinden her yerden istek alabilir.
+
+- Eğer ki sen bir API'a web sayfası/sitesi/uygulaması üzerinden istek gönderiyorsan buradaki client'ın web uygulamsı oluyor server API olmuş oluyor. İşte burada API'a gönderdiğin istek neticesinde sana gelecek olan veriler burada sözleşme olarak nitelendirilebilir.
+  * Nihayetinde bana tüm personelleri getir diye API'a istek yapıyorsun bu istek neticesinde sunucudan yani API'dan sana personeller belirli formatta geliyor. Gelen bu formatın türünü vs. sözleşme diye nitelendirebiliyoruz. Orada entity kavramı bizim için bir sözleşme/kontrakt'a karşılık geliyor.
+
+- Eğer ki API'a web uygulamalarında kullanıyorsak biz bunlara Web API diyoruz.
+
+<img src="5.png" width="auto">
+
+- Nesnelerin interneti denen olay bunun temellerinden gelir.
+  * Herhangi bir mikrofonu, tableti, televizyonu, matkapı her şeyi bir API'a bağlayıp internetten yönetilebilir ya da farklı nesnelerle iletişim kurabilir hale getirebilirsiniz. Eğer ki bu nesnelerden biri Web'se biz buna Web API diyoruz ve orada o yaklaşım üzerinden de ilgili web uygulmasını geliştirebilmekteyiz. Yani bu demektir ki API'la sen birçok nesneyi internete bağlayabilirsin internetten veriyi tüketebilirsin aynı şekilde bu nesnelerden bir tanesi de herhangi bir Web Uygulaması olabilir. 
+   
+- Web uygulaması da API'a bağlanıp API üzerinden API yaklaşımıyla gerekli çalışmalarını gerçekleştirebilir.
+  * Günümüzde kullandığımız angular, react olsun bunun gibi UI tabanlı yani frontend tabanlı web mimarilerinde arkada backend olarak biz API kullanıyoruz.
+
+- API'da bir web geliştirme mimarisidir.
+
+<img src="6.png" width="auto">
