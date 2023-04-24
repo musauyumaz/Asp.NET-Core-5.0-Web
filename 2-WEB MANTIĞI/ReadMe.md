@@ -1,8 +1,3 @@
----
-modified: 2023-04-12T08:25:22.433Z
-title: 3) Asp.NET Core 5.0 - İnternette Gezerken Perde Arkası Nasıldır
----
-
 ***
 # 3) Asp.NET Core 5.0 - İnternette Gezerken Perde Arkası Nasıldır
 <img src="1.png" width="auto">
