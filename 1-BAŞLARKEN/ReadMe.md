@@ -1,8 +1,3 @@
----
-modified: 2023-04-10T11:27:03.082Z
-title: 1) Asp.NET Core 5.0 Eğitimi
----
-
 ***
 # 1) Asp.NET Core 5.0 Eğitimi
 <img src="1.png" width="auto">
