@@ -1,9 +1,3 @@
----
-modified: 2023-04-18T14:12:18.550Z
-title: 7) Asp.NET Core 5.0 - Sunucu Çeşitleri(IIS - Kestrel - Nginx - Apache -
-  HTTP.sys - Docker)
----
-
 ***
 # 7) Asp.NET Core 5.0 - Sunucu Çeşitleri(IIS - Kestrel - Nginx - Apache - HTTP.sys - Docker)
 <img src="1.png" width="auto">
