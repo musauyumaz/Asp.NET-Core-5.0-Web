@@ -1,7 +1,3 @@
----
-modified: 2023-04-18T14:00:04.377Z
-title: 5) Asp.NET Core 5.0 - Http Protokolü Nedir? Çalışma Mantığı Nasıldır?
----
 ***
 # 5) Asp.NET Core 5.0 - Http Protokolü Nedir? Çalışma Mantığı Nasıldır?
 <img src="1.png" width="auto">
