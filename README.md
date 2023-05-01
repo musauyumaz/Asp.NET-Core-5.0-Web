@@ -10,3 +10,4 @@
 - ## [SUNUCU ÇEŞİTLERİ](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/4-SUNUCU%20%C3%87E%C5%9E%C4%B0TLER%C4%B0/ReadMe.md)
 - ## [WEB KAVRAMLARI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/5-%20WEB%20KAVRAMLARI/ReadMe.md)
 - ## [WEB UYGULAMASI GELİŞTİRME YAKLAŞIMLARI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/6-%20WEB%20UYGULAMASI%20GEL%C4%B0%C5%9ET%C4%B0RME%20YAKLA%C5%9EIMLARI/ReadMe.md)
+- ## [ASP.NET CORE PROJE OLUŞTURMA VE DOSYA YAPISI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/7-ASP.NET%20CORE%20PROJE%20OLU%C5%9ETURMA%20VE%20DOSYA%20YAPISI/ReadMe.md)
