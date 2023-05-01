@@ -1,3 +1,4 @@
+***
 # 12) Asp.NET Core 5.0 - Proje Oluşturma ve Dosya Yapısı
 - Esasında Asp.NET Core bir `Console` uygulamasıdır. Fıtratı `console`dur.
 
