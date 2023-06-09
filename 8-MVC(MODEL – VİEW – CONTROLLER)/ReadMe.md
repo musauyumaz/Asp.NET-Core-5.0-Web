@@ -1,5 +1,5 @@
 ---
-modified: 2023-06-02T13:59:43.680Z
+modified: 2023-06-09T15:11:54.250Z
 title: 13) Asp.NET Core 5.0 - MVC Nedir? Asp.NET Core MVC Pipeline'ı Nasıldır?
 ---
 ***
@@ -69,3 +69,104 @@ title: 13) Asp.NET Core 5.0 - MVC Nedir? Asp.NET Core MVC Pipeline'ı Nasıldır
     6. Burada sonuç üretilecek yani model'dan gittin sen model'a bağlandın model'dan ilgili verileri aldın ya da kendin ürettin ya da uzaktan bir servisten aldın vs. Action metot tetiklendikten sonra ilgili veri üretilecek üretilen veri ya direkt client'a gönderilecek ya da View'e gönderilecek View'de render edilecek burada render edilen view'ın sonucunda ViewResult elde edeceksiniz bunu da client'a gönderecek. Ya direkt gönderebilirsin data result olarak ya da viewresult olarak gönderebilirsin. Ya da hiçbişey göndermeyebilirsin. İsteği alırsın başarılı bir şekilde sonlandıradabilirsin.
 
 <img src="6.png" width="auto">
+
+***
+# 14) Asp.NET Core 5.0 - MVC Proje Altyapısı Oluşturma ve Temel Konfigürasyonları Sağlama
+- MVC'de gelen isteği karşılayan bir controller'ımız vardı. Bu controller ihtiyaca binaen Model'a gidiyordu. Model'dan ilgili veriyi alıyordu. Eğer varsa ki bu veri üzerinde bir görselleştirme çalışması bunun için View'e gidiyordu. View'den artık giydirilmiş makyaj yapılmış veriyi alıp tekrardan request'i yapan client'a response ediyordu.
+
+- Boş bir ASP.Net Core uygulamasında MVC design pattern'ını kullanabilmek MVC mimarisinde davranış sergileyebilmesi için yani sistem alacağı request'leri MVC davranışıyla alabilmesi controller'ların devreye girebilmesi için startup.cs'te ya da güncel olarak program.cs'te service olarak uygulamaya eklemeliyiz.
+
+- MVC ASP.Net Core'da artık bir modül olarak gelmiştir bir service olarak gelmiştir ona göre tasarlanmıştır. Dolayısıyla sen eklersen MVC davranışı sergilenecek eklemezsen de artık hangi davranışı sergileyeceksen onu sergileyecektir. 
+
+- `services.AddControllersWithViews();` ekleyerek service'imizi dahil etmiş oluruz.
+
+- Model sadece veritabanları işlemlerinin yapıldığı bir katmandır service değildir.
+
+- Asp.NET Core uygulamasında MVC mimarisini kullanabilmek için uygulama da Controller ve View yapılanmalarının eklenmesi gerekmektedir. Bunun için öncelikle `services.AddControllersWithViews()` service uygulamaya ekleniyor. Böylece uygulama MVC davranışı sergileyebilecektir. 
+
+- Gelen isteği karşılayabilmemiz için bu isteğin davranışını daha iyi daha rahat bir şekilde oturtabilmemiz için ilk önce bir rota ayarlaması yapmamız gerekmektedir. Bununla ilgili belirli middleware'ları tasarlamamız gerekmektedir.
+
+- `app.UseRouting()` burada gelen isteğin hangi controller'lara göre ayrılacağı burada belirleniyor. Rotalarımız burada devreye sokuluyor. Gelen isteğin rotası bu middleware sayesinde belirlenir.
+
+- `app.UseEndpoints()` endpoint kavramı istek yaparken yapmış olduğumuz adresin tek noktası/istek/varış noktası. Endpoint kavramı buradaki varış noktası istek yapılacak adresi temsil eder. Dolayısıyla biz `app.UseEndpoints()`te yapacağımız isteklerin hangi adres tarafından karşılanacağının şablonlarını burada belirtmemiz gerekiyor.
+    * bu endpoint middleware'ının içerisinde tasarladığımız şablonlar bu uygulamaya gelen isteklerin hangi formatta gelebileceğini belirliyor.
+
+- Endpoint : Yapılan isteğin varış noktası. Url İstek adresi... Biz istek yaparken o adrese Url'e endpoint diyeceğiz. 
+
+- Bu uygulamaya gelen isteklerin hangi rotalar/şablonlar eşliğinde gelebileceğini buradan bildireceğiz.
+
+<img src="7.png" width="auto">
+
+- `MapDefaultControllerRoute()` İstek yapacağımız temel/default/varsayılan rotayı belirler.
+
+- `{controller=Home}/{action=Index}/{id?}` => Default olan endpoint şeması...
+    * Bu uygulamaya yapılacak olan istekler bu şemaya uygun şekilde yapılacaktır.
+    * Bir endpoint içerisinde Süslü parantezin içinde belirtilen keyword'ler özel anlam ifade ederler. Yani belirli parametredirler. Controller ve Action sistem tarafından ön tanımlı parametrelerdir.  Controller ve Action gelen isteğin hangi controller'ın hangi action'ını tetikleyeceğini ifade eder.
+    * Controller bir sınıf action ise controller sınıfının içindeki bir metottur.
+    * Eğer hiçbir Url'e hiçbir parametre vermeden direkt görmek istersek hangi controller'ı hangi action'ı tetikleyeceği default tanımlamalar üzerinden yapılır.
+    * Eğer ki controller boş geliyorsa Home action'da boş geliyorsa Index action'ını tetiklemesi gerektiğini burada ifade etmektedir.
+    * Endpoint tanımlamasında süslü parantez içerisinde parametre tanımlanabilmektedir. Bu parametreler herhangi bir isimde olabilir.
+    * Controller ve Action parametreleri ön tanımlı olan parametrelerdir. Yani bunların sistem mimari neye karşılık geldiklerini bilir. 
+    * Biz kendimize özel farklı parametreler tanımlayabiliriz.
+
+<img src="8.png" width="auto">
+
+- Bir web uygulamasında temel MVC konfigürasyonunu yaptıktan sonra artık gelen istekleri karşılayabilmeniz için öncelikle controller tasarlamanız gerekiyor.
+
+## Controller
+- Uygulamaya gelen istekleri karşılayabilmek için kullandığımız sınıflardır.
+
+- MVC uygulamarında controller sınıflarında Controllers klasörü altında tutulurlar.
+
+- Senin MVC uygulamana gelecek olan isteği karşılayacak olan controller İlla ki Controllers klasörü altında bulunmak zorunda değil. Sen buna istediğin bir isim verebilirsin. Nihayetinde arkada gelen istek controller initialize edilirken reflection sayesinde mimaride buluyor dolayısıyla hangi isimde bir klasöre koyduğun önemli değil Ama genellikle controller klasörünün içerisine koymak adettendir.
+
+<img src="9.png" width="auto">
+<img src="10.png" width="auto">
+
+- Controller sınıflarının isimlerinin sonuna Controller eki koyulması gelenekseldir....
+
+<img src="11.png" width="auto">
+
+- Bir sınıfın Request karşılayabilir fıtrata sahip olabilmesi için Controller sınıfından kalıtım alması gerekir.
+
+- Bir sınıfı request alabilir response döndürelebilir yani controller yapabilmek için o sınıfı Controller `class`ından türetmemiz gerekmektedir.
+
+<img src="12.png" width="auto">
+
+- Bir sınıf içerisinde operatif olarak metotları çalıştırır. Sınıf tek başına kendisi operasyon gerçekleştiremez. Algoritmalar operasyonlar bütün herşey metotlarda çalışması gerekiyor.
+
+- İlgili controller içindeki o metot sana o hizmeti sunacaktır. ilgili isteğe karşılığı verecektir. Dolayısıyla biz buradaki isteklerimizi metotlarla karşılarız. Bir controller'ın içinde istekleri karşılayan metotlara biz action metot diyoruz.
+
+- Controller sınıfları içerisinde tanımlanan tümmmm metotlar artık action metot olarak nitelendirilecektir.
+
+<img src="13.png" width="auto">
+
+- Action metot : Controller'a gelen isteği karşılayan ve gerekli operasyonları gerçekleştiren metotlardır...
+
+<img src="14.png" width="auto">
+
+- Sen bir request gönderdiğinde araya kestrel giriyor request'i alıyor gerekli middleware'lar ayağa kaldırılıyor falan filan derken routing modül'de hangi endpoint olduğu ortaya çıkıyor. Hangi rotaya gideceğin belli oluyor bu endpoint'ten sonra reflection ile istek yolladığın controller ilgili uygulama da aranıyor. Bulunduğu taktirde de ondan bir nesne/instance oluşturuluyor ve ardından ilgili action'ı yani ilgili action'a karşılık gelen metodu invoke ediliyor.
+
+- MVC'de Model, View, Controller esasında bir klasördür. Bu klasörün içindeki kah sınıf dosyalarından kah özel razor dosyalarından ibaret çalışan belirli dosyalar var. Yani senin isteğini karşılayan katmanlar klasörlerden ibaret. 
+
+- Controller sınıflarındaki action metotlarının kullanacağı view'lar bunların kesinklikle Views isimli bir klasörde tanımlanmış olması gerekiyor.
+
+- Bir Controller'a ait View'ların ilgil Controller isminin altında bulunması gerekir.
+
+- Default olarak ilgili Action'a ait bir View oluşturacaksanız birebir action'la aynı isimde olması gerekiyor.
+
+- View dosyaları .cshtml uzantılı dosyalardır. C#'la yani .cshtml dosyalarıyla html kodlarının birlikte kullanılabildiği bir format demektir. Biz bu formata Razor teknolojisi diyeceğiz. Razor teknolıojisi sayesinde sen hem html'i hem de C#'ı tek bir dosya üzerinde kullanabiliyorsun.
+
+- Razor ASP.NET Core MVC mimarisinde View'i kodlayabilmemiz için View'de hızlı bir şekilde UI tabanlı çalışmalar gerçekleştirebilmemiz için geliştirilmiş bir teknolojidir. HTML içerisinde C# kodlarını yazmamızı sağlayan bir teknolojidir Razor teknolojisi
+
+<img src="15.png" width="auto">
+
+- İlgili adres tetiklendiğinde/isteği gönderdiğinde ilgili action bunu karşılıyor action kendi view'ini render ettirip sonucu viewresult'u bize döndürüyor ve tarayıcımız bunu yorumlayıp bana gösteriyor.
+
+- View fonksiyonu bu actiona ait view(.cshtml) dosyasını tetikleyecek olan fonksiyondur.
+
+<img src="16.png" width="auto">
+
+- Model katmanı özünde bir klasörden ibarettir. Models'ın altında senin context'in olur entity'lerin olur. Models altındaki sınıfları kullanmaya aslında Models'a gitmek diyoruz.
+
+- Controller'da Model klasöründeki bir sınıfı/nesneyi kullanman/çağırman/işlem yapman Controller'dan Model'a gitmen anlamına geliyor. Stratejik olarak sen oraya gitmiş gibi gözüksende esasında sadece oradaki sınıfları kullanmaktan ibarettir MVC'deki Model katmanını kullanmak.
