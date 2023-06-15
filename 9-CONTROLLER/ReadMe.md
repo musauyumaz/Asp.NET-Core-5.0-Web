@@ -1,5 +1,5 @@
 ---
-modified: 2023-06-15T11:18:56.957Z
+modified: 2023-06-15T14:04:42.196Z
 title: 15) Asp.NET Core 5.0 - Action Türleri Nelerdir?
 ---
 
@@ -213,5 +213,83 @@ public class ProductController : Controller
     #region IActionResult
 
     #endregion
+}
+```
+
+***
+# 16) Asp.NET Core 5.0 - NonAction ve NonController Attributeları
+- Controller'ların gelen request'leri karşılıyan action'ların ise bu request'ler gereği gerekli operasyonları tetikleyen fonksiyonlardır.
+
+- Controller'ların temel yegane amacı sadece request'leri karşılamaktır. Yani Controller dediğiniz sınıf kendi içerisinde ekstradan bir iş mantığı yürütmemelidir. Bir algoritma yürütmemelidir. Sadece request'i karşılamalı ve bu request'in gereği olan o algoritmaları barındıran servisleri çağırmalı yahut bir başka deyişle tetiklemelidir.
+
+- Controller işin komutanıdır. İş yapanı değildir. İş mantığı başka yerlerde başka servislerde başka sınıflarda tanımlanmış olması gerekir. 
+
+- Controller'ların içinde kesinlikle iş mantıkları olmamalıdır. İş mantıkları başka sınıflarda başka katmanlarda başka servislerde API'larda vs olacak Controller sadece bunların gerekli organizasyonunu sağlayacaktır.
+
+- Controller kontrol edendir iş yapan değil.
+
+- Action metotları ise Controller'ların yaverleri gibi düşünülebilir. Yani burada işi yapacak olan servislerin veritabanı işlemini yapacak olan Model'ların yahut gerekli View çalışmalarının yapılacağı olan katmanların tetiklenmesinde gerekli yönlendirmeyi sağladığımız algoritmik operasyonları sağladığımız metotlarımız action metotlarıdır. 
+
+- Controller içerisindeki action'lar gerekli noktalara yönlendirme yapar amma velakin iş yapmaz. Action'lar iş yapmak için değil iş yapan iş mantığını yürüten sınıfları servisleri çağırmak için vardır.
+
+- Nihayetinde Controller'ın içerisindeki metot türü ne olursa olsun bir action metottur.
+
+- Action bir metotsa yani dışarıdan gelen request'i karşılayabiliyorlarsa kesinlikle bir iş mantığı üstlenmemeli iş mantığını üstlenen servislere ya da katmanlara gerekli taleplerde bulunmalıdır.
+
+- Eğer ki ihtiyacınız bir controller sınıfı içerisinde oluşturulan metot iş mantığı yürüten metotsa yani request karşılamaktan ziyade bir işe odaklı çalışıyorsa ki biz bunu tavsiye etmeyiz yani metotlar controller'ların içerisindeki action'lar genellikle request alacaklarından dolayı iş mantıklarını action'larda tanımlamayız. Başka sınıflarda tanımlarız amma velakin diyelim ki böyle bir ihtiyacınız oldu ya da diyelim ki böyle bir tasarımda çalışıyorsunuz ve MVC'de controller'ın içerisindeki bir metot sadece iş mantığını üstlenecektir. Request'i üstlenmemesi gerekecektir.
+
+- Controller sınıflarının içlerinde tanımlanmış olan metotların iş mantığı amaçlı kullanılmasını yani dışarıdan gelen request'in alınmasını engellemek istiyorsak sadece iş mantığıyla o amaçla kullanacaksak ilgili metodun bir action metot olmadığını bildirmemiz gerekiyor. Bunun içinde `NonAction` attribute'u kullanılır. 
+
+- Controller'da `NonAction` attribute'u ile işaretlenen fonksiyonlar dışarıdan request almazlar.
+
+- Controller'lardaki fonksiyonların default hali bir action'dır. Eğer ki `NonAction` ile işaretlerseniz artık bu bir action olmayacaktır. Sadece operatif yani algoritma barındıran/iş mantığı yürüten bir metottur.
+
+- Microservice yapılanmalarında bazen event tabanlı çalışmalar yapabiliyoruz. Kuyruğa gelen bir mesajı tüketebilmek için bazen Controller içerisinde bir iş mantığındaki fonksiyonu tetiklemeniz gerekebilir. İşte böyle durumda ilgili fonksiyonun dışarıdan request almasına gerek kalmaz onun için onu `NonAction` yaparız ki sadece kuyruğa mesaj geldiğinde oradaki mesajları tüketebilmesi için kullanılan bir fonksiyon olacağı için dışarıdan request'leri kapatırız yani `NonAction` ile işaretleriz. İçeride gerekli tüketimler yapılır.
+
+<img src="9.png" width="auto">
+
+```C#
+[NonAction]
+public void X()
+{
+}
+```
+
+- Sistemde varolan tüm controller'lar dışarıdan istek alabilmektedirler. Siz hem controller tanımlayıp hem de dışarıdan istek almasını istemiyorsanız ilgili controller'da `NonController` attribute'u ile işaretleyebilirsiniz.
+
+- Bir metodun istek karşılayabilmesi için onun action olması gerekir.
+
+- Bir controller'ı `NonController` ile işaretlersek eğer içinde action olsun olmasın farketmiyor bir controller olmadığını ifade etmiş olacağız sadece controller'dan türeyen controller sınıfı olduğunu söylüyoruz ama iş mantığıyla kullanacaksanız komple controller'ı Business mantığında çalışmalar yapacaksanız ve bunun dışarıdan bir request almasını istemiyorsanız `NonController` ile Controller'ı işaretlerseniz eğer ilgili controller artık normal bir sınıf olan Controller olacaktır. Yani artık işlevsel bir controller olmayacak normal sıradan bir sınıf olacaktır. Dışarıdan istek alamayacaktır.
+
+```C#
+[NonController]
+public class ProductController : Controller
+{
+    public IActionResult Index()
+    {
+        X();
+        return View();
+    }
+    [NonAction]
+    public void X()
+    {
+    }
+}
+```
+
+## C# Examples
+```C#
+[NonController]
+public class ProductController : Controller
+{
+    public IActionResult Index()
+    {
+        X();
+        return View();
+    }
+    [NonAction]
+    public void X()
+    {
+    }
 }
 ```
