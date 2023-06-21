@@ -1,5 +1,5 @@
 ---
-modified: 2023-06-19T11:16:37.517Z
+modified: 2023-06-21T10:38:20.598Z
 title: 17) Asp.NET Core 5.0 - View Yapılanması ve View'e Veri Taşıma
   Kontrolleri(ViewBag,ViewData,TempData)
 ---
@@ -235,4 +235,136 @@ public class ProductController : Controller
         <li>@product.ProductName</li>
     }
 </ul>
+```
+
+***
+# 18) Asp.NET Core 5.0 - View'e Tuple Nesne Gönderimi ve Kullanımı
+- Tuple nesnesi içerisine birden fazla veriyi/değeri/nesneyi referans edebilen ve semantik açıdan dilin bize kazandırmış olduğu bir söz dizimine/sytnax'a sahip olan bir nesnedir.
+
+- Biz birden fazla veriyi ya da nesneyi bir bütün olarak kullanabilmek için ViewModel dediğimiz Model'ları tasarlarız. Ya da bunun yerine isterseniz dilin bize kazandırmış olduğu tuple syntax'ını da kullanıp bu söz dizimi üzerinden de hızlı bir şekilde ViewModelvari değerler üretebilirsiniz. 
+
+- Tuple nesneleride bizim için esasında bir ViewModel mahiyetinde çalışabilen yapılardır.
+
+- Elimizde eğer birden fazla nesne varsa bunu View'e iki farklı yöntemle gönderebiliriz. Birisi Tuple bir diğeri ise ViewModel.
+
+- ViewImports dosyasında ASP.NET Core MVC uygulamalarında ortak namespace'lerimizi tek çatı altından yönetmemizi sağlar.
+
+- ViewModel ile data gönderme;
+```C#
+//---------- ViewModels ----------
+public class UserProduct
+{
+    public User User { get; set; }
+    public Product Product { get; set; }
+}
+
+//---------- Models ----------
+public class Product
+{
+    public int Id { get; set; }
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+}
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string LastName { get; set; }
+}
+
+//---------- Controllers ----------
+public class ProductController : Controller
+{
+    public IActionResult GetProducts()
+    {
+        Product product = new()
+        {
+            Id = 1,
+            ProductName = "A Product",
+            Quantity = 15
+        };
+
+        User user = new()
+        {
+            Id = 1,
+            Name = "Musa",
+            LastName = "Uyumaz"
+        };
+
+        UserProduct userProduct = new()
+        {
+            Product = product,
+            User = user
+        };
+        return View(userProduct);
+    }
+}
+//---------- Views ----------
+@model OrnekUygulama.Models.ViewModels.UserProduct
+
+<h3>@Model.Product.ProductName</h3>
+<h3>@Model.User.Name</h3>
+```
+
+- Referans olarak tuple nesnesini birebir bir şekilde bildirmeniz gerekiyor.
+
+- Birden fazla veriyi fazlasıyla veri taşıma kontrolleriyle taşınıyor bu da ekstradan yüksek maliyet demektir. Böyle durumlarda ViewModel ya da Tuple nesnenisini kullanmanız gerekecektir.
+
+## C# Examples
+```C#
+//---------- Controllers ----------
+public class ProductController : Controller
+{
+    public IActionResult GetProducts()
+    {
+        Product product = new()
+        {
+            Id = 1,
+            ProductName = "A Product",
+            Quantity = 15
+        };
+
+        User user = new()
+        {
+            Id = 1,
+            Name = "Musa",
+            LastName = "Uyumaz"
+        };
+
+        //UserProduct userProduct = new()
+        //{
+        //    Product = product,
+        //    User = user
+        //};
+        //return View(userProduct);
+
+        (Product product, User user) userProduct = (product, user);
+        return View();
+    }
+}
+
+//---------- Views ----------
+@*@model OrnekUygulama.Models.ViewModels.UserProduct
+
+<h3>@Model.Product.ProductName</h3>
+<h3>@Model.User.Name</h3>*@
+
+@model (OrnekUygulama.Models.Product product,OrnekUygulama.Models.User user)
+
+<h3>@Model.product.ProductName</h3>
+<h3>@Model.user.Name</h3>
+
+//---------- Models ----------
+public class Product
+{
+    public int Id { get; set; }
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+}
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string LastName { get; set; }
+}
 ```
