@@ -1,5 +1,5 @@
 ---
-modified: 2023-07-10T12:31:47.850Z
+modified: 2023-07-11T07:11:02.605Z
 title: 20) Asp.NET Core 5.0 - UrlHelpers - HtmlHelpers Fonksiyonları
 ---
 
@@ -176,3 +176,41 @@ Url.RouteUrl("Default")
 - HtmlHelper ile form ve input nesnesinin oluşturulması server tarafından üstlenildiği için ekstradan maliyetli yapılanmalardır. Bu maliyeti ortadan kaldırmak için Asp.NET Core MVC'de TagHelpers yapıları gelmiştir.
 
 <img src="12.png">
+
+***
+# 21) Asp.NET Core 5.0 - Custom HtmlHelper Fonksiyonu Oluşturmak
+- HtmlHelper'lar Html nesneleri oluştururken bizlere yardımcı olan hazır metodları barındıran bir kütüphane.
+
+- Her Html nesnesi talep ettiğimizde bunun ayarlarını vermek zorunda mıyız? Tabikide değiliz. Eğer ki birçok noktada bu şekilde customize edilecek Html formatlarına ihtiyacımız varsa biz custom bir şekilde sırf o işe odaklı sırf o nitelikleri barındıran HtmlHelper nesnesi oluşturabiliriz. Extension metot yazarak oluşturabiliriz.
+
+- Bir şeyin Custom halini oluşturmak istiyorsanız extension metotlarını kullanabilirsiniz. Herhangi bir nesnenin/yapının/değerin customize edilmiş halini extension üzerinden çok rahat bir şekilde kendinize formatlandırabilirsiniz.
+
+```C#
+//******************* Controller *******************
+public class ProductController : Controller
+{
+    public IActionResult GetProducts()
+    {
+        return View();
+    }
+}
+//******************* View *******************
+@using OrnekUygulama.Extensions
+
+@Html.TextBox("txtadi",null,new {style="background-color:green; color:white"})
+
+@Html.CustomTextBox("txtCustomAdi",null,"Adınız")
+//******************* Extension *******************
+public static class Extensions
+{
+    public static IHtmlContent CustomTextBox(this IHtmlHelper htmlHelper, string name, string value = "", string placeHolder = null)
+        => htmlHelper.TextBox(name, value, new
+        {
+            style = "background-color:black;color:white;font-size:30px;",
+            @class = "form-input",
+            a = "a",
+            b = "b",
+            placeholder = placeHolder
+        });
+}
+```

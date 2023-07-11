@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = OrnekUygulama
-build_property.ProjectDir = d:\Github\Asp.NET-Core-5.0-Web\12-HELPERS\20) Asp.NET Core 5.0 - UrlHelpers - HtmlHelpers Fonksiyonları\OrnekUygulama\
+build_property.ProjectDir = D:\Github\Asp.NET-Core-5.0-Web\12-HELPERS\21) Asp.NET Core 5.0 - Custom HtmlHelper Fonksiyonu Oluşturmak\OrnekUygulama\
