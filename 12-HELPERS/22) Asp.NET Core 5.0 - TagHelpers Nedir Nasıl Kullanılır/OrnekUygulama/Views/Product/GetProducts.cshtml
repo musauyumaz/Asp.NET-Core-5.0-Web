@@ -1,0 +1,24 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@Html.BeginForm("Index","Product",FormMethod.Post);
+
+<form asp-controller="Product" asp-action="Index" method="post">
+    @Html.TextBox("txtAdi")
+    <input type="text" asp-for=""/>
+    <select asp->
+        <option value="value">text</option>
+    </select>
+</form>
+
+<cache>
+    Cache : @DateTime.Now
+</cache>
+<br />
+@DateTime.Now
+
+<environment names="Development">
+    <p>Development Ortamı</p>
+</environment>
+<environment names="Production, Staging">
+    <p>Production veya Staging Ortamı</p>
+</environment>

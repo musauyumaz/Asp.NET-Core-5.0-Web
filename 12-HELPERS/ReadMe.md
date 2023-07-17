@@ -1,5 +1,5 @@
 ---
-modified: 2023-07-11T07:11:02.605Z
+modified: 2023-07-17T12:47:38.182Z
 title: 20) Asp.NET Core 5.0 - UrlHelpers - HtmlHelpers Fonksiyonları
 ---
 
@@ -214,3 +214,128 @@ public static class Extensions
         });
 }
 ```
+
+***
+# 22) Asp.NET Core 5.0 - TagHelpers Nedir? Nasıl Kullanılır?
+<img src="13.png">
+
+- Tag Helpers, daha okunabilir, anlaşılabilir ve kolay geliştirilebilir bir view inşa etmemizi sağlayan, Asp.NET Core ile birlikte HtmlHelpers'ların yerine gelen yapılardır.
+
+- HtmlHelper View üzerinde Html ile ilgili bize yardımcı olan fonksiyonları tanıyan bir sınıftır.
+
+- Basit bir sayfa/form sayfası bile tasarlamak istiyorsanız HtmlHelper ciddi manada kompleks okunabilirliği düşük bir sayfa tasarlamamızı sağlıyor. Halbuki TagHelper'lar daha okunabilir daha anlaşılabilir daha kolay geliştirilebilir sayfa tasarımları oluşturmamızı sağlıyor.
+ 
+<img src="14.png">
+
+- TagHelper'lar view'lerde ki kod maliyetini oldukça düşürmektedirler. Kod maliyetinden kastımız hani performans açısından olan maliyet değil normal bildiğiniz baktığınızda hani mevcut inşadaki kullanılan malzemenin maliyeti kodun maliyeti. Yapabileceğiniz bir işi basit bir şekilde ya da olması gerektiğinden daha fazlasıyla yapma maliyeti. Sen şimdi HtmlHelper kullandığında orada oluşturman gereken Html nesnelerini fonksiyonel tabanlı oluşturduğunda ciddi manada yönetimi de zorlaşıyor kod maliyeti de artmış oluyor. Ama TagHelper'lar etiket bazlı çalıştıkları için Html nesnelerinde vs. kod maliyetini arttırmazlar. Direkt Html kullanabilirsiniz.
+
+- HtmlHelpers'ların Html nesnelerinin generate edilmesini server'a yüklenmesinin getirdiği maliyeti de ortadan kaldırmaktadırlar.
+
+- HtmlHelpers'ların Html nesnelerinin generate edilmesi server'a ekstradan yük bindirir.
+
+- HtmlHelpers'lar da ki programatik yapılanma, programlama bilmeyen tasarımcıların çalışmasını imkansız hale getirmekteydi. TagHelpers'lar ile buradaki kusur giderildi ve tasarımcılar açısından programlama bilgisine ihtiyaç duyulmaksızın çalışma yapılabilir nitelik kazandırdı.
+
+- HtmlHelpers ile oluşturulan html nesnesinin attribute'ları 'htmlAttribute' parametresi üzerinden anonim nesne ile verilmektedir. Bu durum hem bellek optimizasyonu açısından hemde kod maliyeti açısından oldukça zararlıdır. TagHelpers'lar bu maliyeti ortadan kaldırmakta ve html nesnelerine sadece ilgili attribute'ları normal sözdizimiyle vermekle ilgilenmektedirler.
+
+- TagHelper'lar senin Html nesnesinni oluştururken herhangi bir fonksiyon kullanmana gerek yok çünkü Html nesnesini alenen koyuyorsun sen oraya üzerine gerekli attribute'larını girebiliyorsun yani normal Html çalışırken o Html üzerinde belirli etiket desteğini sağlayan bir yapılanmadır TagHelper.
+
+<img src="15.png">
+
+- TagHelper'ları kullanabilmek için View'lere  `@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers` namespace'inin eklenmesi gerekmektedir.
+
+- TagHelper'lar özünde bir sınıf olduklarından dolayı belirli bir kütüphanenin içerisinde barındırılmaktadır.
+
+<img src="16.png">
+<img src="17.png">
+
+
+## FORM TAGHELPER
+`<form action="/" asp-action="Index" asp-controller="Home" method="post"></form>`
+
+- HtmlHelper ile çalışırken `Html.BeginForm()` yapısını kullanıyorduk.
+
+<img src="18.png">
+
+## INPUT TAGHELPER
+- input nesnelerinde kullanabildiğimiz bu nesneler üzerinde belirli model binding işlemlerinde vs kullandığımız TagHelper'ımızdır.
+
+```C#
+<input type="text" asp-for=""/>
+<select asp->
+    <option value="value">text</option>
+</select>
+```
+
+<img src="19.png">
+
+## CACHE TAGHELPER
+- Elimizdeki verileri cache'leyebiliyoruz. InMemory'de bunları cache'leyebilmektedir.
+
+```C#
+<cache>
+    Cache : @DateTime.Now
+</cache>
+<br />
+@DateTime.Now
+```
+
+<img src="20.png">
+
+## ENVIRONMENT TAGHELPER
+<img src="21.png">
+
+```C#
+<environment names="Development">
+    <p>Development Ortamı</p>
+</environment>
+<environment names="Production, Staging">
+    <p>Production veya Staging Ortamı</p>
+</environment>
+```
+
+## IMAGE TAGHELPER
+- Tarayıcılar static dosyaları local cache üzerinde saklamaktadırlar.
+
+- Cachelenmiş bir dosya tekrar istenildiği taktirde bunun için server'a istek gönderilmez ve local cache üzerinden ilgili dosyanın cache'I gönderilir. Böylece sayfalar ilk açılışlarından sonraki taleplerde daha hızlı yüklenebilmektedirler.
+
+- Lakin bazen dosya adı değişmeden içeriği değişebilmektedir. Böyle bir durumda ilgili dosyanın cache'den değil, server'dan yüklenmesi gerekmektedir. Bu duruma biz ETag yöntemiyle müdahale edebilmekteyiz.
+
+- Asp.NET Core MVC mimarisinde TagHelper'lar içerisinde static dosyalara etag yöntemini uygulayabilir ve dosyanın adı değişmesede içeriği değiştiği taktirde etag üzerinden bu değişikliği fark ederek ilgili dosyanın server'dan talep edileceği bilinebilmektedir.
+
+- Sen bir web sitesi üzerinde giriş yaptıysan ve bu ilk girişinse bütün dosyalar ilgili web sitesinden yüklenir. Sen girişi yaptın sunucu sana bütün ne var yoksa sayfaya dair dosyaların hepsini yükleyecektir. Senin tarayıcına yüklenen bu dosyalara artık bir sonraki istekte eğer ki bir değişiklik yoksa tekrardan yüklenmeyecek bunlar senin tarayıcındaki cache'den çekilecektir.  Sunucu diyor ki ya kardeşim her isteğe karşılık varolan statik dosyaları tekrar tekrar göndermektense bu dosyaları sana bir kere gönderecem gönderdiklerimi senin tarayıcın cache'leyecek bu cache neticesinde de biz artık bundan sonraki isteklerde onu kullanacağız.
+
+- Senin yapmış olduğun istek neticesinde bu statik dosyalar değiştiyse ve bu değişiklikten haberdar değilsen burada tekrardan cache'deki dosyaları kullanacaksın. Böyle bir durumda Etag dediğimiz bir etiket/jeton kullanılır ve bu jeton üzerinden server'da ilgili statik dosyanın değişip değişmeme durumu fark edilir ve ona göre değiştiyse server'dan en güncel halleri çekilir.
+
+- ImageTagHelper yani TagHelper'lar image'ler üzerinde belirli cache işlemleri yapılırken eğer ki data güncellendiyse ilgili image dosyası değiştirildiyse buradaki değişikliği yakalayabilmemiz için kendi dahilinde ETag yöntemini otomatik kullanmamızı sağlayabilmektedir.
+
+```C#
+<img src="~/resim.png" asp-append-version="true"/>
+```
+<img src="22.png">
+
+## PARTIAL TAGHELPER
+- 
+```C#
+<partial name="~/Views/Product/Partials/ListPartial.cshtml" />
+```
+
+<img src="23.png">
+
+## REMOVE TAGHELPER
+- TagHelper'ları eklediğimiz View'lerden tekrardan kaldırabiliyoruz.
+
+```C#
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@removeTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<img src="~/resim.png" asp-append-version="true"/>
+```
+
+<img src="24.png">
+
+```C#
+<form asp-action="Index" asp-controller="Home"></form>
+<!form asp-action="Index" asp-controller="Home"></!form>
+```
+<img src="25.png">
