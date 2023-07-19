@@ -1,5 +1,5 @@
 ---
-modified: 2023-07-17T12:47:38.182Z
+modified: 2023-07-19T06:44:49.267Z
 title: 20) Asp.NET Core 5.0 - UrlHelpers - HtmlHelpers Fonksiyonları
 ---
 
@@ -339,3 +339,67 @@ public static class Extensions
 <!form asp-action="Index" asp-controller="Home"></!form>
 ```
 <img src="25.png">
+
+***
+# 23) Asp.NET Core 5.0 - Custom TagHelpers Oluşturma
+- Özel bir TagHelper oluşturmanın ihtiyacı normal bir projenin doğal seyrinde olan bir ihtiyaçtır. Nihayetinde gelişim sürecinde olan projelerde tekrar tekrar bazı yapıları oluşturmaktansa bunu tek seferlik oluşturmak ve her kullanman gereken noktada onu çağırıp kullanmak işin temel pratik çözümüdür. Tek seferde bir component mantığıyla olayı çözebilirsiniz.
+
+- TagHelper'lar yapısal olarak bir sınıftır. Bizim Custom TagHelper oluşturabilmemiz için normal bir sınıf oluşturmamız gerekir.
+
+- TagHelper sınıflarında esasında TagHelper'ın isminin ta kendisidir.
+
+- Bir sınıfın TagHelper olabilmesi için `Microsoft.AspNetCore.Razor.TagHelpers.TagHelper` `abstract class`ından türemesi gerekmektedir.
+ 
+```C#
+public override void Process(TagHelperContext context, TagHelperOutput output)
+{
+    base.Process(context, output);
+}
+```
+- context parametresinin içerisinde ilgili TagHelper'a vermiş olduğumuz bütün değerleri sizlere getirecektir. context sana kaynağı TagHelper'ı getirecek output ise bu TagHelper'ın yapacağı işleri sana sunacaktır. context o sırada tetiklenen TagHelper'ı sana getirecek bütün özellikleriyle beraber output kullanılan TagHelper'ın yerine çıktı olarak ne vereceksin onun ayarlarını konfigürasyonlarını bunun üzerinden yapıyorsun.
+
+- `Process` fonksiyonu ise ilgili TagHelper'ın işlemini yapıldığı fonksiyondur.
+
+- TagHelper üzerinde alacağımız attribute'ları property olarak alırsak direkt tanımlanabilir hale geleceklerdir.
+
+- Yapısal olarak bir TagHelper içerisindeki property'lerle ve `Process` fonksiyonuyla ibaret. Property'lere değerleri almakta `Process`te ise bu değerleri işleyip output'unu sunmaktadır.
+
+- Bir TagHelper oluşturduysanız oluşturulan TagHelper ismini sınıfın isminden almaktadır. Yahut farklı bir isim vermek isterseniz `[HtmlTargetElement]` attribute'u ile verebilirsiniz.
+
+- TagHelper'ın işlevsellik gösterebilmesi/operasyonunu gerçekleştirebilmesi için `Process` metodunun override edilmesi gerekmektedir. Biz bu metot üzerinden gerekli operasyonu gerçekleştiriyoruz.
+
+- `TagHelperContext context` : İlgili TagHelper'ı getirmekte. Attributes'ları UnıqueId gibi değerleri getirmektedir.
+
+- `TagHelperOutput output`  : İlgili attribute'un çıktısını bizlere vermektedir.
+
+<img src="26.png">
+
+```C#
+//******************* TagHelper *******************
+using Microsoft.AspNetCore.Razor.TagHelpers;
+
+namespace OrnekUygulama.TagHelpers
+{
+    //[HtmlTargetElement("mail")]
+    public class EmailTagHelper : TagHelper
+    {
+        public string Mail { get; set; }
+        public string Display { get; set; }
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            output.TagName = "a";
+            output.Attributes.Add("href",$"mailto:{Mail}");
+            output.Content.Append(Display);
+            //base.Process(context, output);
+        }
+    }
+}
+
+//******************* View *******************
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, OrnekUygulama
+
+<a href="mailto:musa.uyumaz73@gmail.com"></a>
+<br />
+<email mail="musa.uyumaz73@gmail.com" display="Musa Uyumaz Mail'i'"></email>
+```
