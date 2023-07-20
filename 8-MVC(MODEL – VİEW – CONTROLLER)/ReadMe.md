@@ -1,7 +1,3 @@
----
-modified: 2023-06-09T15:11:54.250Z
-title: 13) Asp.NET Core 5.0 - MVC Nedir? Asp.NET Core MVC Pipeline'ı Nasıldır?
----
 ***
 # 13) Asp.NET Core 5.0 - MVC Nedir? Asp.NET Core MVC Pipeline'ı Nasıldır?
 <img src="1.png" width="auto">
