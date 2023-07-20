@@ -11,3 +11,8 @@
 - ## [WEB KAVRAMLARI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/5-%20WEB%20KAVRAMLARI/ReadMe.md)
 - ## [WEB UYGULAMASI GELİŞTİRME YAKLAŞIMLARI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/6-%20WEB%20UYGULAMASI%20GEL%C4%B0%C5%9ET%C4%B0RME%20YAKLA%C5%9EIMLARI/ReadMe.md)
 - ## [ASP.NET CORE PROJE OLUŞTURMA VE DOSYA YAPISI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/7-ASP.NET%20CORE%20PROJE%20OLU%C5%9ETURMA%20VE%20DOSYA%20YAPISI/ReadMe.md)
+- ## [MVC(MODEL – VİEW – CONTROLLER)](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/8-MVC(MODEL%20%E2%80%93%20V%C4%B0EW%20%E2%80%93%20CONTROLLER)/ReadMe.md)
+- ## [CONTROLLER](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/9-CONTROLLER/ReadMe.md)
+- ## [VİEW](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/10-V%C4%B0EW/ReadMe.md)
+- ## [RAZOR](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/11-RAZOR/ReadMe.md)
+- ## [HELPERS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/12-HELPERS/ReadMe.md)
