@@ -1,8 +1,3 @@
----
-modified: 2023-07-19T06:44:49.267Z
-title: 20) Asp.NET Core 5.0 - UrlHelpers - HtmlHelpers Fonksiyonları
----
-
 ***
 # 20) Asp.NET Core 5.0 - UrlHelpers - HtmlHelpers Fonksiyonları
 - Helpers yapılanmaları adı üstünde yardımcı metotlar. 
