@@ -1,8 +1,3 @@
----
-modified: 2023-06-15T14:04:42.196Z
-title: 15) Asp.NET Core 5.0 - Action Türleri Nelerdir?
----
-
 ***
 # 15) Asp.NET Core 5.0 - Action Türleri Nelerdir?
 - Client'tan gelen request'i controller karşılar. Controller request'in mahiyetine uygun olan/bu işlemi yapacak olan action'a yönlendiriyor yani ilgili fonksiyon tetikleniyor bu fonksiyon ihtiyaca binaen bütün operasyonu/aksiyonu alıyor. Gerektiği taktirde model'a gidiyor Model'da ilgili veri üretiliyor ve elde ediyor. Gerekirse View'e gidiyor View'de ilgili veriyi makyajını yapıyor tekrar elde ediyor ve en nihayetinde client'a istediği veriyi bir şekilde döndürmüş oluyor. İşte buradaki operasyonu action üstlenir. Controller sadece bu action'ların tutulduğu bir sınıf bizim nazarımızda.
