@@ -1,9 +1,3 @@
----
-modified: 2023-06-21T10:38:20.598Z
-title: 17) Asp.NET Core 5.0 - View Yapılanması ve View'e Veri Taşıma
-  Kontrolleri(ViewBag,ViewData,TempData)
----
-
 ***
 # 17) Asp.NET Core 5.0 - View Yapılanması ve View'e Veri Taşıma Kontrolleri(ViewBag,ViewData,TempData)
 - View dediğimiz Controller'da üretilen datanın görselleştirildiği Javascript, CSS kullanarak ve bunun gibi ekstradan UI tabanlı teknolojileri kullanılarak verinin görselleştirildiği render edildiği bir katman ve bu katmana özel geliştirilmiş bir özel formatta/uzantıda dosyadır View dediğimiz yapılanma.
