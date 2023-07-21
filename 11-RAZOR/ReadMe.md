@@ -1,8 +1,3 @@
----
-modified: 2023-06-23T14:44:55.157Z
-title: 19) Asp.NET Core 5.0 - Razor Nedir? Kullanım Durumları Nelerdir?
----
-
 ***
 # 19) Asp.NET Core 5.0 - Razor Nedir? Kullanım Durumları Nelerdir?
 - Varolan bir programlama dilini farklı bir ortamda kullanmamızı sağlayan bir sözdizimidir.
