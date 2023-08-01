@@ -1,5 +1,5 @@
 ---
-modified: 2023-07-28T05:59:18.196Z
+modified: 2023-08-01T10:50:04.596Z
 title: "25) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Form
   Üzerinden Veri Alma "
 ---
@@ -177,6 +177,72 @@ namespace OrnekUygulama.Model
     {
         public string ProductName { get; set; }
         public int Quantity { get; set; }
+    }
+}
+```
+
+***
+# 26) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - QueryString Üzerinden Veri Alma
+- Biz web uygulamasında belirli verilerimizi gizli formatlarda taşımayı tercih ediyoruz ama bazı veriler vardır ki güvenlik gerektirmeyen bilgilerdir bunlar genellikle ve url üzerinde hızlı bir şekilde taşıyabiliriz. Url üzerinde taşımamızın sebebi yapılan istek neticesinde sunucuya hızlı bir şekilde eriştirebilmek. Yani hedef endpointimiz neresiyse bu illaki bir sunucu değil bir serviste olabilir. Bu servise ilgili güvenlik gerektirmeyen verileri hızlı bir şekilde göndermek istiyorsak QueryString yapısını kullanabiliyoruz.
+
+- Güvenlik gerektirmeyen bilgilerin url üzerinde taşınması için kullanılan yapılanmadır.
+
+<img src="1.png">
+
+- Biz tabi içerik olarak QueryString'in sadece kullanıcılardan bize veri taşıyan bir yapılanmaymış gibi bahsediyor olabiliriz ama esasında böyle bir mekanizma değil QueryString bir tek kullanıcılardan veri almamakta esasında ilgili yazılımın ilgili uygulamanın istek yapacağı servislere yahut sunuculara bu isteklerde hızlı bir şekilde veri taşımasını sağlayan yapılanmadır. Yani esasında yazılım kullanıyor buradaki bilgiyi. Ama biz en nihayetinde kullanıcıdan da QueryString üzerinden doğrudan ya da dolaylı bir şekilde verilerimizi alabildiğimizden dolayı normalde kullanıcı değil sen yazılımsal operasyonlar neticesinde QueryString'e değerler koyabilir ve bu değerleri ilgili işlemlerde operasyonlarda çok rahat kullanabilirsin.
+
+- QueryString bir POST işleminin neticesi değildir.  QueryString'te bir değer taşıyorsak bu değer illaki POST'ta değil herhangi bir istek neticesinde taşınabilir.
+
+- QueryString yapılan request'in türü her ne olursa olsun QueryString'in değerleri taşınabilir.
+
+<img src="2.png">
+
+- Url üzerinde QueryString parametresi tanımlayabilmek istiyorsanız url'in en sonunda `?` operatörünü koyuyorsunuz ve bundan sonra QueryString parametrelerinizi tanımlayabiliyorsunuz.
+
+- QueryString değerlerini yakalamak istiyorsanız parametre üzerinden ilgili QueryString'e karşılık gelen bir parametre tanımlayabilirsiniz.
+
+- `product/verial?a=5&b=ahmet` => QueryString'de birden fazla parametre girilebilir bunun için `&` operatörünü kullanırız.
+
+- Gelen değerleri karşılayabilecek bir türde karşılamanız en doğrusudur. Gelen değeri farklı bir türle yakalamaya çalışırsan herhangi bir hata vermeyecektir ama ilgili parametre değeri yakalayamacaktır.
+
+- QueryString'ten gelen değerleri gelen request'in için girerek'te QueryString değerlerini okuyabiliriz.
+
+- `QueryString queryString = Request.QueryString;` //Request yapılan endpoint'e query string parametresi eklenmiş mi eklenmemiş mi bununla ilgili bilgi verir.
+
+- QueryString parametrelerine karşılık gelecek property isimlerini barındıran bir tür tanımlamanız yeterli olacaktır.
+
+- Kullanıcıyla yapılan etkileşimler neticesinde yapılan veri transferlerinin bir şekilde gönderilen verileri sunucu tarafında yakalanıp işlenmesi.
+
+## C# Examples
+```C#
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace OrnekUygulama.Controllers
+{
+    public class ProductController : Controller
+    {
+        public IActionResult GetProducts()
+        {
+            return View();
+        }
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+        //public IActionResult VeriAl(string a,string b)
+        public IActionResult VeriAl(QueryData queryData)
+        {
+            QueryString queryString = Request.QueryString; //Request yapılan endpoint'e query string parametresi eklenmiş mi eklenmemiş mi bununla ilgili bilgi verir.
+            string a =Request.Query["a"].ToString();
+            string b =Request.Query["b"].ToString();
+            return View();
+        }
+    }
+    public class QueryData
+    {
+        public int A { get; set; }
+        public string B { get; set; }
     }
 }
 ```
