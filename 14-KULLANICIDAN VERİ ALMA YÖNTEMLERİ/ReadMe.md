@@ -1,5 +1,5 @@
 ---
-modified: 2023-08-01T10:50:04.596Z
+modified: 2023-08-02T09:06:50.290Z
 title: "25) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Form
   Üzerinden Veri Alma "
 ---
@@ -246,3 +246,41 @@ namespace OrnekUygulama.Controllers
     }
 }
 ```
+
+***
+# 27) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Route Parameter Üzerinden Veri Alma
+- `UseEndpoints()` diye bir middleware'imiz var. Şimdi bu middleware içerisinde clienttan bu server'a gelecek olan isteklerin rotalarını belirleriz. Route parametreleri ise bu rota üzerinde değerler taşıyabiliyoruz. Aynen QueryString gibi. Rotanın içerisine belirli değerlerimizi gömebiliyoruz bunlarla beraber istek yaptığımızda ilgili değerler ilgili sunucuya gönderilmiş oluyor. QueryString'e çok benziyor.
+
+- Rotalar kendi fıtratlarında parametrelerden oluşur. Yani değerlerden oluşur.
+
+- Rotalarda biz custom parametrelerde tanımlayıp o parametreye uygun koyduğumuz değeri sunucuya gönderebiliyoruz. QueryString güvenli olmayan verilerde kullandığımız bir veri taşıyıcı iken rotalar gömülü olarak yerleştirdiğimiz parametrelerde en azından güvenlik bir nebze olsun sağlanabilmektedir. Daha uygun bir formatta url oluşturmamızı sağlamaktadır.
+
+- Örenğin QueryString => `?userid=5` demek ki bir user'ın id'sine karşılık geldiği alenen belli. Rota da belli de en azından rota da bunun id değeri olup olmadığı sunucu tarafında hangi değerle/nasıl yakalanacağı bilinmemekte.
+
+- QueryString'te server'da yapılacak eylemin yakalanabilmesi için hangi parametrenin kullanıldığı bilinmekte. Ama rotada yok. Yani QueryString güvenlik açığı verir.
+
+- Route üzerinde veri taşıyabilmek için route'un ilgili veriyi karşılayabileceği bir parametre ihtiyacı vardır. Eğer ki biz default'u kullanıyorsak zaten id değerini taşıyabiliriz. Default'ta id dışında başka değerler taşıyamayız.
+
+- Rotaya uygun bir şekilde id parametresine yerleştirilen değeri burada yakalayabilmek istiyorsam yapmam gereken sadece rotadaki parametreye/parametrenin ismine uygun bir değişken tanımlamaktır.
+
+- Rotada önemli olan oradaki parametrenin ismidir.
+
+- Esasında Route yapılanması QueryString'e çok benzer. Davranış olarakta birebir aynı. QueryString'te verileri nasıl karşılıyorsanız Route'da da aynı şekil karşılıyorsunuz.
+
+- Parametreden karşılayabilirsin hatta bu parametrede bu değeri karşılayabilecek bir tür oluşturup onunla karşılayabiliyorsun. Hatta request üzerinden de karşılama yapabiliyorsunuz.
+
+- `Request.RouteValues` property'si sana route parametrelerini getirecektir.
+
+- controller ve action'da nihayetinde bir parametredir. controller ve action sistem tarafından ön tanımlı parametrelerdir. Yani controller ve action dendiği zaman senin bunu karşılamana gerek yok controller ve action ilgili mvc mimarisinde gelen bu parametrelere karşılık olan hangi controller'ın hangi action'ı hangi fonksiyonun tetiklenebileceği bildirilebiliyor. Bunu sen tanımlamıyorsun mimari zaten bu isimlerden otomatik yakalıyor.
+
+- `endpoints.MapDefaultControllerRoute();` => Sistem tarafından default tanımlanmış rotayı getirir.
+
+- Her bir route parametresi kendisine sıralı bir şekilde karşılık gelen değeri karşılayacaktır. Url'deki sırası önemlidir!!!
+
+- QueryString ile Route güvenlikle alakalı ilgili datayı hangi değişken ismiyle taşıdığınızı gizlemeyle alakalı bir fark sağlıyor. Nihayetinde route yapılanmaları hani daha gizli bir şekilde veriyi taşımamızı sağlarken  QueryString alenen açık güvensiz bir şekilde taşımamızı sağlıyor.
+
+- ```C#
+<a asp-action="Index" asp-controller="Home" asp-route-a="ahmet" asp-route-b="mehmet" asp-route-id="123" asp-route-x="asfasdgafaf">Content</a> //Burada gerekli şekilde parametreler route dizaynına göre yerleştirilecektir. Ama eğer ki route dizaynında olmayan bir parametre varsa querystring olarak yerleştirilecektir.
+
+{controller=Home}/{action=Index}/{a}/{b}/{id}
+``` 

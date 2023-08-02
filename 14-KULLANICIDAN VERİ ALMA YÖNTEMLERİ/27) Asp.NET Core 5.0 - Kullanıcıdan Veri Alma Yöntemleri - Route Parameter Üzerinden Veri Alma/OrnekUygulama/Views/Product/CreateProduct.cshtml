@@ -1,0 +1,11 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<form asp-action="VeriAl" asp-controller="Product" method="post">
+    <input type="text" /> <br />
+    <input type="text" /> <br />
+    <button>Gönder</button>
+</form>
+
+<a asp-action="Index" asp-controller="Home" asp-route-a="ahmet" asp-route-b="mehmet" asp-route-id="123" asp-route-x="asfasdgafaf">Content</a>
+
+{controller=Home}/{action=Index}/{a}/{b}/{id}

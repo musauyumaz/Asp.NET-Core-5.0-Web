@@ -1,0 +1,25 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = OrnekUygulama
+build_property.RootNamespace = OrnekUygulama
+build_property.ProjectDir = D:\Github\Asp.NET-Core-5.0-Web\14-KULLANICIDAN VERİ ALMA YÖNTEMLERİ\27) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Route Parameter Üzerinden Veri Alma\OrnekUygulama\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Github\Asp.NET-Core-5.0-Web\14-KULLANICIDAN VERİ ALMA YÖNTEMLERİ\27) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Route Parameter Üzerinden Veri Alma\OrnekUygulama
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Github/Asp.NET-Core-5.0-Web/14-KULLANICIDAN VERİ ALMA YÖNTEMLERİ/27) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Route Parameter Üzerinden Veri Alma/OrnekUygulama/Views/Product/CreateProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxDcmVhdGVQcm9kdWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Github/Asp.NET-Core-5.0-Web/14-KULLANICIDAN VERİ ALMA YÖNTEMLERİ/27) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Route Parameter Üzerinden Veri Alma/OrnekUygulama/Views/Product/VeriAl.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxWZXJpQWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
