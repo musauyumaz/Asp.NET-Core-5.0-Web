@@ -368,3 +368,48 @@ namespace OrnekUygulama
     }
 }
 ```
+
+***
+# 28) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Header Üzerinden Veri Alma
+- Kullanıcıdan veri almayı başarabilmemiz için kullanıcıdan bir request/istek almamız gerekiyor.
+
+- Kullanıcının yapmış olduğu istekte/request'te birçok farklı alandan değerlerimizi ilgili sunucuya taşıyabiliyoruz. Amaç veri taşıyabilmek.
+
+- Kullanıcının göndermiş olduğu request'te/http isteğinde bulunan veridir.
+
+- Header'lar genellikle ilgili istekle alakalı nitelikleri barındırır. 
+
+- Header dediğimiz yapılanmaları authorization işlemlerinde Jwt token gibi bu tarz yapılanmaları header'lara koyup authorization'ının karşılığında koyup header'ları kullanıp o şekilde yetkilendirmeleri sağlıyoruz.
+
+- Header'lar isteklerde belirli verileri taşımamızı sağlayan nitelendirici bir kalıptır/başlıklardır.
+
+- Tarayıcılar istek yapmamızı sağlıyor amma velakin header'ları manuel bir şekilde doldurmamıza müsaade etmiyor.
+
+- Postman yapısal olarak bir istekte bulunmamızı herhangi bir endpointe istekte bulunmamızı sağlayan bir arayüzdür. Endpoint'e karşılık bildirdiğin türde istekte bulunmanı sağlayan bir arayüz. Tabi ki de bu isteklerde bulunurken bu isteğin body'sine de header'ına da müdahale edebiliyorsunuz.
+
+- İster Post ister Put ister Get farketmiyor herhangi bir istek türünde istek yapabilirsiniz. Nihayetinde header'ınızda bir data varsa buraya taşınacaktır.
+
+- Header'lar genellikle parametre üzerinden değilde `Request.Headers` property'si üzerinden yakalanır.
+
+- Header'lar diğer yapılar gibi davranışsal kullanılmaz. Header gelen istekte ayrı özel bir bölüm gibi özel nitelikleri barındıran bir alan gibi düşünülebilir.
+
+- Header'larda Türkçe, Japonca, Arapça karakter kulanılmaz. Sadece Latince karakterler ile bildirim yapmak zorundasınız. 
+
+<img src="3.png" width="auto">
+
+```C#
+//****************************** Controller ******************************
+using Microsoft.AspNetCore.Mvc;
+
+namespace OrnekUygulama.Controllers
+{
+    public class ProductController : Controller
+    {
+        public IActionResult VeriAl()
+        {
+            var headers = Request.Headers;
+            return View();
+        }
+    }
+}
+```
