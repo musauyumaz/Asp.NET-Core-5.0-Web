@@ -1,5 +1,5 @@
 ---
-modified: 2023-08-02T09:06:50.290Z
+modified: 2023-08-03T05:47:25.299Z
 title: "25) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Form
   Üzerinden Veri Alma "
 ---
@@ -279,8 +279,92 @@ namespace OrnekUygulama.Controllers
 
 - QueryString ile Route güvenlikle alakalı ilgili datayı hangi değişken ismiyle taşıdığınızı gizlemeyle alakalı bir fark sağlıyor. Nihayetinde route yapılanmaları hani daha gizli bir şekilde veriyi taşımamızı sağlarken  QueryString alenen açık güvensiz bir şekilde taşımamızı sağlıyor.
 
-- ```C#
+```C#
 <a asp-action="Index" asp-controller="Home" asp-route-a="ahmet" asp-route-b="mehmet" asp-route-id="123" asp-route-x="asfasdgafaf">Content</a> //Burada gerekli şekilde parametreler route dizaynına göre yerleştirilecektir. Ama eğer ki route dizaynında olmayan bir parametre varsa querystring olarak yerleştirilecektir.
 
 {controller=Home}/{action=Index}/{a}/{b}/{id}
 ``` 
+
+## C# Examples
+```C#
+//****************** Controller ******************
+using Microsoft.AspNetCore.Mvc;
+
+namespace OrnekUygulama.Controllers
+{
+    public class ProductController : Controller
+    {
+        public IActionResult GetProducts()
+        {
+            return View();
+        }
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+        //public IActionResult VeriAl(string id,string a,string b)
+        public IActionResult VeriAl(RouteData routeData)
+        {
+            var values = Request.RouteValues;
+            return View();
+        }
+    }
+    public class RouteData
+    {
+        public int Id { get; set; }
+        public string A { get; set; }
+        public string B { get; set; }
+    }
+}
+//****************** View ******************
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<form asp-action="VeriAl" asp-controller="Product" method="post">
+    <input type="text" /> <br />
+    <input type="text" /> <br />
+    <button>Gönder</button>
+</form>
+
+<a asp-action="Index" asp-controller="Home" asp-route-a="ahmet" asp-route-b="mehmet" asp-route-id="123" asp-route-x="asfasdgafaf">Content</a>
+
+{controller=Home}/{action=Index}/{a}/{b}/{id}
+//****************** Program.cs ******************
+namespace OrnekUygulama
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute("CustomUrl","{controller=Home}/{action=Index}/{a}/{b}/{id}");
+            });
+
+            app.Run();
+        }
+    }
+}
+```
