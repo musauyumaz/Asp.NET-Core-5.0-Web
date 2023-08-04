@@ -1,5 +1,5 @@
 ---
-modified: 2023-08-03T05:47:25.299Z
+modified: 2023-08-04T09:36:04.206Z
 title: "25) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Form
   Üzerinden Veri Alma "
 ---
@@ -410,6 +410,69 @@ namespace OrnekUygulama.Controllers
             var headers = Request.Headers;
             return View();
         }
+    }
+}
+```
+
+***
+# 29) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Ajax Tabanlı Veri Alma
+- Ajax Client tabanlı istek yapmamızı sağlayan ve bu isteklerin sonuçlarını almamızı sağlayan bir Javascript temelli mimaridir.
+
+- Gönderdiği javascript objesini yakalayabilmek için bunun property'lerine gelecek bir class oluşturup ilgili nesneyi karşılayabilirsin.
+
+- Bir uygulamada client tabanlı çalışabilmek için/ajax tabanlı çalışabilmek için ajax'ı destekleyen herhangi bir UI teknolojisini/kütüphanesini kullanabilirsiniz.(JQuery)
+
+- Biz ajax tabanlı istek yapacaksak ve yapacağımız istekler Get ya da Post istekleriyse eğer `$.post()` veya `$.get()` kullanabiliriz. Eğer Put ya da Delete'i kullanacaksanız buradan `$.ajax` fonksiyonuyla Put'u ve Delete'i de kullanabilirsiniz.
+
+- [JQuery ile Post İsteği](https://api.jquery.com/jquery.post/)
+
+- Gelen json formattaki dosyayı/datayı burada ilgili türe Mvc mimarimiz otomatik dönüştürebiliyor. Yani parametredeki türe Deserialization işlemini gerçekleştirebiliyor. Normalde eğer karşılamasaydı bunu `string` olarak karşılayıp içeride/method body'sinde ilgili türe dönüştürmen gerekirdi.
+
+- Ekstradan elinizdeki endpointe QueryString değerleri girebilir istek neticesinde ilgili değerleri yakalayabilirsiniz. Route parametreleri girebilir ve değerleri yakalayabilirsiniz. Yapmış olduğunuz isteğin illa ki post olmasına gerek  yoktur.
+
+- Client tabanlı gelen bütün isteklerde yapı neyse o yapıya rahat bir şekilde erişebiliyorsunuz.
+
+## C# Examples
+```C#
+//************************* Controller *************************
+using Microsoft.AspNetCore.Mvc;
+
+namespace OrnekUygulama.Controllers
+{
+    public class ProductController : Controller
+    {
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult VeriAl(AjaxData ajaxData)
+        {
+            return View();
+        }
+    }
+}
+
+//************************* View *************************
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<button id="btnGonder">Gönder</button>
+
+<script>
+    $("#btnGonder").click(() => {
+        $.post("https://localhost:5001/product/verial", { a: "a data", b: "b data" })
+    });
+</script>
+
+//************************* Model *************************
+namespace OrnekUygulama.Models
+{
+    public class AjaxData
+    {
+        public string A { get; set; }
+        public string B { get; set; }
     }
 }
 ```
