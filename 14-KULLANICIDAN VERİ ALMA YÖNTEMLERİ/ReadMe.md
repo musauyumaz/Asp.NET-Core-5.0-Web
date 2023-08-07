@@ -1,5 +1,5 @@
 ---
-modified: 2023-08-04T09:36:04.206Z
+modified: 2023-08-07T14:19:57.709Z
 title: "25) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Form
   Üzerinden Veri Alma "
 ---
@@ -476,3 +476,124 @@ namespace OrnekUygulama.Models
     }
 }
 ```
+
+***
+# 30) Asp.NET Core 5.0 - Tuple Nesne Post Etme ve Yakalama
+- Tuple nesnesi içerisinde birden fazla değer barındırabilen tek bir tanımlamalık söz dizimi açısından dil tarafından desteklenen birden fazla nesneyi tanımlayan değişkendir.
+
+- MVC mimarisinde genellikle View katmanında tekil nesneler model olarak kullanılsada bazı durumlarda tuple nesneleri model olarak kullanmamız gerekebilir.
+
+- Bir view dosyasının herhangi bir türe bind edilebilmesi için öncelikle model'ın belirtilmesi gerekiyor. Haliyle bu tür bir eğer ki tuple nesnesiyse yine de o tuple nesnesinin türünün bildirilmesi gerekiyor.
+
+- Tuple nesnesi üzerinden bir bind mekanizması ortaya koymak istiyorsanız öncelikle tuple nesnesinin içerisinde nesnelerimizin null olmaması gerekiyor.
+
+- Eğer ki bind mekanizmasında tuple türde bir nesne kullanıyorsak bu tuple nesnenin içerisindeki datalar/değerler/nesneler/objectler'in oluşturulup verilmesi gerekmektedir. Yani null olmaması gerekir. Nihayetinde OOP mantığıyla düşünün tuple tek başına bir nesneyse bunun içerisindeki bir item'ı/elemanı çağırıyorsun eğer o null'sa null olan birşeyi çağıramazsınız uygulama patlar. Dolayısıyla tuple'da bir bind mekanizmasını kullanıyorsanız illa ki o tuple nesnenin içerisindeki değerleri vermeniz gerekiyor. 
+
+<img src="4.png" width="auto">
+
+```C#
+// Hatalı Kullanım
+public IActionResult CreateProduct()
+{
+    return View();
+}
+
+[HttpPost]
+public IActionResult CreateProduct((Product product,User user ) model)
+{
+    return View();
+}
+```
+
+- Bu değerleri ise ilgili formu açacak olan Get fonksiyonundan veririz.
+```C#
+// Hatalı Kullanım
+public IActionResult CreateProduct()
+{
+    (Product, User) tuple = new();
+    return View(tuple);
+}
+
+[HttpPost]
+public IActionResult CreateProduct(Product product User user)
+{
+    return View();
+}
+```
+
+- Gönderdiğiniz tuple nesnesinin içerisindeki her bir elamanı ayrı parametre olarak tanımlamanızda yeterli olacaktır. Tuple mı geldi? Gelen tuple'ın içerisindeki her bir elemanı ayrı bir parametreyle yakalamaya çalışırız. Eğer ki bu şekilde de yakalamaya çalışırsanız burada da bir açık var ve yine yakalayamazsınız Bind işlemi view'de başarılıyken controller'da başarısız olur. Gönderilen data tuple türünde olduğundan dolayı controller'da bizim hangi nesneye ait parametre olduklarını bind ederek bildirmemiz gerekiyor. Tuple içindeki hangi property ise onun ismini bildiririz
+
+```C#
+//******************************* View *******************************
+@model (OrnekUygulama.Models.Product product, OrnekUygulama.Models.User user)
+//******************************* Controller *******************************
+public IActionResult CreateProduct()
+{
+    (Product, User) tuple = new();
+    return View(tuple);
+}
+[HttpPost]
+public IActionResult CreateProduct([Bind(Prefix = "Item1")] Product product, [Bind(Prefix = "Item2")] User user)
+{
+    return View();
+}
+```
+
+- Siz view'de bu parametrelere ne kadar farklı isimler versenizde `Prefix`'te bind ederken mecbur tuple'ın soldan sağa Item1, Item2, Item3 olacak şekilde isimlendirmeniz gerekir. Yani view'de belirttiğiniz alias'lar işlemez/geçerli olmaz.
+
+## C# Examples
+```C#
+//******************************* View *******************************
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model (OrnekUygulama.Models.Product product, OrnekUygulama.Models.User user)
+<form asp-action="CreateProduct" asp-controller="Product" method="post">
+    <input type="text" asp-for="product.ProductName" placeholder="Product Name"/><br />
+    <input type="text" asp-for="user.Name" placeholder="Name" /><br />
+    <button>Gönder</button>
+</form>
+//******************************* Controller *******************************
+using Microsoft.AspNetCore.Mvc;
+using OrnekUygulama.Models;
+
+namespace OrnekUygulama.Controllers
+{
+    public class ProductController : Controller
+    {
+        public IActionResult GetProducts()
+        {
+            return View();
+        }
+
+        public IActionResult CreateProduct()
+        {
+            (Product, User) tuple = new();
+            return View(tuple);
+        }
+        [HttpPost]
+        public IActionResult CreateProduct([Bind(Prefix = "Item1")] Product product, [Bind(Prefix = "Item2")] User user)
+        {
+            return View();
+        }
+    }
+}
+//******************************* Model *******************************
+namespace OrnekUygulama.Models
+{
+    public class Product
+    {
+        public int Id { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+    }
+}
+namespace OrnekUygulama.Models
+{
+    public class User
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
+    }
+}
+``` 
