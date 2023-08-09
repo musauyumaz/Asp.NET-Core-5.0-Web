@@ -1,9 +1,3 @@
----
-modified: 2023-08-07T14:19:57.709Z
-title: "25) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Form
-  Üzerinden Veri Alma "
----
-
 ***
 # 25) Asp.NET Core 5.0 - Kullanıcıdan Veri Alma Yöntemleri - Form Üzerinden Veri Alma 
 - Veri Alma Yöntemleri
