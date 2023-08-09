@@ -16,3 +16,5 @@
 - ## [VİEW](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/10-V%C4%B0EW/ReadMe.md)
 - ## [RAZOR](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/11-RAZOR/ReadMe.md)
 - ## [HELPERS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/12-HELPERS/ReadMe.md)
+- ## [BINDINGS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/13-B%C4%B0ND%C4%B0NGS/ReadMe.md)
+- ## [14-KULLANICIDAN VERİ ALMA YÖNTEMLERİ](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/14-KULLANICIDAN%20VER%C4%B0%20ALMA%20Y%C3%96NTEMLER%C4%B0/ReadMe.md)
