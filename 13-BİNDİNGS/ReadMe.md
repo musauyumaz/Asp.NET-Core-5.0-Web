@@ -1,8 +1,3 @@
----
-modified: 2023-07-21T08:16:19.019Z
-title: 24) Asp.NET Core 5.0 - Model Binding Mekanizması
----
-
 ***
 # 24) Asp.NET Core 5.0 - Model Binding Mekanizması
 - Http request ile gelen verilerin ayrıştırılarak ilgili controller'daki bulunan action metotlarında uygun herhangi bir türe dönüştürülmesi işlemidir. 
