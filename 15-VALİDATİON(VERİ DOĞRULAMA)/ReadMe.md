@@ -1,5 +1,5 @@
 ---
-modified: 2023-08-14T05:56:32.245Z
+modified: 2023-08-15T09:40:28.645Z
 title: 31) Asp.NET Core 5.0 - Kullanıcıdan Gelen Verilerin Doğrulanması Validations
 ---
 
@@ -189,6 +189,123 @@ namespace OrnekUygulama.Models
         [StringLength(maximumLength: 100, ErrorMessage = "Lütfen product name'i en fazla 100 karakter giriniz.")]
         public string ProductName { get; set; }
         public int Quantity { get; set; }
+        [EmailAddress(ErrorMessage ="Lütfen doğru bir email adresi giriniz.")]
+        public string Email { get; set; }
+    }
+}
+```
+
+***
+# 32) Asp.NET Core 5.0 - ModelMetadataType İle Validation Sorumluluğunu Başka Bir Sınıfa Yükleme
+- Bizler validationları entity sınıflarında yani entityframework'teki entity modellarımızda veritabanındaki tablolara karşılık gelen onları modelleyen sınıflarımızda oluşturmayız oluşturmak istemeyiz. validasyonlar genellikle ViewModel'larda uygulanır.
+
+- Yani mümkün mertebe entity modellarınızda validasyonları işte data annotations attribute'larını falan kullanmayacaksınız.
+
+- Viewmodellarımızda da kullandığımız data annotations ile oluşturulan validasyonlar solid prensiplerindeki tek sorumluluk(Single Responsibility Principle)'a aykırılık oluşturuyor olabilir çünkü bir sınıf sade ve sadece tek bir amaca odaklanmalıdır. Bu amaç tabiki de göreceli olarak senle ben çiziyoruz yani birisi tarafından ya da prensibi ortaya koyanlar tarafından bu sınır çizilmez.
+
+- Sınıfa baktığınız zmaan bu sınıf bir model mıdır? yoksa validation'ların uygulandığı bir sınıf mıdır? diye sorduğunuzda tek sorumluluk prensibine aykırılık olduğu gayet aşikardır.
+
+- Tek sorumluluk prensibi temelde bir sınıfın bir metodun bir yapının mümkün mertebe sade ve sadece tek bir amaca odaklı çalışmasını savunan bir prensiptir.
+
+- Validation'larımızı daha efektif daha solid prensiplere uygun bir şekilde kullanmak için 2 yöntemimiz vardır.
+    * ModelMetaDataType dediğimiz attribute ile validation tanımlamalarını/sorumluluğunu farklı sınıflara üstlendirebiliriz.
+    * FluentValidation yapılanmasını/kütüphanesini kullanabiliriz. 
+
+- Buradaki amaç sade ve sadece validasyona odaklanmış bir sınıf tasarlamak.
+
+- Bir sınıfın validasyonlarını taşıyan bir MetaData olduğunu bildirebilmek için `[ModelMetadataType(typeof(ProductMetadata))]`
+
+```C#
+[ModelMetadataType(typeof(ProductMetadata))]
+public class Product
+{
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+    public string Email { get; set; }
+}
+
+public class ProductMetadata
+{
+    [Required(ErrorMessage ="Lütfen product name'i giriniz.")]
+    [StringLength(100,ErrorMessage ="Lütfen product name'i en fazla 100 karakter giriniz.")]
+    public string ProductName { get; set; }
+    [EmailAddress(ErrorMessage ="Lütfen doğru bir email adresi giriniz.")]
+    public string Email { get; set; }
+}
+```
+
+- Product sınıfının validasyonlarının ProductMetadata sınıfından alınacağını bildirmiş olduk ve böylece ilgili property'lerin hangileri ProductMetadata'da tanımlıysa tanımlanmış olan validasyonlarında geçerli olduğunu söylemiş oluyoruyz. Bundan sonra sistem her ne kadar Product üzerinden veriyi taşısanızda bu product'la ilgili mimarimiz karşılığı olan metadata'daki validasyonları devreye sokacak bunları doğrulayacak ve ona göre işlemleri yapmamızı sağlayacaktır.
+
+- Sistem burada bizim model'ımızı/entity'mizi/viewmodel'ımızı validasyondan arındırıp daha temiz hale getirmemizi sağlayabiliyor ve bu şekilde sorumluluğu farklı bir sınıfa üstlendirip işlemler yapmamızı sağlayabilmektedir. 
+
+- Bizim burada temel amacımız şu olabilir. Validasyonları belli bir katmanda yönetmek ve bir sınıf içerisinde bir viewmodel içerisinde tüm property'lere validasyon yazmayacaksanız bunları daha sade bir şekilde sadece yazılacak olanları temsil etmek istiyorsanız bu şekilde metadata sınıflarıyla çalışabilirsiniz.
+
+## C# Examples
+```C#
+//***************************** Controllers *****************************
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using OrnekUygulama.Models;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace OrnekUygulama.Controllers
+{
+    public class ProductController : Controller
+    {
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateProduct(Product model)
+        {
+            if (ModelState.IsValid)
+            {
+                List<KeyValuePair<string, ModelStateEntry>> messages = ModelState.ToList();
+
+                return View(model);
+            }
+
+            return View(model);
+        }
+    }
+}
+//***************************** Views *****************************
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model OrnekUygulama.Models.Product
+
+<form asp-action="CreateProduct" asp-controller="Product" method="post">
+    <input type="text" asp-for="ProductName" placeholder="ProductName" /><br />
+    <input type="number" asp-for="Quantity" placeholder="Quantity" /><br />
+    <input type="email" asp-for="Email" placeholder="Email" /><br />
+    <button>Gönder</button>
+</form>
+//***************************** Models *****************************
+using Microsoft.AspNetCore.Mvc;
+using OrnekUygulama.Models.ModelMetaDataTypes;
+
+namespace OrnekUygulama.Models
+{
+    [ModelMetadataType(typeof(ProductMetadata))]
+    public class Product
+    {
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public string Email { get; set; }
+    }
+}
+//***************************** MetadataTypes *****************************
+using System.ComponentModel.DataAnnotations;
+
+namespace OrnekUygulama.Models.ModelMetaDataTypes
+{
+    public class ProductMetadata
+    {
+        [Required(ErrorMessage ="Lütfen product name'i giriniz.")]
+        [StringLength(100,ErrorMessage ="Lütfen product name'i en fazla 100 karakter giriniz.")]
+        public string ProductName { get; set; }
         [EmailAddress(ErrorMessage ="Lütfen doğru bir email adresi giriniz.")]
         public string Email { get; set; }
     }
