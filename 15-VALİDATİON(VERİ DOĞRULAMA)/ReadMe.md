@@ -1,5 +1,5 @@
 ---
-modified: 2023-08-15T09:40:28.645Z
+modified: 2023-08-18T12:29:03.649Z
 title: 31) Asp.NET Core 5.0 - Kullanıcıdan Gelen Verilerin Doğrulanması Validations
 ---
 
@@ -310,4 +310,141 @@ namespace OrnekUygulama.Models.ModelMetaDataTypes
         public string Email { get; set; }
     }
 }
+```
+
+# 33) Asp.NET Core 5.0 - FluentValidation Kütüphanesi İle Validation İşlemleri
+- FluentValidation Validasyonel işlemleri daha efektif bir şekilde gerçekleştirmemizi sağlayan hazır bir kütüphanedir.
+
+- Eğer ki data annotations'larla validasyonel operasyonlar gerçekleştirirsek bunlar Solid prensiplerinden tek sorumluluk prensibi dediğimiz Single Responsibility principle'ı aştığından/aykırı davrandığından dolayı kullanımı doğru olmayacaktır.
+
+- FluentValidation kütüphanesi de hem solid prensiplerini %100 uygulamakta hem de validasyonel operasyonları farklı sınıflara %100 taşımamızı sorumluluğunu yüklememizi sağlayan ve yönetilebilirliği daha kolay olan bir yöntem sağlamaktadır. Ondan dolayı FluentValidation'ı tercih etmekteyiz.
+
+- FluentValidation kütüphanesini ASP.Net Core uygulamasında kullanabilmek için kütüphaneyi projeye yüklememiz gerekmektedir.
+
+- ModelState dediğimiz validasyonel durumları model'ın durumuyla ilgili bilgileri dönen hazır bir mimarimiz bulunmaktadır. Oradaki mimariyi es geçipte farklı bir kütüphaneyi kullanmak çok doğru olmayacaktır. Dolayısıyla FluentValidation'da kullanabilirliğini arttırabilmek için bizim MVC mimarisindeki ModelState yapılanmasıyla entegre edilebilir şekilde kendini geliştirmiştir. FluentValidation MVC'deki ModelState ile ortak çalışıyor. Onunla entegre edilmiştir.
+
+- Entity'lerle ilgili ya da ViewModel'larla ilgili yani kullanıcıdan/client'tan gelecek olan verileri karşılayıp gerekli validasyonel operasyonları üstlenecek olan entity'lerimin üzerinde yapacağım validasyonları uygulamada bir yerde tutmam lazım. Bu validasyonları nerede tutulursa tutulsun bunun sisteme bildirilmesi gerekiyor. Bu bildirmeyi tek tek yapabilirsiniz. Yani birden fazla Validator'ınız olabilir bunların hepsini gelip sisteme tek tek bildirebilirsiniz ya da sistemden bu servisten mimari üzerinde reflection üzerinden assembly'den kendisini bulmasını da isteyebilirsiniz.
+
+- Onlarca Validator'mız olabiliyor bunların hepsini sisteme entegre etmektense kardeşim bunları kendin bul beni de yorma demek için `RegisterValidatorsFromAssemblyContaining<>()` isimli fonksiyonumuz var. Buradan vereceğimiz sınıfın bulunduğu assembly ne ise o assembly içindeki bütün validator'ları bulacak sisteme otomatik entegre edecektir. Genellikle bu durumda önceden Startup.cs şimdi ise Program.cs dosyasını vermeyi tercih ederiz. Burada bizim oluşturduğumuz validation'ları barındıracak olan validator sınıflarını otomatik `RegisterValidatorsFromAssemblyContaining<>()` fonksiyon sayesinde bulacak ve kullanacak.
+
+- Kullanıcıdan gelecek olan dataları karşılayacak olan ViewModel'larımın ya da entity sınıflarımın üzerine validasyon operasyonlarını uygulamam gerekiyor bunun için Validator'ları yazarız.
+
+- Birden fazla model'a ya da viewmodel'a uygun bir şekilde validator uygulayabilirsiniz.
+
+- Sistemdeki kullanılan sınıflardan hangisinin validator sınıfı olduğunu ayırt edebilmek için ilgili sınıfın `AbstractValidator<>`dan türemesi gerekmektedir. Burada hangi viewmodel'ı/türü/model'ı validate edeceksek generic olarak vermemiz gerekmektedir.
+
+- `RegisterValidatorsFromAssemblyContaining<>()` fonksiyon uygulamada bu assembly içerisinde `AbstractValidator<>`dan türeyen tüm sınıfları bir validator sınıfı olduğunu algılayacak ve bunları yakalayacak bunları tüketecek validator olarak kullanmamızı sağlayacak.
+
+- Adamlar demişler ki sen sınıfını `AbstractValidator<>`dan türet gerekli şartlarını sınırlılıklarını constructor içine gir demişler. Constructor'da base class'tan gelen `RuleFor()` fonksiyonlarıyla artık validasyon yazabiliriz. `RuleFor()` Senin generic olarak vermiş olduğun tür hangisiyse ona uygun bir şekilde validasyon oluşturmanı sağlayacaktır.
+
+- `AbstractValidator<>`dan türeyen sınıfı tanımladın constructor içerisinde rule'lerini/kurallarını tanımladın bunlardan sonra yapman gereken bişey yok. Çünkü Program.cs'te `RegisterValidatorsFromAssemblyContaining<Program>()` Program'ın bulunduğu assembly'nin içerisindeki bütün validator sınıflarını bul ve gerekli validasyonları uygula. Bundan sonrası artık mimari kendiliğinden uygulamaya gelen bütün model'lara karşılık kullandığımız viewmodel'ların karşılığı olan bir validator varsa onu devreye sokacak ve validasyon sonuçlarını bize ModelState'le getirecektir.
+
+## C# Examples
+```C#
+//***************************** Controller *****************************
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using OrnekUygulama.Models;
+
+namespace OrnekUygulama.Controllers
+{
+    public class ProductController : Controller
+    {
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateProduct(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                List<KeyValuePair<string, ModelStateEntry?>>? messages = ModelState.ToList();
+
+                return View(product);
+            }
+
+            return View();
+        }
+    }
+}
+//***************************** View *****************************
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model OrnekUygulama.Models.Product
+
+<div asp-validation-summary="All">
+
+</div>
+
+<form asp-action="CreateProduct" asp-controller="Product" method="post">
+    <input type="text" asp-for="ProductName" placeholder="Product Name"/>
+    <span style="color:red" asp-validation-for="ProductName"></span><br />
+
+    <input type="number" asp-for="Quantity" placeholder="Quantity" />
+    <span style="color:red" asp-validation-for="Quantity"></span><br />
+
+    <input type="email" asp-for="Email" placeholder="Email" />
+    <span style="color:red" asp-validation-for="Email"></span><br />
+    <button>Gönder</button>
+</form>
+//***************************** Model *****************************
+namespace OrnekUygulama.Models
+{
+    public class Product
+    {
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public string Email { get; set; }
+    }
+}
+//***************************** Validators *****************************
+using FluentValidation;
+using OrnekUygulama.Models;
+
+namespace OrnekUygulama.Validators
+{
+    public class ProductValidator : AbstractValidator<Product>
+    {
+        public ProductValidator()
+        {
+            RuleFor(p => p.Email).NotNull().WithMessage("Email boş olamaz!");
+            RuleFor(p => p.Email).EmailAddress().WithMessage("Lütfen doğru bir Email giriniz.");
+
+            RuleFor(p => p.ProductName).NotNull().NotEmpty().WithMessage("Lütfen product name'i boş geçmeyiniz.");
+            RuleFor(p => p.ProductName).MaximumLength(100).WithMessage("Lütfen product name'i 100 karakterden fazla girmeyiniz.");
+        }
+    }
+}
+//***************************** Program.cs *****************************
+using FluentValidation.AspNetCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
+
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapDefaultControllerRoute();
+});
+
+app.Run();
 ```
