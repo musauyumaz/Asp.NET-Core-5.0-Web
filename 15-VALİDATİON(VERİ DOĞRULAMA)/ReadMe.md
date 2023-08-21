@@ -1,5 +1,5 @@
 ---
-modified: 2023-08-18T12:29:03.649Z
+modified: 2023-08-21T08:28:24.255Z
 title: 31) Asp.NET Core 5.0 - Kullanıcıdan Gelen Verilerin Doğrulanması Validations
 ---
 
@@ -423,6 +423,80 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
 
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapDefaultControllerRoute();
+});
+
+app.Run();
+```
+
+# 34) Asp.NET Core 5.0 - Server’da ki Validation’ları Dinamik Olarak Client Tabanlı Uygulamak
+- Post'u gönderdiğimiz server öncelikle bu postu alıyor biz server'da bu validasyonu gerçekleştiriyoruz. Eğer ki doğrulanmıyorsa client'a yeniden mesajları gönderip uyarı da bulunuyoruz. Eğer bizim client'ta da validasyonumuz olsaydı eğer bu istek gelmeden önce burada kullanıcıyı uyarabilirdik. Bu server'daki maliyeti düşürür. Çünkü server'da önceden burada uyarılacağından dolayı doğru veriler gelene kadar server'da zaten biz ekstradan validasyon işlemlerini yapmak zorunda kalmayacaktık. Kullanıcı açısından da bu bir zahmet nihayetinde kullanıcı yapmış olduğu işlemlerde gidecek gelecek ondan sonra fark edecek yanlışlarını dolayısıyla kullanıcı dostu bir arayüzü kullanıcıdan beklediği verileri hızlı bir şekilde kullanıcıya söylemesi lazım. Bu yüzden Client tabanlı validasyonlar olmazsa olmazdır.
+
+- Client'a validasyonları istersen manuel bir şekilde alabilirsin. Yani jQuery'de javascript'te ya da farklı kütüphanelerler backend'deki mantığa uygun validasyonları client'ta da uygulayabilirsin.
+
+- Yazılımcı dediğin yönetilebilir kodlar yazmalıdır. Yani sen validasyon uygulayacaksan eğer bu validasyon kodlarını bir yerde bir kereye mahsus sunucu da yazdın. Bir daha gelipte client'ta bunları tekrarlı bir şekilde yazmaktansa sunucudakileri yazılmış haldekileri client'ı render ederken nasıl buraya taşıyabilirim diye düşünüyoruz. Tabi biz bunu düşünürken gerekli mimariyi oluşturmamız yerine Microsoft tarafından bununla ilgili gerekli kütüphaneler oluşturulmuş bize sunulmuştur. Sizin tek yapmanız gereken bu kütüphaneleri kullanmaktır. Yani client'ta ekstradan validasyon kodları yazıp kodları kirletmenize gerek yok server'da backend'de oluşturmuş olduğunuz validation kodlarını kütüphanelerle hızlı bir şekilde hiçbir koda gerek kalmaksızın client'a taşıyabilir ve client üzerinde ajax tabanlı validation işlemlerini gerçekleştirebilirsiniz. Ayriyetten bu yöntem sayesinde her iki tarafta da ayrı ayrı çalışmayacağınızdan dolayı ortak bir noktadan validasyonlar çekileceğinden dolayı tutarlı ve esnek geliştirilebilir bir validasyonel çalışma oluşturmuş olacaksınız.
+
+- Bu işlem için 3 tane kütüphane kullanacağız
+    1. jquery
+    2. jquery-validate => Client tabanlı doğrulamayı yapacak kütüphanemiz.
+    3. jquery-validation-unobtrusive  => Bu iş için Microsoft tarafından geliştirilmiştir ve sunucudaki validasyonları client'a taşıyabilmek için bize yardımcı olacak olan kütüphanedir.
+
+- Bu kütüphaneleri yüklemek için Visual Studio'daki client-side dediğimiz eklentiyi kullanarak bu harici UI tabanlı kütüphaneleri yükleriz.
+
+<img src="3.png" width="auto">
+
+- jquery kütüphaneleri olsun css kütüphaneleri olsun bunları bodoslama Asp.Net Core mimarisinde herhangi bir yere yüklemeyiz. Bunları yükleyeceksek `wwwroot` dizinin içine yükleriz. `wwwroot` özel bir klasördür. ve bu klasöre erişebilmen için senin gelip `app.UseStaticFiles();` middleware'ini çağırman gerekir.
+ 
+- Bu kütüphaneleri yükledikten sonra yapmamız gereken client tabanlı validasyon operasyonu yapmamız gereken tek bir işlem var. Nerede client tabanlı validation yapacaksanız bu kütüphaneleri ilgili View'de kaynak olarak göstermek.
+
+- `jquery-validation-unobtrusive` bu kütüphane ve diğer kütüphaneler sayesinde veri modellerinin validasyonlarının doğrulanmalarını kodu kirletmeksizin istemci tarafına uygulamamızı sağlamakta dolayısıyla yeri gelecek client tabanlı validasyonları hızlı bir şekilde dinamik bir şekilde kodu kirletmeksizin uygulamanız gerekirse bu kütüphaneleri uygulamanıza direkt referans göstermeniz yeterli olacaktır.
+
+- bu kütüphaneler MVC'deki binding mekanizması üzerinden hızlı bir şekilde `jquery-validation-unobtrusive` dediğimiz bu kütüphane hızlı bir şekilde ilgili validasyonları client'a taşımakta ve hata mesajlarını vs. jquery tabanlı hızlı bir şkeilde kullanmamızı sağlamaktadır.
+
+## C# Examples
+```C#
+//***************************** Views *****************************
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@model OrnekUygulama.Models.Product
+
+<script src="~/jquery/jquery.min.js"></script>
+<script src="~/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/jquery.validate.unobtrusive.min.js"></script>
+<div asp-validation-summary="All"></div>
+
+<form asp-action="CreateProduct" asp-controller="Product" method="post">
+    <input type="text" asp-for="ProductName" placeholder="Product Name"/> <span style="color:red" asp-validation-for="ProductName"></span> <br />
+    <input type="number" asp-for="Quantity" placeholder="Quantity" /> <span style="color:red" asp-validation-for="Quantity"></span> <br />
+    <input type="email" asp-for="Email" placeholder="Email" /> <span style="color:red" asp-validation-for="Email"></span> <br />
+    <button>Gönder</button>
+</form>
+//***************************** Program.cs *****************************
+using FluentValidation.AspNetCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
 
 var app = builder.Build();
 
