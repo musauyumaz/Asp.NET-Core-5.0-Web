@@ -1,9 +1,10 @@
 ---
-modified: 2023-08-22T06:43:38.780Z
+modified: 2023-08-24T09:03:08.027Z
 title: 35) Asp.NET Core 5.0 - Layout Yapılanması Nedir? RenderBody ve
   RenderSection Fonksiyonları Nelerdir?
 ---
 
+***
 # 35) Asp.NET Core 5.0 - Layout Yapılanması Nedir? RenderBody ve RenderSection Fonksiyonları Nelerdir?
 <img src="1.png" width="auto">
 
@@ -260,3 +261,100 @@ title: 35) Asp.NET Core 5.0 - Layout Yapılanması Nedir? RenderBody ve
 - Sayfaya göre ekstradan bir bölümsel işlem yapacaksan JS dosyalarını biz `section` ile sayfalar arasında ayırabiliyoruz.
 
  <img src="9.png" width="auto">
+
+***
+ # 36) Asp.NET Core 5.0 - _ViewStart ve _ViewImports Dosyaları Nelerdir?
+ - Asıl amacı tüm view'ler de kullanılması/yapılması gereken ortak çalışmaların yapıldığı view'dir.
+
+ - _ViewStart'ta esasında bir .cshtml dosyasıdır.
+
+ - View'le alakalı çalışma yaptığımız tüm operatif view'ler özünde bir .cshtml dosyasıdır.
+    * Layout'ta bir .cshtml. Bir başka view tarafından layout olarak işaretliyorsan artık o .cshtml layout özelliği kazanan terminolojide o şekilde nitelendirilen bir view'dir. 
+    * Benzer mantıkla _ViewStart. _ViewStart'ta yine bir view olacak ama sen bunun isminden bu özelliği niteliği buna kazandırmış olacaksın.
+    * Bir başka göreceğimiz _ViewImports o da bir view olacak .cshtml o da isminden ilgili niteliği kazanacak.
+
+- Asp.Net Core MVC mimarisinde view yapılarının hepsi özünde bir .cshtml'dir. Sadece yapacağı/alacağı sorumluluğa göre terminolojik olarak farklı bir şekilde isimlendirilmektedir.
+
+- _ViewStart'ta bir viewdır asıl amacı tüm viewlarda kullanılacak yapılacak işlemleri ortak olarak yapmamızı sağlayan ana bir view'dir.
+
+- Bir nevi tüm view'lerin atasıdır diyebiliriz.
+
+- Herhangi bir view'i sunucuda render ediyorsanız eğer varsa _ViewStart önce bu render edilir ardından senin view'in artık hangisiyse o render edilecektir.
+
+- Amaç olarak ortak çalışma yapmamızı sağlayan bir .cshtml dosyasıdır.
+
+- Views klasörü altında _ViewStart.cshtml olarak oluşturulması gerekir. Aksi taktirde mimari tarafından herhangi bir view'in başlangıç view'i olup olmadığını bildiremezsiniz. İsmi ve konumu çok önemli
+
+- Bazı view'lerde isimler çok önemlidir. Özellikle _ViewStart ve _ViewImports
+
+- Genellikle tüm view'lerin ortak kullanacağı Layout tanımlaması bu dosya içerisinde gerçekleştirilir.
+
+- Tüm view'lerde ayrı ayrı layout tanımlaması yapmaktansa biz layout tanımlamasını _ViewStart dosyası üzerinden yapmayı tercih ediyoruz.
+
+ <img src="10.png" width="auto">
+
+ - Layout tanımlamsını tüm view'lerden yapmak yönetilebilirliği zayıflatacaktır. Nihayetinde biz tekrar eden yapılanmalardan mümkün mertebe kaçıyoruz. Yani bir yazılımcının huyudur zaten bu. Bir şey tekrar ediyorsa eğer biz ona takılırız. onu tekilleştirme çabasına düşeriz. Her bir view dosyasında tek tek tanımlama ypacağımıza biz bunu tek bir noktada tanımlamak istersek eğer burada yapabileceğimiz/çalışabileceğimiz tek dosya _ViewStart dosyası olacaktır.
+
+ - _ViewStart dosyası öncelikli olarak render edilir.
+
+ - _ViewStart bu şekilde başlangıç/ortak tanımlamaları yaptığımız ve her view'e etki eden çalışmaları yaptığımız bir dosya. Genellikle bu dosyada bütün view'ler tarafından kullanılan yapılar kullanılır.
+
+ - Başlangıç view'ine ilgili layoutu verdikten sonra artık hangi view'i render ediyorsan o view doğal olarak buradaki layout dosyasını baz alıp render edilecektir. Bununla alakalı ekstradan çalışma yapmanıza gerek kalmayacaktır. Yani bundan sonra sistemde yüklemiş olduğunuz oluşturmuş olduğunuz herhangi bir view dosyasında ekstradan layoutu bildirmenize gerek yok çünkü default olarak _ViewStart dosyasını baz alacağından dolayı otomatik layout tanımlanmış olacaktır.
+
+ - Eğer ki genelin dışında istisnai hareket edip herhangi bir view'de _ViewStart'taki tanımlamayı ezmek istiyorsanız layout tanımlamasını ilgili sayfada layout değerine `null` vermeniz yeterli olacaktır. Ya da başka bir layout kullanmak isterseniz o kullanacağınız layoutun path'ini yazabilirsiniz. Mevcut _ViewStart'taki layout tanımlamasını bu şekilde ezebilirsiniz.
+
+ - _ViewImports Razor sayfaları için kütüphane ve namespace tanımlamalarını sayfa sayfa farklı tanımlamaktansa ortak/merkezi olarak tanımlamamızı sağlayan dosyadır.
+
+ - Views klasörü altında _ViewImports.cshtml isminde oluşturulmalıdır.
+
+- _ViewImports ve _ViewStart dosyaları esasında ortak tanımlama dosyalarıdır. İkisinin arasındaki teknik fark _ViewImports programatik tanımlamaları using blokları gibi namespace tanımlamaları gibi bunları yapmamızı sağlarken _ViewStart ise programatiğin dışında layout gibi ya da ortak kullanılan html tabanlı çalışmaları yaptığımız dosyadır.
+
+- _ViewImports'ta programatik import işlemlerini yaparız. Genellikle using bloklarının tanımlanması olsun TagHelper kütüphanelerinin tanıumlanması olsun bu şekilde çalışmaları _ViewImports dosyası içerisinde gerçekleştirmekteyiz.
+
+- Views klasörü altında _ViewImports.cshtml isminde bir dosya varsa bu dosya içerisindeki using tanımlamalarının hepsi mimarideki View'ler tarafından benimsenecektir ve ilgili using'lerin/namespacelerin altındaki class'lara direkt erişim sağlanabilecektir.
+
+- View'ler üzerinde varolan bir entity'e ya da viewmodel'a erişmemiz gerektiğinde ya `@model LayoutExample.Models.Product` bu şekilde namespace'ini bildirmemiz gerekiyordu ya da ilgili view üzerinde `using LayoutExample.Models` ilgili namespace altındaki bütün sınıfları bu şekilde View bazlı kullanılabilir hale getiriyorduk. Ama biz bu şekilde çalışmalarda tüm view'lerde kullanılacak belirli namespace'lerin bu şekilde tek tek tanımlanmasını View bazlı tanımlanmasını çok fazla tercih etmiyoruz bu hem bizim için maliyetli olmakta hem de yorucu olmakta. Dolayısıyla bu şekildeki genel tanımlamaları _ViewImports dosyası altında gerçekleştiriyoruz.
+
+- Artık mimaride Views klasörü altında _ViewImports isimli dosyamız varsa bunun içinde yapılan tüm using tanımlamaları mimaride global bir şekilde erişilebilir olacaktır.
+
+- Benim artık belirli bir namespace altındaki sınıflara erişebilmem için tekrar tekrar namespace tanımlaması yapmama gerek kalmıyor _ViewImports üzerinden yapılan bu çalışma neticesinde tüm view'lere gerekli using tanımlamaları tek çatı altından yapılmış oluyor.
+
+- Herhangi bir view tabanlı TagHelper kütüphanesini tanımlamamıza gerek kalmaksızın _ViewImports üzerinden tek çatı altından bu tanımlamayı da sağlayıp direkt view'lerde operasyonlarımıza odaklanabiliyoruz.
+
+## C# Example
+```C#
+//************************ _ViewImports ************************
+@using LayoutExample.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+//************************ _ViewStart ************************
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+//************************ Product ************************
+namespace LayoutExample.Models
+{
+    public class Product
+    {
+
+    }
+}
+//************************ Sayfa2 ************************
+@{
+    Layout = null;
+}
+
+@{
+    Product product = new();
+}
+
+@section solmenu{
+    <ul>
+        <li>A</li>
+        <li>B</li>
+        <li>C</li>
+        <li>D</li>
+    </ul>
+}
+
+Burası sayfa 2'dir.
+```
