@@ -18,3 +18,5 @@
 - ## [HELPERS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/12-HELPERS/ReadMe.md)
 - ## [BINDINGS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/13-B%C4%B0ND%C4%B0NGS/ReadMe.md)
 - ## [KULLANICIDAN VERİ ALMA YÖNTEMLERİ](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/14-KULLANICIDAN%20VER%C4%B0%20ALMA%20Y%C3%96NTEMLER%C4%B0/ReadMe.md)
+- ## [VALİDATİON(VERİ DOĞRULAMA)](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/15-VAL%C4%B0DAT%C4%B0ON(VER%C4%B0%20DO%C4%9ERULAMA)/ReadMe.md)
+- ## [LAYOUT YAPILANMASI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/16-LAYOUT%20YAPILANMASI/ReadMe.md)

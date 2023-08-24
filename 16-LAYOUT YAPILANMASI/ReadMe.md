@@ -1,8 +1,9 @@
 ---
-modified: 2023-08-24T09:03:08.027Z
+modified: 2023-08-24T09:29:52.482Z
 title: 35) Asp.NET Core 5.0 - Layout Yapılanması Nedir? RenderBody ve
   RenderSection Fonksiyonları Nelerdir?
 ---
+
 
 ***
 # 35) Asp.NET Core 5.0 - Layout Yapılanması Nedir? RenderBody ve RenderSection Fonksiyonları Nelerdir?

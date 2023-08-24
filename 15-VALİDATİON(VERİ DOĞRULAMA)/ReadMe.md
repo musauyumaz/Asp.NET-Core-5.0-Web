@@ -1,8 +1,3 @@
----
-modified: 2023-08-21T08:28:24.255Z
-title: 31) Asp.NET Core 5.0 - Kullanıcıdan Gelen Verilerin Doğrulanması Validations
----
-
 ***
 # 31) Asp.NET Core 5.0 - Kullanıcıdan Gelen Verilerin Doğrulanması Validations
 - Gelen verilerden hangilerini işleyip hangilerini işlememiz gerektiğini bulunduğumuz şartlara uygun olan verilerin hangileri olduğunu ayıklamamızı sağlayan yapılanma validation'dır.
@@ -312,6 +307,7 @@ namespace OrnekUygulama.Models.ModelMetaDataTypes
 }
 ```
 
+***
 # 33) Asp.NET Core 5.0 - FluentValidation Kütüphanesi İle Validation İşlemleri
 - FluentValidation Validasyonel işlemleri daha efektif bir şekilde gerçekleştirmemizi sağlayan hazır bir kütüphanedir.
 
@@ -449,6 +445,7 @@ app.UseEndpoints(endpoints =>
 app.Run();
 ```
 
+***
 # 34) Asp.NET Core 5.0 - Server’da ki Validation’ları Dinamik Olarak Client Tabanlı Uygulamak
 - Post'u gönderdiğimiz server öncelikle bu postu alıyor biz server'da bu validasyonu gerçekleştiriyoruz. Eğer ki doğrulanmıyorsa client'a yeniden mesajları gönderip uyarı da bulunuyoruz. Eğer bizim client'ta da validasyonumuz olsaydı eğer bu istek gelmeden önce burada kullanıcıyı uyarabilirdik. Bu server'daki maliyeti düşürür. Çünkü server'da önceden burada uyarılacağından dolayı doğru veriler gelene kadar server'da zaten biz ekstradan validasyon işlemlerini yapmak zorunda kalmayacaktık. Kullanıcı açısından da bu bir zahmet nihayetinde kullanıcı yapmış olduğu işlemlerde gidecek gelecek ondan sonra fark edecek yanlışlarını dolayısıyla kullanıcı dostu bir arayüzü kullanıcıdan beklediği verileri hızlı bir şekilde kullanıcıya söylemesi lazım. Bu yüzden Client tabanlı validasyonlar olmazsa olmazdır.
 
