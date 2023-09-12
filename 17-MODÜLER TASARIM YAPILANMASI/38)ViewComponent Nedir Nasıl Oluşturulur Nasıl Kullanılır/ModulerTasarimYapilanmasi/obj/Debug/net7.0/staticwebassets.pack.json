@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\doga.jpg",
+      "PackagePath": "staticwebassets\\doga.jpg"
+    },
+    {
+      "Id": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\doga2.jpg",
+      "PackagePath": "staticwebassets\\doga2.jpg"
+    },
+    {
+      "Id": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\doga3.jpg",
+      "PackagePath": "staticwebassets\\doga3.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.ModulerTasarimYapilanmasi.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.ModulerTasarimYapilanmasi.props",
+      "PackagePath": "build\\ModulerTasarimYapilanmasi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.ModulerTasarimYapilanmasi.props",
+      "PackagePath": "buildMultiTargeting\\ModulerTasarimYapilanmasi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.ModulerTasarimYapilanmasi.props",
+      "PackagePath": "buildTransitive\\ModulerTasarimYapilanmasi.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,19 @@
+﻿@model List<Personel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Adi</th>
+            <th scope="col">Soyadi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Personel personel in Model)
+        {
+            <tr>
+                <td>@personel.Adi</td>
+                <td>@personel.Soyadi</td>
+            </tr>
+        }
+    </tbody>
+</table>

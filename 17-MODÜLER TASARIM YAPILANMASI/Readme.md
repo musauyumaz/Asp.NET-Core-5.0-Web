@@ -1,5 +1,5 @@
 ---
-modified: 2023-09-08T08:55:22.026Z
+modified: 2023-09-12T10:40:04.590Z
 title: 37) Asp.NET Core 5.0 - Modüler Tasarım Yapılanması Nedir? Nasıl Uygulanır?
 ---
 
@@ -271,4 +271,190 @@ namespace ModulerTasarimYapilanmasi.Controllers
         &copy; 2023 - ModulerTasarimYapilanmasi - Laylaylom galiba sana göre sevmeler...
     </div>
 </footer>
+```
+
+# 38) Asp.NET Core 5.0 - ViewComponent Nedir? Nasıl Oluşturulur? Nasıl Kullanılır?
+- `ViewComponent` modüler tasarım yapısını oluşturmamızı sağlayan modüler tasarım yapılanmasında kullanmamızı sağlayan ve .Net Core mimarisinde gelen bir yapılanmadır. Esasında `PartialView`le aynı amaca hizmet ederler ama teknik olarak aralarında fark vardır.
+
+- Gelen isteği controller karşılar. Gelen istek neticesinde eğer veriye ihtiyacı varsa bu veriyi model'dan alır. Model'dan datayı aldıktan sonra data view'e gönderilir. View render edilir ondan sonra requeste result edilecek.
+
+- `PartialView`in tükettiği bir data varsa bu datanın kesinlikle controller'dan gelmesi gerekmektedir.
+
+- `ViewComponent`i de bir parça olarak kullanılabilir ve eğer veriye ihtiyacın varsa bu veriyi controller'ı hiç yormaksızın direkt model'dan alabilir.
+
+- Normalde bir Modüler tasarım yapılanmasında `PartialView` olur `ViewComponent` olur farketmiyor bu iki yapılanmada gelecek veriyi controller'dan alıyorsak her ikisinde de bir veriye ihtiyacımız varsa ve bu veri controllerdan gelecekse burada bir tezatlık ortaya çıkar.
+
+- `PartialView` yapılanmasında veriye ihtiyacımız olduğunda bu veri controller'dan geliyorsa bu controller istek mi karşılayacak veri mi üretecek üretilen veriler üzerinden gerekli transferi mi sağlayacak hadi view istedi view'in partial'ına mı data gönderecek vs. yani sen burada controller'ı çok fazla meşgul ediyorsun ve controller partial'lara da data göndermek zorunda kalıyor. Ana view'e data göndermek ayrıdır tamam ama birden fazla partial kullanan bir view'in her bir partial'ına data göndermek ve bunu controller üzerinden yapmak controller'ın maliyetini arttıracaktır. Controller'ın amacını saptıracaktır.
+
+- `ViewComponent` diyor ki ya kardeşim bu component'i herhangi bir view'in neresinde kullanıyorsan kullan kendi backendi var yani kendi .cs dosyası var oradan ilgili veriyi çekebilirsin. Haliyle her bir `ViewComponent` ana view'den bağımsız bir içerik temsil ediyorsa bu içerikleri bu ana view'i render eden controller'dan değilde kendi backend'inden kendi .cs dosyasından direkt veritabanına bağlanıp çekebilir. Servislere bağlanıp çekebilir artık nasıl çekiyorsa farketmiyor sadece artık kendi bünyesindne kendi dahilindeki backendinden çekmeli. Backend'inden kastımız `ViewComponent`in arka tarafında bir tane .cs dosyası var. Controller değil istek almaz bu .cs dosyası sadece bu `ViewComponent` tetiklendiğinde o .cs dosyası da tetiklenir. Onun üzerinden gider veritabanı işlemlerini gerçekleştirir ne controller'a dokunur ne de istek sürecindeki herhangi bir şeye müdahale eder. Dolayısıyla bu daha efektif olmaktadır.
+
+- Gelen istek neticesinde gittin personelleri aldın personeller geldi gönderdin reklamıydı son dakika haberleriydi vs'ydi falan burada `PartialView` kullanıyorsanız hepsini controller'dan göndermek zorundasınız. Ama `ViewComponent` kullanıyorsanız controller sadece personelleri gönderir geri kalan reklamıydı viewcomponent kendisi gider reklamları çeker getirir. Son dakika haberleri gider kendisi son dakika haberlerini çeker getirir. Haliyle controller'daki maliyet bu şekilde düşürülmüş olur. Controller'lardaki tek sorumluluk prensibi de hemen hemen yerine getirilmiş olur. Belki orada farklı ihtiyaçlarını olabilir yerine getirmeye yakınlaşmış olursunuz. Nihayetinde Controller işine daha çok odaklanabilir lüzumsuz verileri ekstradan getirmek zorunda kalmayabilir. Lüzumsuz dediğim veriler işte reklam gibi son dakika haberleri gibi ekstradan sayfada ana verinin dışındaki verileri `ViewComponent` kendisi getirecektir zaten. Controller'da buradaki ilişkiyi sağlamayacak.
+
+- `ViewComponent` yapılanması adı üstünde component zaten modern UI tabanlı çalışmaların hepsinde component mantığı vardır. Nedir bu copmponent dediğimiz yapılanma bir bileşen tek bir işe odaklanmış tek bir sorumlulukla işi halleden yapılar bileşenler. 
+
+- `ViewComponent` ve `PartialView`ler özünde aynı amaca hizmet ederken teknik olarak daha farklı çalışmaktadırlar.
+
+- `PartialView` yapılanması ihtiyacı olan dataları controller üzerinden elde edeceği için controller'daki maliyeti arttırmakta ve SOLID prensiplerine aykırı davranılmasına sebebiyet vermektedir...
+
+- `PartialView` yapısal olarak controller üzerinden beslenmektedir.
+
+- `ViewComponent` ihtiyacı olan dataları controller üzerinden değil, direkt kendi .cs dosyasından elde edebilmektedir. Böylece controller'daki lüzumsuz maliyeti ortadan kaldırmış olmaktayız...
+
+- `ViewComponent` direkt hedef odaklı çalışmaktadır. Yani ilgili veriyi hızlı bir şekilde elde edebiliyor ve sadece o veriyi elde edebiliyor hangi dataya ihtiyacı varsa sadece onunla ilgili çalışma sergiliyor.  
+
+<img src="3.png" width="auto">
+
+- `ViewComponent` iki yapılanmadan oluşur. Biri .cshtml dosyası iken diğeri ise bu .cshtml dosyasının beslendiği .cs dosyası. Haliyle .cs dosyasında programatik işlemler gerçekleştirirken .cshtml de ise görsel view'la ilgili işlemler gerçekleştiriyoruz. 
+
+- `ViewComponent` dependency injection mekanizmasını view dosyasında kullanılabilir haldedir. Yani bir `ViewComponent`'ı render ederken dependency injection constructor üzerinden gerçekleştirebiliyorsunuz.
+
+- yapısal olarak `ViewComponent` inşa etmek için ilk önce .cs kısmını daha sonra ise .cshtml kısmını inşa etmemiz gerekir. Sana bunu bir bütün olarak veren hazır ide bulunmamaktadır. Burada senin bunu tasarlaman gerekiyor.
+
+<img src="4.png" width="auto">
+
+- Bir `ViewComponent` class'ı oluşturuyorsanız yapacağınız işleme göre isim vermeniz gerekmektedir. 
+
+- `ViewComponent`leri oluştururken isminin sonuna ViewComponent koymak adettendir.
+
+- Bir class'ın `ViewComponent` olabilimesi için `Microsoft.AspNetCore.Mvc` altındali `ViewComponent` class'ından türemesi gerekmektedir. Bu class'ta istediğiniz işlemleri yapabilirsiniz. Senin `ViewComponent`ı tetiklediklerinde tetiklenme esnasında backend'de çalışmasını istediğiniz kodları `public IViewComponentResult Invoke()` imzalı metotta tanımlamanız gerekmektedir.
+
+- Tasarlanan `ViewComponent` çağırılıp render edildiğinde içerisinde çalışmasını istediğimiz kodları `public IViewComponentResult Invoke()` imzada bir metodun içerisine yerleştirmeliyiz...
+
+<img src="5.png" width="auto">
+
+- `IViewComponentResult` esasında bir `ActionResult`tur.
+
+- `ViewComponent`in View'i ise bu `ViewComponent`i kullanacağınız hangi controller'sa o controller'ın altında barındırabilirsiniz.
+
+- `ViewComponent` render edilirken render edilecek `ViewComponent`ın view'ini bulabilmesi için iki yere bakmaktadır;
+    1. O anda kullanıldığı controller'ın views klasörü altındaki klasörünün altında components diye bir klasör arar ve onun altında da hangi `ViewComponent`sa o `ViewComponent`ın ismine karşılık bir klasör arayacaktır ve herhangi bir view belirtilmediyse direkt default .cshtml'i arayacak onu kendi view'i olarak render edecek ve sana sonucu döndürecektir. Burada Controller bazlı hareket edersen tüm controller'ın altına bu çalışmayı yapmak zorundasın Bu da ciddi manada maliyetli olabilir.
+    2. Shared altında Components isimli klasör oluşturulur aynı mantık daha sonra o shared'ın altındaki components'ın altında `ViewComponent`in ismine karşılık gelen bir klasör ve içine default.
+
+- Bunların View'ini daha farklı yerlerde konumlandırmak için `ViewComponent` içerisinde `View()` metoduna ilgili path'leri doldurmanız gerekmektedir.
+
+- Controller bazlı çalışıyorsanız controller bazlı ayarlama yapmanız gerekiyor. Ya da uygulama bazlı çalışıyorsanız uygulama bazlı bir şekilde ayarlamayı gerçekleştirmeniz gerekmektedir.
+
+- `@await Component.InvokeAsync("Personeller")` Fonksiyonu üzerinden gerekli tetiklemede bulunabilirsiniz. Sadece bildirmeniz gereken viewmodel'in ismi.
+    * Personeller isimli `ViewComponent` sistem tarafından yani reflection ile bulunacak ve gerekli ilişkili viewi render edilip bastırılacaktır.
+
+- `ViewComponent` direkt kendi .cs dosyasından verileri çekiyor `PartialView`ler ise controller üzerinden datalarını beklemektedir. Partial yapılanmasında kesinlikle ve kesinlikle datalarla ilgili veritabanından ya da servislerden veri çekecekseniz controller'ı fazla meşgul etmeksizin bu işlemi bu operasyonu gerçekleştirebilmek için `ViewComponent`i kullanmanızı tavsiye ederim.
+
+- `ViewComponent`in view'i üzerinden yapılan herhangi bir post isteği `ViewComponent`in .cs'i üzerinden karşılanabilecek mi?
+    * `ViewComponent`ların .cs dosyaları controller mekanizması gibi çalışamamakta sadece ve sadece `GET` operasyonlarında çalışabilmekte yani siz belirli veri gönderecekseniz o zaman render edebilmektesiniz. Aha herhangi bir gelen isteği `ViewComponent` sınıflarında karşılayamazsınız. İstekleri sadece ve sadece controllerlardaki action'larda karşılayabilirsiniz. Dolayısıyla yapılan bir POST işlemini ya da PUT olur DELETE olur farketmiyor hatta GET isteğinde bile sadece controller'larda karşılayabilmekteyiz. Haliyle böyle bir durumda ihtiyacınız olduğunda `ViewComponent`ın view dosyasında bir form tasarladıysanız bunun POST neticesini sizin bir controller'a yönlendirmeniz gerekecektir.
+
+- `ViewComponent`ler fonksiyonel yani parametrik çalışır. Render edilme esnasında `ViewComponent`a buradan gönderdiğimiz değerler ya da parametreler üzerinden .cs üzerinde farklı değerleri handle edebilmekte ve ona göre buradan verilecek render neticesinde verilecek çıktılara müdahale edebilmekteyiz. Yani `ViewComponent` tersine bir data göndermemizi sağlayıp o dataya uygun modüler sonuçlar elde etmemizi sağlayan güzel bir yapılanmadır. Zaten component dediğimiz yapılanmalar bu şekilde çalışırlar. `PartialView`den de ayıran noktası budur. `PartialView` de akış tek yönlüdür. Yani sen PartialView'i render ederken controllera müdahale edemezsin çünkü controller partialview'i render etmiştir çoktan. Ama `ViewComponent`te ise controller olamdığından dolayı ilgili .cs'i tetiklemeden önce .cs'e davranışlarını belirleyebileceğiniz değerleri gönderip ona göre handle işlemlerine müdahale edebiliyorsunuz yani çıktıyı da değiştirebiliyorsunuz. Bunu da `@await Component.InvokeAsync("Personeller")` metodun ikinci parametresinden yaparız. İkinci parametreye gelip herhangi bir değer verip bunu .cs dosyasına yani backend'e gönderebilirsiniz.
+
+- `@await Component.InvokeAsync("Personeller",new{id = 5})` bu nesneyi verdiğimiz zaman bu nesne bizim `ViewComponent`a gelecek ve `ViewComponent` bu nesneyi yakalayabilecektir. Senin vermiş olduğun oradaki anaonim türü `ViewComponent` `public IViewComponentResult Invoke(int id)` burada direkt parametre olarak karşılayacaktır.
+
+- `[NonViewComponent]` attribute'u ile `ViewComponent`ların nitelikleri ezilebilir. Olur mu olur bazen mimaride bir sınıftan tasarladığınız belirli nitelik kazandırdığınız sınıflarınızı farklı amaçlarla kullanmak isteyebilirsiniz dolayısıyla o sınıfın render edilebilen ya da çağırılabilen ya da ezilebilen ihtiyacını yapabilecek bir sınıf olmasını istemeyebilirsiniz. Böyle bir durumda ilgili sınıfları kendi özelliklerini ezmek isteyebilirsiniz. `ViewComponent`ta da böyle bir ihtiyacınız olursa `ViewComponent`tan türeyen herhangi bir sınıfın `ViewComponent` olamıdığını bildirebilmek için `[NonViewComponent]` attribute'u tarafından işaretlenmesi yeterli olacaktır.
+
+- `ViewComponent`lar `PartialView`lere nazaran daha da uzatıyor kod maliyetini arttırıyor gibi düşünebilirsiniz ama efektifliği ve asenkron yapılanmayı daha hızlı sağlayabildiği için `ViewComponent` yapılanmasını kesinlikle tavsiye ederim.
+
+## C# Examples
+```C#
+//********************** ViewImports **********************
+@using ModulerTasarimYapilanmasi
+@using ModulerTasarimYapilanmasi.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+//********************** Layout **********************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap 5 Website Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    @* @Html.Partial("~/Views/Home/Partials/_HeaderPartial.cshtml") *@
+    @*  @{
+    Html.RenderPartial("~/Views/Home/Partials/_HeaderPartial.cshtml");
+    } *@
+    <partial name="~/Views/Home/Partials/_HeaderPartial.cshtml" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <partial name="~/Views/Home/Partials/_SlaytPartial.cshtml" , model="@ViewBag.images" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <partial name="~/Views/Home/Partials/_LeftMenuPartial.cshtml" />
+            </div>
+            <div class="col-md-8">
+                <main class="pb-3">
+                    @RenderBody()
+                </main>
+                <div class="row">
+                    <div class="col-md-12">
+                        @await Component.InvokeAsync("Personeller",new{id = 5})
+                    </div>
+                    </di>
+                </div>
+                <div class="col-md-2">
+                    @RenderSection("sagTaraf",false)
+                </div>
+            </div>
+        </div>
+
+        <partial name="~/Views/Home/Partials/_FooterPartial.cshtml" />
+</body>
+</html>
+//********************** ViewComponent .cs**********************
+using Microsoft.AspNetCore.Mvc;
+using ModulerTasarimYapilanmasi.Models;
+
+namespace ModulerTasarimYapilanmasi.ViewComponents
+{
+    [NonViewComponent]
+    public class PersonellerViewComponent : ViewComponent
+    {
+        public IViewComponentResult Invoke(int id)
+        {
+            List<Personel> datas = new()
+            {
+                new(){Adi="Şuayip",Soyadi="Abi"},
+                new(){Adi="Hüseyin",Soyadi="Sümer"},
+                new(){Adi="Rıfkı",Soyadi="Bilmemneoğlu"},
+                new(){Adi="Şakir",Soyadi="Çorumlu"},
+                new(){Adi="Hilmi",Soyadi="Celayir"}
+            };
+            return View(datas);
+        }
+    }
+}
+//********************** ViewComponent cshtml **********************
+
+@model List<Personel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Adi</th>
+            <th scope="col">Soyadi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Personel personel in Model)
+        {
+            <tr>
+                <td>@personel.Adi</td>
+                <td>@personel.Soyadi</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+//********************** Models **********************
+namespace ModulerTasarimYapilanmasi.Models
+{
+    public class Personel
+    {
+        public string Adi { get; set; }
+        public string Soyadi { get; set; }
+    }
+}
+
 ```

@@ -9,37 +9,37 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ModulerTasarimYapilanmasi
 build_property.RootNamespace = ModulerTasarimYapilanmasi
-build_property.ProjectDir = D:\Github\Asp.NET-Core-5.0-Web\17-MODÜLER TASARIM YAPILANMASI\37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır\ModulerTasarimYapilanmasi\
+build_property.ProjectDir = d:\Github\Asp.NET-Core-5.0-Web\17-MODÜLER TASARIM YAPILANMASI\37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır\ModulerTasarimYapilanmasi\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Github\Asp.NET-Core-5.0-Web\17-MODÜLER TASARIM YAPILANMASI\37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır\ModulerTasarimYapilanmasi
+build_property.MSBuildProjectDirectory = d:\Github\Asp.NET-Core-5.0-Web\17-MODÜLER TASARIM YAPILANMASI\37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır\ModulerTasarimYapilanmasi
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Index.cshtml]
+[d:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_FooterPartial.cshtml]
+[d:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_FooterPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsc1xfRm9vdGVyUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_HeaderPartial.cshtml]
+[d:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_HeaderPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsc1xfSGVhZGVyUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_LeftMenuPartial.cshtml]
+[d:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_LeftMenuPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsc1xfTGVmdE1lbnVQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_SlaytPartial.cshtml]
+[d:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Home/Partials/_SlaytPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsc1xfU2xheXRQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Shared/_Layout.cshtml]
+[d:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/_ViewImports.cshtml]
+[d:/Github/Asp.NET-Core-5.0-Web/17-MODÜLER TASARIM YAPILANMASI/37)Modüler Tasarım Yapılanması Nedir Nasıl Uygulanır/ModulerTasarimYapilanmasi/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

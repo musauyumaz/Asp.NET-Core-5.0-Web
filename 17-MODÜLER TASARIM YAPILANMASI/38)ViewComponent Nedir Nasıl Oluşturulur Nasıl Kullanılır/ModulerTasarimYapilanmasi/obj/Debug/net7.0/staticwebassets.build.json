@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "Hash": "GpYjNE39PW/FWrsAocVATx2ZV7yXuZcPhPazVehqKXE=",
+  "Source": "ModulerTasarimYapilanmasi",
+  "BasePath": "_content/ModulerTasarimYapilanmasi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ModulerTasarimYapilanmasi\\wwwroot",
+      "Source": "ModulerTasarimYapilanmasi",
+      "ContentRoot": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\",
+      "BasePath": "_content/ModulerTasarimYapilanmasi",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\doga.jpg",
+      "SourceId": "ModulerTasarimYapilanmasi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\",
+      "BasePath": "_content/ModulerTasarimYapilanmasi",
+      "RelativePath": "doga.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\doga.jpg"
+    },
+    {
+      "Identity": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\doga2.jpg",
+      "SourceId": "ModulerTasarimYapilanmasi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\",
+      "BasePath": "_content/ModulerTasarimYapilanmasi",
+      "RelativePath": "doga2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\doga2.jpg"
+    },
+    {
+      "Identity": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\doga3.jpg",
+      "SourceId": "ModulerTasarimYapilanmasi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Github\\Asp.NET-Core-5.0-Web\\17-MODÜLER TASARIM YAPILANMASI\\38)ViewComponent Nedir Nasıl Oluşturulur Nasıl Kullanılır\\ModulerTasarimYapilanmasi\\wwwroot\\",
+      "BasePath": "_content/ModulerTasarimYapilanmasi",
+      "RelativePath": "doga3.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\doga3.jpg"
+    }
+  ]
+}
