@@ -1,5 +1,5 @@
 ---
-modified: 2023-09-14T12:53:26.960Z
+modified: 2023-09-18T14:19:11.620Z
 title: 39) Asp.NET Core 5.0 - Derinlemesine Route Yapılanması
 ---
 
@@ -267,6 +267,191 @@ namespace RouteYapilanmasi.Constraints
         {
             var idValue = values[routeKey];
             return true;
+        }
+    }
+}
+```
+
+# 40) Asp.NET Core 5.0 - Custom Route Handler Nedir? Nasıl İnşa Edilir?
+- Standart bir web uygulamasında request response mimarisine dayalı bir şekilde iletişim sağlanır.
+
+- Client bir tane request atar server'da bir işlem yapılır ve response olarak client'a geri döner.
+
+- Bu mimari üzerinde client'tan gelen request'in server'da hangi alan tarafından karşılanacağını bilebilmesi için asp.net core yapılanmasında routing şemaları geliştirilmiştir.
+
+- Routing request'in yapıldığı endpoint'in şablonuna/yapısına göre ilgili server'da hangi controller'ı ve onun altındaki hangi action'ının tetikleneceğini mimari tarafından bilinebilir hale getirir. Dolayısıyla Routing rotamızı belirlemiş oluyor. 
+
+- Sen eğer ki yapmış olduğun bir uygulamada client'ın göndermiş olduğu örneğin product/getproducts endpoint'ine bir istek geldiğinde biliyorsun ki tüm product'ları dönmen gerekiyor. Benzer mantıkla product/addproduct geliyorsa he demek ki bir product geliyor bunu eklemen gerekiyor. İşte bu iki farklı operasyonu birbirinden ayırabilmen için rotalar üzerinde biz hareket ediyoruz ve her bir rota kendisini uygun formatına uygun bir controller altındaki action'ı tetikleme göreviyle bize eşlik etmektedir.
+
+- Asp.net Core uygulamalarında bir request geldi gelen request'in rotasına uygun bir şekilde controller'ın tetiklenmesi lazım. Request'lerin avantajları sana hangi controller'ın hangi action'ını tetiklenebileceğini bildirebiliyorsun. Controller'larını ayırabiliyorsun. Ama dikkat request'e gelen talep neticesinde sen bir controller tetiklemek zorundasın bir yandan da dezavantajı budur. Yani biz her gelen request'i controller'la mı karşılamak zorundayız. Bir nevi evet. 
+
+- Request'leri sadece controller'ların karşılaması bizim için ciddi manada bağlayıcı unsur. Bu demek oluyor ki kesinlikle bir controller sınıfı tasarlaman lazım ve kesinlikle belirli operasyonlar basit orta ölçekli ya da büyük/devasa operasyonlar controller'lar üzerinde gerçekleştirilmesi gerekiyor anlamına geliyor.
+
+- Gelen istekleri direkt controller'ın dışında farklı handle sınıflarına yönlendirsek ve ilgili isteğe karşılık sonucu orada gerçekleştirip döndürsek böyle bir ihtiyacımız oldu diyelim controller'dan bağımsız çalışmamız gerekiyor. Bir şeyi handle etmem lazım bir şeyi gelen isteği gelen rotayı customize edip controller üzerinde değilde bir action üzerinde operasyon üzerinde işlemi gerçekleştirmek değilde klasik MVC'den çıkıp normal bir handle operasyonu gerçekleştirmem gerekiyor. Diyelim ki request geldi bu request sadece belirli bir image formatlandırması yapacak sadece image'in boyutunu ayarlaması gerekecek işte bunun için bir controller'ı yormanın anlamı yoktur işte buradaki anlamsızlığı ortadan kaldırma ihtiyacına istinaden Custom Route yapılanması oluşturulmuştur. Custom Route Custom rotalar oluşturmak değil burada kastedilen custom route handle operasyonu Yani rota olacak custom ya da genelleştirilmiş önemli değil olan rotanın controller'a değil custom handle edilecek sınıfa yönlendirilmesini istiyoruz.
+
+- Custom Route Handle operasyonlarında eğer ki biz controller'dan bağımsız business mantığında direkt isteği karşılayıp operasyon gerçekleştirmek istiyorsak işte bu operasyonu gerçekleştirilmiş sınıfa özelleştirilmiş bir şekilde tanımlamamız lazım ve belirli bir endpoint'le eşleştirmemiz lazım. Biz buna Custom Route Handle(Özelleştirilmiş Rota Operasyonu) diyoruz.
+
+- Custom Route Handle: Herhangi bir belirlenmiş route şemasının controller sınıflarından ziyade business mantığında karşılanması ve orada iş görüp response'un dönülmesi operasyonudur.
+
+- Biz günlük hayatta ya da iş hayatında yapmış olduğumuz çalışmalarda gelen request'lerin hepsini controller'larda karşılamak istemeyebiliriz. Gelen request'leri bazen özelleştirilmiş sınıflarda karşılamak isteriz ve oralarda işlemek isteriz Böyle durumlarda gelen request'i controller'da değilde herhangi bir sınıfta karşılayıp operasyon gerçekleştirmek istiyorsanız gelecek olan request'in rotasına uygun bir tane Custom Route Handle oluşturmanız lazım yani gelen isteği hande edebileceğiniz/karşılayabileceğiniz bir sınıf oluşturmanız lazım. Dikkat bu sınıf artık bir controller değil.
+
+- Bir resim uygulaması yaptığınızı düşünün ya da bir dosya formatlandırma uygulaması yaptığınızı düşünün belirli operasyonları belirli işlemleri controller üzerinde yapmaktansa biz bunu direkt Custom Route Handle'larla özel sınıflara dağıtabilir ve o özel sınıflar üzerinde operasyonu daha da spesifik hale getirebiliriz.
+
+- Bir isteği özelleştirebilmek controllerdan bağımsız daha da business mantığına odaklanmış bir yapılanmada karşılayabilmek istiyorsanız Custom Route Handler oluşturmanız lazım. Tabiki de bu operasyon daha gelişmiş yapılanmalarda yani mimarisel noktalarda kullanılan bir operasyondur. Burada ne yapıyorsanız birebir zaten gelen request'i controller'da da karşılayıp uygulayabilirsiniz Ama bu işlem spesifik noktalarda uygulanır.
+
+<img src="8.png" width = "auto">
+
+- Controller'lar gelen request'i karşılayıp istenen veriyi üretmekten sorumlu kıldığımız sınıflarımızdır. Dolayısıyla controller aslında zaten benim gelen isteği karşılayıp sonucu döndürmem için yeterli bir sınıftır.
+
+- Eğer ki sen herhangi bir sayfa açacaksan ya da bir view render edeceksen ya da örneğin genel geçer repository'le vs. bunlarla veritabanından verilerini alıp kullanıcıya sunacaksan kullanıcıdan gelen verileri vs. alıp veritabanına işleyeceksen bu tarz operasyonlarda Custom Route Handler'a ihtiyacın yok. Genel geçer operasyonlarda controller'ı kullanacaksın.
+
+- Genel geçer operasyonlarda klasik controller mekanizmasıyla gelen request'i karşılayıp gerekli operasyonu gerçekleştireceksin. 
+
+- Genel geçer operasyonlardan kasıt authorization'lardan tut işte kullanıcı kaydından tut kullanıcıyla yapılan bütün etkileşimlerden tut bunlarda klasik controller'ları kullan onda sıkıntı yok. Ama bir operasyon aşırı derecede spesifikse orada custom route handler oluşturacaksın.
+
+- `endpoints.Map` Map ile başlayan bütün fonksiyonlarımız bizim esasında rotalarla ilgili çalışma yapmamızı sağlayan fonksiyonlar. Öyle ya da böyle rota ayarlıyorsun.
+
+- `endpoints.Map()` => bu da diyor ki ya kardeşim senin burada belirli controller'ların dışında ekstradan bir sınıf tasarlayıp orada request'i karşılamak istiyorsan sadece bununla çalışabilirsin. İkinci parametrede diyor ki ya kardeşim tamam bu endpointe bir istek geldiğinde biz herhangi bir controller ayağa kaldırmayacağız ama sen bu isteği karşılayacak bir tane metot tanımlamalısın buraya. İşte bu metodu da ikinci parametredeki delegasyonla sağlıyor. RequestDelegate türünden olan bu parametre sayesinde verebileceğimiz metot her neyse bu isteği bu metot karşılayacaktır. Dolayısıyla ben bu metodu herhangi bir sınıfa koyduğumda o sınıf benim için iş mantığını yürüten bir sınıf olabilir dolayısıyla bu sınıf üzerindeki yapılan operasyonlarda ilgili request'e karşılayan operasyonlar olacaktır.
+
+- Bir delegate kendi imzasına uygun fonskiyonu temsil edebilmektedir. 
+
+- `public delegate Task RequestDelegate(HttpContext context);` : Kardeşim ben bir delagate'im ve benim temsil edebileceğim metotlar şu tarz metotlardır;
+    1. Geriye `Task` dönecek.
+    2. Parametre olarakta `HttpContext` türünde bir parametre alacak.
+- Geriye kalan ismi cismi önemli değil metodun ismi herhangi bir şey olabilir parametrenin ismi de herhangi birşey olabilir. Ama burada imza kısmı birebir aynı olmak zorunda. İsimler dışında imzanın iskeleti birebir aynı olmak zorunda.
+
+- `async` ilgili fonksiyonun hani asenkron yapılanma olabileceğini temsil ediyor ve geriye Task döndürmesini sağlıyor. Kendisi otomatik bu işlemi sağlıyor.
+
+- Program.cs'te çok fazla iş yapılır ama bu konfigürasyonlar mümkün mertebe farklı noktalarda gerçekleştirilip burada çağrılır. Burayı biz ne kadar sade tutarsak konfigürasyon yapılanmasına hakimiyetimiz o kadar sağlam olacaktır.
+
+```C#
+app.UseEndpoints(endpoints =>
+{
+    endpoints.Map("example-route", async c =>
+    {
+        //https://localhost:5001/example-route endpoint'e gelen herhangi bir istek Controller'dan ziyade direkt olarak buradaki fonksiyon tarafından karşılanacaktır.
+        // Bu rotaya bir istek gönderdiğimizde ki bu istek Get olabilir Post olabilir Put olabilir herşey olabilir. Yani bu isteklerin hepsini burada sağlayabiliyorsunuz o da var. Bu istekler neticesinde istek metotların herhangi birisiyle buradaki fonksiyonu tetikleyip işlemi gerçekleştirebiliyorsun. Ne olmuş oluyor controller tetiklenmemiş oluyor ne olmuş oluyor herhangi bir controller initialize etmediğimizden dolayı ekstradan bir maliyeti de ortadan kaldırmış oluyoruz. Tabi buradaki operasyonu farklı bir sınıfa koyarsak o sınıftan initalize operasyonu sağlayacağız o da ekstradan maliyet geri dönmüş olacak ama en azından yapacağın operasyonda artık controller action controller'ın ekstradan oradan view getiriyor yok başka bir nimetleri var onları getiriyor ya bunların hiçbirini ben kullanmıyorum kardeşim ben sadece buraya gelen istek neticesinde bir operasyon yapacağım bırak sadeleştir. Sadece o operasyona odaklanmak istiyorum diyorsan işte bu şekilde çalışabilirsin.
+    });
+
+    endpoints.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+```
+- https://localhost:5001/example-route endpoint'e gelen herhangi bir istek Controller'dan ziyade direkt olarak buradaki fonksiyon tarafından karşılanacaktır.
+- Bu rotaya bir istek gönderdiğimizde ki bu istek Get olabilir Post olabilir Put olabilir herşey olabilir. Yani bu isteklerin hepsini burada sağlayabiliyorsunuz o da var. Bu istekler neticesinde istek metotların herhangi birisiyle buradaki fonksiyonu tetikleyip işlemi gerçekleştirebiliyorsun. Ne olmuş oluyor controller tetiklenmemiş oluyor ne olmuş oluyor herhangi bir controller initialize etmediğimizden dolayı ekstradan bir maliyeti de ortadan kaldırmış oluyoruz. Tabi buradaki operasyonu farklı bir sınıfa koyarsak o sınıftan initalize operasyonu sağlayacağız o da ekstradan maliyet geri dönmüş olacak ama en azından yapacağın operasyonda artık controller action controller'ın ekstradan oradan view getiriyor yok başka bir nimetleri var onları getiriyor ya bunların hiçbirini ben kullanmıyorum kardeşim ben sadece buraya gelen istek neticesinde bir operasyon yapacağım bırak sadeleştir. Sadece o operasyona odaklanmak istiyorum diyorsan işte bu şekilde çalışabilirsin.
+
+- `endpoints.Map("example-route",new ExampleHandler().Handler());` example-route'a gelen request ExampleHandler() sınıfının Handler metodunda karşılandı diyelbiliriz.
+
+- Resim denilen dosyalar web uygulamalarının olmazsa olmazıdır. Herhangi bir eticaret uygulamasında elinize aldığınızda şöyle bakıyorsunuz yani vitrinde bile ürünlerin kendilerinden önce resimleri karşımıza gelmektedir. Eğer ki bir yazılımcı resimlerle ilgili çalışmayı şu şekilde yaparsa gelenksel olarak resmin belirli bir boyutunu alıyorsun ve sunucuya koyuyorsun. Sunucuda bir tane resmin var ama sen web uygulamasında bu resmi kullanırken yeri gelecek bunu küçültmen gerekecek napıyorsun orada HTML tabanlı genişlik ve yükseklik ayarlarını veriyorsun orada ilgili resim küçültülmüş gibi gösteriyor Halbuki bakarsanız network kısmına senin yapmış olduğun istek neticesinde 10 boyutundaki resim yükleniyor sen oraya koymuşsun küçük bir şekilde ama yine 10 boyutunda yükleniyor. Halbuki arkada sunucu senin 10 boyutundaki resmini 3 boyutuna indirir 3 boyutunda olur ve sen o 3 boyutundaki dosyayı gönderir ve bu şekilde performanstan kazanmış olursun maliyeti de düşürmüş olursun. Resim boyutlandırmasını genellikle HTML tabanlı değil sunucu tabanlı yapmayı tercih ettiğimiz uygulamalar olabiliyor ve bu resim formatlandırma operasyonunu controller'larda değil(yapabilirsin) CustomRouteHandler'larda yapıyoruz. Çünkü resim boyutlandırma başka bir işlemin yok bunun için controller'a gerek yok herhangi bir controller'da kaç tane action tanımlayabilirsin ki bununla ilgili varsa öyle bir ihtiyacın yap. Ama controller'dan ziyada bunu route handler'da daha doğru daha efektif olabiliyor.
+ 
+- Custom Route Handler dediğimiz yani gelen özelleştirilmiş rotaları handle ettiğimiz sınıflarımız metotlarımız spesifik/özel belirli durumlar için kullandığımız tekniktir.
+
+- Bir asp.net Core uygulamasında image/video/mp3/pdf/css/js dosyaları bilmem aklına ne geliyorsa bu tarz dosyaların hepsini `wwwroot` klasörüne koymak zorundasın. `wwwroot` klasördeki dosyalara erişebilmek için `app.UseStaticFiles()` isimli middleware'i çağırman gerekiyor.
+
+- Custom Route Handler'ları istediğimiz gibi isimlendirebiliriz.
+
+- Custom Route Handler'larda iligli delagate uygun bir fonksiyon geriye döndürmelisiniz.
+
+- `FileInfo` bir `system.IO` namespace'inin bir üyesidir. Haliyle herhangi bir dosyayı elde etmemizi sağlayan dosyayla ilgili bilgiler elde etmemizi sağlayan bir sınıftır.
+
+- `MagickImage` kütüphanesi resmin boyutunu ayarlama operasyonlarını barındırıyor.
+
+- `IDisposable` olan herhangi bir nesneyi `using` ile işaretleyebilirsiniz. İlgili fonksiyon görevini bitirdiği zaman yani fonksiyondan çıkıldığı zaman Garbage Collector ilgili nesnenin üstesinden gelecektir. Yani ilgili nesneyi imha edecektir.
+
+- Profesyonel bir çalışmada resim boyutlandırmada/formatlandırmada querystring'ten width ve height değerleri alınır.
+
+- Response'u eğer sen elinle manuel birşekilde tasarlıyorsan Response'su bir silersin. Bu gelenektir.
+
+## C# Examples
+```C#
+//********************************************** Program.cs **********************************************
+using CustomRouteHandler.Handlers;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    //endpoints.Map("example-route", async c =>
+    //{
+    //    //https://localhost:5001/example-route endpoint'e gelen herhangi bir istek Controller'dan ziyade direkt olarak buradaki fonksiyon tarafından karşılanacaktır.
+    //    // Bu rotaya bir istek gönderdiğimizde ki bu istek Get olabilir Post olabilir Put olabilir herşey olabilir. Yani bu isteklerin hepsini burada sağlayabiliyorsunuz o da var. Bu istekler neticesinde istek metotların herhangi birisiyle buradaki fonksiyonu tetikleyip işlemi gerçekleştirebiliyorsun. Ne olmuş oluyor controller tetiklenmemiş oluyor ne olmuş oluyor herhangi bir controller initialize etmediğimizden dolayı ekstradan bir maliyeti de ortadan kaldırmış oluyoruz. Tabi buradaki operasyonu farklı bir sınıfa koyarsak o sınıftan initalize operasyonu sağlayacağız o da ekstradan maliyet geri dönmüş olacak ama en azından yapacağın operasyonda artık controller action controller'ın ekstradan oradan view getiriyor yok başka bir nimetleri var onları getiriyor ya bunların hiçbirini ben kullanmıyorum kardeşim ben sadece buraya gelen istek neticesinde bir operasyon yapacağım bırak sadeleştir. Sadece o operasyona odaklanmak istiyorum diyorsan işte bu şekilde çalışabilirsin.
+    //});
+
+    endpoints.Map("image/{imagename}", new ImageHandler().Handler(app.Environment.WebRootPath));
+
+    endpoints.Map("example-route",new ExampleHandler().Handler());
+
+    endpoints.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
+app.Run();
+//********************************************** ExampleHandler **********************************************
+namespace CustomRouteHandler.Handlers
+{
+    public class ExampleHandler
+    {
+        public RequestDelegate Handler()
+        {
+            return async c => 
+            {
+               await c.Response.WriteAsync("Hello World");
+            };
+        }
+    }
+}
+//********************************************** ImageHandler **********************************************
+using ImageMagick;
+
+namespace CustomRouteHandler.Handlers
+{
+    public class ImageHandler
+    {
+        public RequestDelegate Handler(string filePath)
+        {
+            return async c =>
+            {
+                FileInfo fileInfo = new($"{filePath}\\{c.Request.RouteValues["imagename"].ToString()}");
+                using MagickImage magicK = new(fileInfo);
+
+                int width = magicK.Width, height = magicK.Height;
+
+                if (!string.IsNullOrEmpty(c.Request.Query["w"].ToString()))
+                    width = int.Parse(c.Request.Query["w"].ToString());
+                if (!string.IsNullOrEmpty(c.Request.Query["h"].ToString()))
+                    height = int.Parse(c.Request.Query["h"].ToString());
+
+                magicK.Resize(width, height);
+
+                byte[]? buffer = magicK.ToByteArray();
+                c.Response.Clear();
+                c.Response.ContentType = string.Concat("image/", fileInfo.Extension.Replace(".", ""));
+
+                await c.Response.Body.WriteAsync(buffer, 0, buffer.Length);
+                await c.Response.WriteAsync(filePath);
+            };
         }
     }
 }

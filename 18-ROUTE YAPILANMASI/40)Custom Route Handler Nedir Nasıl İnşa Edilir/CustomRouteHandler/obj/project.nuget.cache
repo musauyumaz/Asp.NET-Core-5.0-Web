@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "a3CJ/epb836M1099MjItfe5vNZRc7SYKOq0fTkUjBJTGe5QuFBlOb/U0pBim+1orN8lSD6BZTtQBc7EpIXMQyw==",
+  "success": true,
+  "projectFilePath": "D:\\Github\\Asp.NET-Core-5.0-Web\\18-ROUTE YAPILANMASI\\40)Custom Route Handler Nedir Nasıl İnşa Edilir\\CustomRouteHandler\\CustomRouteHandler.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\magick.net-q16-anycpu\\13.2.0\\magick.net-q16-anycpu.13.2.0.nupkg.sha512",
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\magick.net.core\\13.2.0\\magick.net.core.13.2.0.nupkg.sha512"
+  ],
+  "logs": []
+}
