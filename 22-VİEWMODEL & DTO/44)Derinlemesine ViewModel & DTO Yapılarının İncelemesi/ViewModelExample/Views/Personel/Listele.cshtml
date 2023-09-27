@@ -1,0 +1,10 @@
+﻿#region Senaryo 1 - Bir Model’in View’de ki Etkileşimine Uygun Parçasını Temsil Etme
+@model List<PersonelListeVM>//Haliyle bu nesne senin bu view'de kullanacağın dataları taşıyacağından dolayı ekstra bir veri yoğunluğu olmayacak bir veri karışıklığıda söz konusu olmayacaktır. Daha efektif daha best practice'lere uygun bir kod bir çözüm getirmiş olacağız.
+
+<ul>
+    @foreach (PersonelListeVM personel in Model)
+    {
+        <li>@personel.Adi @personel.Soyadi @personel.Pozisyon</li>
+    }
+</ul>
+#endregion

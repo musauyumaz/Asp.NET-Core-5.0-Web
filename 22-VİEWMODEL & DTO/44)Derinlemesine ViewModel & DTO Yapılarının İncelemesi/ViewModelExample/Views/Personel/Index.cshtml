@@ -1,0 +1,16 @@
+﻿#region Senaryo 1 - Bir Model’in View’de ki Etkileşimine Uygun Parçasını Temsil Etme
+@model PersonelCreateVM
+
+<form asp-action="Index" asp-controller="Personel" method="post">
+    <input type="text" asp-for="Adi" /><br />
+    <input type="text" asp-for="Soyadi" /><br />
+    <button>Gönder</button>
+</form>
+
+@* sen  buradan bir veri göndereceksin içerisinde Adı var Soyadı var Medeni Hali var. Maaşı var Pozisyonu var.*@
+@* burada bir nesne oluşturacak sen bunun sadece adını ve soyadını kullanacaksın diğerleri nerede diğerlerini kullanmayacaksın Madem öyle diğerlerini kullanmayacaksan bu view'le bu view'den besleyen backend'in arasında iletişimi sağlayacak olan model Personel olmamalı dolayısıyla sadece adını ve soyadını taşıyacak bir model tasarlamalıyız. İşte bu model view'i baz alarak tasarlanıyor. Biz buna viewmodel diyoruz. *@
+@* View'de kullanılacak olan veriler illaki view'e gönderilen veriler olmak zorunda değil. View'den gelecek olan verileri de karşılayacak olan model'a biz viewmodel diyoruz. View'e gönderilecek ve View'den gelecek olan her iki türlü/yönlü transferi sağlayacak olan nesneye viewmodel nesnesi diyoruz. *@
+@* Dolayısıyla bizim öyle bir nesne oluşturmamız lazım ki buradaki lüzumsuz içeriklere sahip olmamalı sadece ben buradan hangilerini gönderiyorsam ve buraya hangileri geliyorsa onları temsil eden bir nesne olması gerekiyor dolayısıyla bu nesneye biz viewmodel nesnesi diyoruz. *@
+@* Her bir eyleme/view'e karşılık viewmodel oluşturmamız gerekecek. *@
+@* Hangi eyleme karşılık viewmodel oluşturuyorsan isminde bildirmen senin avantajına olacaktır. *@
+#endregion

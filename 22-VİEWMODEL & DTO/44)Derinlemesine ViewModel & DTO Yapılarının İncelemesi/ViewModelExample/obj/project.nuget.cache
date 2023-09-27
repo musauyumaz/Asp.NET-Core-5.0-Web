@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "h7ZoQJtuXpPdYuUY+xv17baIdFvYY4zT5ate4tFbhb5jNvHdbtRweud51vhm4YyP/wkPpo8iuEPLnz6wMJQHFQ==",
+  "success": true,
+  "projectFilePath": "D:\\Github\\Asp.NET-Core-5.0-Web\\22-VİEWMODEL & DTO\\44)Derinlemesine ViewModel & DTO Yapılarının İncelemesi\\ViewModelExample\\ViewModelExample.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
