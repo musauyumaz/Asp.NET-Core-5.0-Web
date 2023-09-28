@@ -24,5 +24,5 @@
 - ## [ROUTE YAPILANMASI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/18-ROUTE%20YAPILANMASI/ReadMe.md)
 - ## [MİDDLEWARE YAPILANMASI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/19-M%C4%B0DDLEWARE%20YAPILANMASI/ReadMe.md)
 - ## [DEPENDENCY INJECTİON - IOC YAPILANMASI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/20-DEPENDENCY%20INJECT%C4%B0ON%20-%20IOC%20YAPILANMASI/ReadMe.md)
-- [AREAS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/21-AREAS/ReadMe.md)
-- [VİEWMODEL & DTO](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/22-V%C4%B0EWMODEL%20%26%20DTO/ReadMe.md)
+- ## [AREAS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/21-AREAS/ReadMe.md)
+- ## [VİEWMODEL & DTO](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/22-V%C4%B0EWMODEL%20%26%20DTO/ReadMe.md)
