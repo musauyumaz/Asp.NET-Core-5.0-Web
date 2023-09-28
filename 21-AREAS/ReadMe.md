@@ -1,8 +1,4 @@
----
-modified: 2023-09-25T13:32:00.040Z
-title: 43) Asp.NET Core 5.0 - Baştan Sona Areas Yapılanması
----
-
+***
 # 43) Asp.NET Core 5.0 - Baştan Sona Areas Yapılanması
 <img src="1.png" width = "auto">
 
