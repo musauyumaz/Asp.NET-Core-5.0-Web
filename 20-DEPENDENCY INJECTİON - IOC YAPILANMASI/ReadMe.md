@@ -1,8 +1,4 @@
----
-modified: 2023-09-21T10:03:05.050Z
-title: 42) Asp.NET Core 5.0 - Derinlemesine Dependency Injection - IoC Yapılanması
----
-
+***
 # 42) Asp.NET Core 5.0 - Derinlemesine Dependency Injection - IoC Yapılanması
 - Dependency injection bir tasarım desenidir. Yani bir strateji/mantık/matematik bir yapı değildir. 
 
