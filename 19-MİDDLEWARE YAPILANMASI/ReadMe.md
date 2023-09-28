@@ -1,8 +1,4 @@
----
-modified: 2023-09-20T09:34:52.649Z
-title: 41) Asp.NET Core 5.0 - Middleware Nedir? Nasıl Oluşturulur?
----
-
+***
 # 41) Asp.NET Core 5.0 - Middleware Nedir? Nasıl Oluşturulur?
 - Client'tan gelen request neticesinde response dönene kadar olacak süreçlerin yapılacak işlemlerin sorumluluğunu üstlenen yapı middleware'dir.
 
