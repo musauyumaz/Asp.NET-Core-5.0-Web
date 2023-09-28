@@ -1,8 +1,4 @@
----
-modified: 2023-09-12T10:40:04.590Z
-title: 37) Asp.NET Core 5.0 - Modüler Tasarım Yapılanması Nedir? Nasıl Uygulanır?
----
-
+***
 # 37) Asp.NET Core 5.0 - Modüler Tasarım Yapılanması Nedir? Nasıl Uygulanır?
 - Modüler tasarım günlük hayatta da sık sık karşımıza çıkmaktadır. Şimdi bir arabamız var ve bu arabamızn varsayalım ki direksiyonu var. Tabi tekerleri var koltuğu var vs. Bunun motoru var. Diyelim ki arabanın herhangi bir parçasında örneğin direksiyonunda bir sıkıntı olduğu zaman eğer ki direksiyondaki sıkıntı tekeri haliyle tekerdeki sıkıntı koltuğu koltuktaki sıkıntı motoru motordaki distrübitörü vs. yani ufacık bir sıkıntı alakasız yerleri etkiliyor olsaydı sizce araba sektörü dünyada bu noktaya gelebilir miydi? Araba tek başına bir bütün olabilir belki ama yapısal olarak esasında küçük parçaların bir araya gelerek bir bütün oluşturduğu yapılanmadır araba dediğimiz olay.
 
