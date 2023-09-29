@@ -1,5 +1,5 @@
 ---
-modified: 2023-09-29T09:00:52.904Z
+modified: 2023-09-29T11:12:45.521Z
 title: 45) Asp.NET Core 5.0 - appsettings.json Dosyası Nedir? Ne İse Yarar?
 ---
 
@@ -324,4 +324,221 @@ namespace ConfigurationExample.Models
         public string Surname { get; set; }
     }
 }
+```
+
+***
+# 46) Asp.NET Core 5.0 - Options Pattern İle Konfigürasyonları Dependency Injection ile Yapılandırma
+- appsettings.json dosyasındaki yapmış olduğumuz konfigürasyon ayarlarını uygulamaya hızlı bir şekilde enjekte edebilmemizi yani dependency injection'ı kullanabilmemizi ve o şekilde daha pratik çalışmamızı sağlar.
+
+<img src="13.png" width = "auto">
+
+- Bu desen sayesinde appsettings.json dosyasındaki kayıtları yapılandırılmış şekilde ilgili uygulamanın IoC container'ına koyacağız ve bunu sonraki süreçlerde ihtiyaç doğrultusunda pratik olacak şekilde dependency injection'ı kullanarak talep edebileceğiz.
+
+- Asp.NET Core uygulamalarında konfigürasyonel hiçbir metinsel değer kodun içerisine yazılmaz. Bu değerler appsettings.json dosyasında yazılır.
+
+```C#
+//**************************** HomeController ****************************
+public class HomeController : Controller
+{
+    #region Konfigürasyon Verilerini IConfiguration üzerinden Okuma
+    private readonly IConfiguration _configuration;
+    public HomeController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+    public IActionResult Index()
+    {
+        string? host = _configuration["MailInfo:Host"];
+        string? port = _configuration["MailInfo:Port"];
+        MailInfo? mailInfo = _configuration.GetSection("MailInfo").Get<MailInfo>();//Tasarladığınız model hani Get metodunu kullanırken sana ilgili konfigürasyonu yapılandırıp(yani  ilgili konfigürasyonu ilgili fonksiyonları kullanarak sen MailInfo türünden bir nesne elde ediyorsun Bu senin açından oradaki konfigürasyon dosyalarını dil açısından yapılandırılıp  yani nesnel karşılığını elde ediyorsun böyle yapınaldırmış oluyorsun.) getiriyor ya işte bu durumda birebir bizim konfigürasyon isimleriyle property isimleri aynı olması gerekiyor.  Eğer ki bir fark olursa ilgili eşleştirme yapılamayacağından dolayı Property'ler null değerinde gelebilir.
+        //Options pattern buradaki yapılandırmayı dependency injection üzerinden tek elden yapmamızı sağlayan bir kolaylık sağlıyor. Sana her MailInfo lazım olduğunda _configuration. GetSection("MailInfo").Get<MailInfo>(); bu işlemi yapmak zorundasın. Yani her lazım olduğu yerde IConfiguration'ı enjekte edeceksin. Bu işlemden sonra geleceksin GetSection ("MailInfo") diyip Get<MailInfo>(); deyip işlemi yapman gerekecek. Ölme eşşeğim ölme :)
+        return View();
+    }
+    #endregion
+}
+//**************************** appsettings.json ****************************
+"MailInfo": {
+    "Port": 587,
+    "Host": "smtp.gmail.com",
+    "EmailInfo": {
+      "Email": "musa.uyumaz73@gmail.com",
+      "Password": "12345"
+    }
+}
+```
+
+- `MailInfo? mailInfo = _configuration.GetSection("MailInfo").Get<MailInfo>();` => Tasarladığınız model hani Get metodunu kullanırken sana ilgili konfigürasyonu yapılandırıp(yani ilgili konfigürasyonu ilgili fonksiyonları kullanarak sen MailInfo türünden bir nesne elde ediyorsun Bu senin açından oradaki konfigürasyon dosyalarını dil açısından yapılandırılıp yani nesnel karşılığını elde ediyorsun böyle yapınaldırmış oluyorsun.) getiriyor ya işte bu durumda birebir bizim konfigürasyon isimleriyle property isimleri aynı olması gerekiyor. Eğer ki bir fark olursa ilgili eşleştirme yapılamayacağından dolayı Property'ler null değerinde gelebilir.
+    * Options pattern buradaki yapılandırmayı dependency injection üzerinden tek elden yapmamızı sağlayan bir kolaylık sağlıyor. Sana her MailInfo lazım olduğunda _configuration.GetSection("MailInfo").Get<MailInfo>(); bu işlemi yapmak zorundasın. Yani her lazım olduğu yerde IConfiguration'ı enjekte edeceksin. Bu işlemden sonra geleceksin GetSection("MailInfo") diyip Get<MailInfo>(); deyip işlemi yapman gerekecek. Ölme eşşeğim ölme :)
+    * Biz bir yerden sonra bu yöntemden de kaçacağız diyeceğiz ki ya kardeşim benim sürekli belirli noktalarda kullandığım konfigürasyonel değerler var. Ben bu değerleri dependency injection'da kullanabilmek istiyorum. İşte dependency injection'da direkt nesne olarak bu değerleri talep edebilmem için benim bu konfigürasyonel yapıları appsettings.json içerisindeki belirli parçaları IoC yapılanmasının container'ına bir nesne karşılığı koymam lazım. İşte bunu koyabilmeni ve istediğin zaman çağırabilmeni sağlayan yapılanmaya options pattern diyoruz. 
+
+- Options Pattern appsettings.json dosyasındaki konfigürasyonları Dependency Injection ile kullanmamızı sağlayan ve yapılandırılmış olan nesnel modellerle ilgili konfigürasyonları temsil etmemizi sağlayan bir tasarım desenidir.
+
+<img src="14.png" width = "auto">
+
+- Bunu birden fazla kez farklı konfigürasyonel yapılanmalar içinde n adet nesneye çevirebilecek yapılandırmalar sağlayabilirsiniz. 
+
+```C#
+//**************************** Program.cs ****************************
+#region Konfigürasyon Verilerini Options Pattern İle Okuma
+builder.Services.Configure<MailInfo>(builder.Configuration.GetSection("MailInfo"));// Bu fonksiyonda GeSection ile gerekli değeri veriyoruz. appsettings'teki hangi nesneyi hedef göstereceksen hangi bölümü yani ayarı/konfigürasyonu hedef göstereceksen onun ismini bildiriyorsun. Altındakileri Zaten bildirmiş olduğun generic türe dönüşüm yapılıp IoC container'ına ilgili nesne verilmiş olacaktır.
+//Birden fazla konfigürasyonel değeri program.cs üzerinden bu şekilde farklı türlerdeki class'lara yapılandırıp istediğimiz zaman lazım olanı çağırabilirsiniz. 
+#endregion
+
+//**************************** HomeController ****************************
+MailInfo _mailInfo;
+public HomeController(IOptions<MailInfo> mailInfo)
+{
+    _mailInfo = mailInfo.Value;
+}
+public IActionResult Index()
+{
+    MailInfo mailInfo = _mailInfo;
+    return View();
+}
+
+//**************************** MailInfo ****************************
+{
+    public class MailInfo
+    {
+        public string Host { get; set; }
+        public string Port { get; set; }
+        public EmailInfo EmailInfo { get; set; }
+    }
+    public class EmailInfo
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}
+
+```
+
+- Bu şekilde yapılan çalışmalarda biz özellikle konfigürasyon değerlerine erişebilmek için bunları karışık bir şekilde `IConfiguration` üzerinden değil de Options Pattern'ı kullanarak elde etmeyi tercih ediyoruz Çünkü bu hem daha düzenli hem de yapılandırılmış bir çalışma sunduğu için daha hızlı hareket etmemizi sağlayacaktır. Kodun bakımı ve kodun esnekliği/temizliği açısından daha doğru olacaktır. Çünkü eğer ki biz appsettings.json dosyasının içindeki değerleri  `IConfiguration` ile her kodun içinde çağırmış olsaydım bu da bir konfigürasyon değerinin içeride çağırılması olacaktı. Dolayısıyla bunu tek bir yerden çağırıyorum. Haliyle bir gün gelirde appsettings.json içindeki değerler/key'ler değişirse en azından tek bir yerden bunu yönettiğim için birtek orayı değiştirmem yeterli olacaktır. 50 tane yerde sen ilgili konfigürasyonu çağırıyorsan hem konfigürasyon değerleri üzerinde sana hız kazandıran ve gerçekten yapılandırmanı güçlü bir şekilde sağlayan bu yapılanmanın o isimleride konfigürasyonel değer oldukları için metinsel olarak kodun içerisine gömülmüş oluyorlar. Birgün değişebilir/silinebilir. İşte böyle durumlarda bu kodların hepsini temizleniz ya da değiştirmeniz gerekir. Bunların hepsini Options Pattern sayesinde tek elden yine yönetebilmiş oluyorsunuz.
+
+## C# Example
+```C#
+//**************************** Program.cs ****************************
+using ConfigurationExample.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+#region Konfigürasyon Verilerini Options Pattern İle Okuma
+builder.Services.Configure<MailInfo>(builder.Configuration.GetSection("MailInfo"));// Bu fonksiyonda GeSection ile gerekli değeri veriyoruz. appsettings'teki hangi nesneyi hedef göstereceksen hangi bölümü yani ayarı/konfigürasyonu hedef göstereceksen onun ismini bildiriyorsun. Altındakileri Zaten bildirmiş olduğun generic türe dönüşüm yapılıp IoC container'ına ilgili nesne verilmiş olacaktır.
+                                                                                   //Birden fazla konfigürasyonel değeri program.cs üzerinden bu şekilde farklı türlerdeki class'lara yapılandırıp istediğimiz zaman lazım olanı çağırabilirsiniz. 
+#endregion
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
+
+//**************************** HomeController ****************************
+using ConfigurationExample.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Diagnostics;
+
+namespace ConfigurationExample.Controllers
+{
+    public class HomeController : Controller
+    {
+        #region Konfigürasyon Verilerini IConfiguration üzerinden Okuma
+        //private readonly IConfiguration _configuration;
+
+        //public HomeController(IConfiguration configuration)
+        //{
+        //    _configuration = configuration;
+        //}
+
+        //public IActionResult Index()
+        //{
+        //    string? host = _configuration["MailInfo:Host"];
+        //    string? port = _configuration["MailInfo:Port"];
+
+        //    MailInfo? mailInfo = _configuration.GetSection("MailInfo").Get<MailInfo>();//Tasarladığınız model hani Get metodunu kullanırken sana ilgili konfigürasyonu yapılandırıp(yani ilgili konfigürasyonu ilgili fonksiyonları kullanarak sen MailInfo türünden bir nesne elde ediyorsun Bu senin açından oradaki konfigürasyon dosyalarını dil açısından yapılandırılıp yani nesnel karşılığını elde ediyorsun böyle yapınaldırmış oluyorsun.) getiriyor ya işte bu durumda birebir bizim konfigürasyon isimleriyle property isimleri aynı olması gerekiyor. Eğer ki bir fark olursa ilgili eşleştirme yapılamayacağından dolayı Property'ler null değerinde gelebilir.
+        //    //Options pattern buradaki yapılandırmayı dependency injection üzerinden tek elden yapmamızı sağlayan bir kolaylık sağlıyor. Sana her MailInfo lazım olduğunda _configuration.GetSection("MailInfo").Get<MailInfo>(); bu işlemi yapmak zorundasın. Yani her lazım olduğu yerde IConfiguration'ı enjekte edeceksin. Bu işlemden sonra geleceksin GetSection("MailInfo") diyip Get<MailInfo>(); deyip işlemi yapman gerekecek. Ölme eşşeğim ölme :)
+        //    return View();
+        //}
+        #endregion
+        #region Konfigürasyon Verilerini Options Pattern İle Okuma
+        MailInfo _mailInfo;
+        public HomeController(IOptions<MailInfo> mailInfo)
+        {
+            _mailInfo = mailInfo.Value;
+        }
+        public IActionResult Index()
+        {
+            
+            return View();
+        }
+        #endregion
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+//**************************** MailInfo ****************************
+namespace ConfigurationExample.Models
+{
+    public class MailInfo
+    {
+        public string Host { get; set; }
+        public string Port { get; set; }
+        public EmailInfo EmailInfo { get; set; }
+    }
+    public class EmailInfo
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}
+
+//**************************** appsettings.json ****************************
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "MailInfo": {
+    "Port": 587,
+    "Host": "smtp.gmail.com",
+    "EmailInfo": {
+      "Email": "musa.uyumaz73@gmail.com",
+      "Password": "12345"
+    }
+  }
+}
+
 ```
