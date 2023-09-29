@@ -1,8 +1,4 @@
----
-modified: 2023-09-27T05:23:43.453Z
-title: 44) Asp.NET Core 5.0 - Derinlemesine ViewModel & DTO Yapılarının İncelemesi
----
-
+***
 # 44) Asp.NET Core 5.0 - Derinlemesine ViewModel & DTO Yapılarının İncelemesi
 - Viewmodel ve DTO dediğimiz bu yapılanmalar herhangi bir mimariye ya da dile bağlı yapılanmalar değildir. Bunlar yazılımsal terminolojik kavramlar.
 

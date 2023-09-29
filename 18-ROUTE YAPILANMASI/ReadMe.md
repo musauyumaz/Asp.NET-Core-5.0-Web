@@ -1,8 +1,4 @@
----
-modified: 2023-09-18T14:19:11.620Z
-title: 39) Asp.NET Core 5.0 - Derinlemesine Route Yapılanması
----
-
+***
 # 39) Asp.NET Core 5.0 - Derinlemesine Route Yapılanması
 - Route yapılanması rotalarımızı yani gelen isteklerde hangi controller'ı tetikleyeceğimizi belirlememizi sağlayan ayırt edebilmemizi sağlayan bir mekanizmadır.
 
