@@ -1,5 +1,5 @@
 ---
-modified: 2023-09-29T11:12:45.521Z
+modified: 2023-10-06T10:08:06.462Z
 title: 45) Asp.NET Core 5.0 - appsettings.json Dosyası Nedir? Ne İse Yarar?
 ---
 
@@ -541,4 +541,255 @@ namespace ConfigurationExample.Models
   }
 }
 
+```
+
+***
+# 47) Asp.NET Core 5.0 - Secret Manager Tools İle Hassas Verilerin Korunması
+- Siz belirli konfigürasyonel değerler tutuyorsunuz web uygulamalarında bu konfigürasyonel değerler appsettings.json'da tutuluyor. `appsettings.json`'ın davranışını bildiğinizde burada bir risk olduğunu göreceksiniz. Sen geldin herhangi bir x konfigürasyonel değerini gittin `appsettings.json`'a koydun. Eyvallah zaten yeri orasıdır. Zaten koyman gereken yer odur Ama `appsettings.json` konfigürasyonel değerlerin tutulduğu yerlerden bir tanesidir. Diğer yerler de var. Diğer yerlerden bir tanesi de Secret Manager Tools dediğimiz yapılanma.
+
+- `appsettings.json` dediğimiz dosya içerisine koymuş olduğunuz konfigürasyonu bütün sistemde merkezi bir şekilde yönetmemizi sağlayan bir dosya. Amma velakin biz geliştirdiğimiz web uygulamasını bir gün çıktısını alacağız yani publish diyeceğiz biz buna yayınlanılabilir yani production ortamına uygun hale getireceğiz yayınlanabilir hale getireceğiz ve bunu gidicez bir sunucuya ya da bir cloud'daki herhangi bir yere atıp kullanıcılarımıza hizmet vermeye başlayacağız. Yani sunuma/production'a çıkacağız. Haliyle sen bir web uygulamasını Asp.NET Core uygulamasını publish ettiğin zaman çıktıda `appsettings.json` dosyası da bulunacaktır. Sen uygulamanda konfigürasyonel yapıları`appsettings.json`'a koyduğunda `appsettings.json` publish çıktısında bulunan bir dosya demek. `appsettings.json` uygulama production ortamına gönderilirken gönderilen bir dosya demek.
+
+- `appsettings.json` içerisinde kritik verilerinizin olduğunu düşünün şifreleriniz connection string değerleriniz işte third party'lerle iletişim sağlamanızı sağlayan belirli id secret değerleriniz vs. Yani kritik değerleriniz başkasının eline geçtiği zaman kullanabilir ve sizi her türlü rezillikle sonuçlandırabilir değerlerinizin olduğunu düşünelim. Şimdi sen uygulamanın çıktısını aldığın zaman bu çıktıda `appsettings.json` olacak ve bu `appsettings.json`ın içinde bu değerler olacak. Adam açtığı zaman bunları görebilecek. Sen bunu sunucuya gönderdiğinde diyelim li bir gün sunucuna biri sızdı ya da sunucunun sahibi dedi ki ulan bir bakayım ben şu adamın dosyalarına dedi. Senin kritik verilerin orada gözüküyor. Kritik verilerin `appsettings.json`'ı açtığı zaman adamın karşısında olacak. Diyecek ki vay be bu adamın connection string'i demek ki buymuş tamam bizde alalım kullanıcı adı ve şifresi herşeyi burada bu adamın. Kötü niyetli bir insan senin sunucunu elde ettiği zaman bütün bilgilerini hap bilgi olarak `appsettings.json`'da tutuyorsan eğer kötü niyetli insana bunu vermiş olma ihtimalin var. Dolayısıyla biz kritik yani hassasiyet arz eden konfigürasyonel verilerimizi `appsettings.json`'da tutmuyoruz. `appsettings.json`'da hassasiyet arz etmeyen konfigürasyonel değerleri tutuyoruz.
+
+- Hassasiyet arz eden kritik benim için bir başkasının eline geçtiği zaman her türlü risk konusu olabilecek verilerimizi mümkün mertebe `appsettings.json`'da tutmayacaksınız. Çünkü `appsettings.json` uygulamanın publish neticesinde çıktıda yer alan ve herhangi bir kişi tarafından tıklandığında açılıpta içi görülebilen bir dosyadır. Dolayısıyla biz kritik verilerimizi uygulamada niye sunucuya gönderelim?
+
+- Kritik konfigürasyonel değerlerin varsa cidden risk taşıyorsa bu değerleri `appsettings.json` içinde mümkün mertebe tutmaman gerekiyor.
+
+<img src="15.png" width = "auto">
+
+## Secret Manager Tools Nedir?
+- Web uygulamalarında development ortamında kullandığımız bazı verilerimizin canlıya deploy edilmesini istemeyebiliriz. Nihayetinde canlıya deploy edildiğinde iyi ya da kötü niyetli bir kişi tarafından bu verilerimiz elde edilebilir kah o anda kah daha sonraki süreçlerde her türlü saboteye sebep olunabilir.
+
+## Kritik/Hassas Veriler Neler Olabilir?
+- Bu verilerimiz;
+    * Veritabanı bilgilerini barındıran connection string bilgisi,
+    * Herhangi bir kritik arz eden token değeri,
+    * Facebook veya Google gibi third party authentication işlemleri yapmamızı sağlayan client secret id değerler
+    * vs.
+- olabilir.
+
+- Connectionstring senin web uygulamanla veritabanı sunucusu arasında bağlantıyı sağlayan yani veritabanıyla ilgili bütün bilgileri tutan hangi server/kullanıcı adı/şifre bunların hepsi connectionstring'in üzerinde var. Sen gidip bunu `appsettings.json` içerisine koyarsan kötü niyetli bir kişiye böyle hani rapor niteliğinde sunmuş gibi verirsen bunu sunucuya adam elde ettiği aman bakar senin connectionstring'in içerisinden bütün veritabanına dair bilgilerini elde edebilir ve veritabanına sızma bile denmez direkt giriş yapabilir. Haliyle bunun gibi bir bilgi `appsettings.json` içine koyulup gönderilmemelidir.
+
+- Senin için uygulamanda önem arz eden bir değer varsa bunu da `appsettings.json`'a koymaman gerekiyor.
+
+- OAuth 2.0 protokolleriyle yok facebook'tan login yok google'dan login yani bunun gibi third party authentication işlemleri yapabildiğimiz operasyonlar var. şimdi bunu yapabilmen için bu işin detayında şu vardır facebook ya da google twitter instagram farketmiyor bunların hepsi sana bir client id ile secret id dediğimiz değerler verir ve senin uygulamanı bu değerler üzerinden tanılar. Haliyle bu değerler bu dev firmalar tarafından sana ait sadece sana ait olan değerlerdir. Bu değerlerini gidip `appsettings.json` içerisine koyarsan düşünsene facebook için sana ait olan değeri kötü niyetli adamın eline kaptırdın adam her türlü seni sabote edebilir. Facebook'a karşı kullanabilir vs. Dolayısıyla biz bu tür değerleri `appsettings.json` içine koyup kendimizi riske atmak istemeyiz.
+
+-  Bu veriler developer ortamında kullanılırken, production ortamında kötü niyetli kişilerin uygulama dosyalarına erişim sağladıkları durumlarda elde edemeyecekleri vaziyette bir şekilde ezilmeleri gerekmektedir.
+
+- İşte bunun için Secret Manager Tool geliştirilmiştir
+
+- Web uygulamalarında static olan verileri tekrar tekrar yazmak yerine bir merkezde depolayarak kullanmayı tercih ediyoruz.
+
+- Asp.NET Core uygulamalarında bu merkez genellikle `appsettings.json` dosyası olmaktadır.
+
+- `appsettings.json` konfigürasyonel bir dosya olsada kritik arz eden hassasasiyet arz eden konfigürasyon değerlerini biz `appsettings.json`'da tutabiliriz tutarsak başımızın ağrıma ihtimali var. 
+
+- Her ne olursa olsun uygulama publish edildiği taktirde çıktıdan erişilebilir bir dosya olduğu için `appsettings.json` bizim hassasiyet kritik arz eden değerlerimizi bu erişileyemeyecek bir şekilde ayrı bir ezilebilir/daha farklı bir yerden verilmesi lazım. Biz kritik verilerimizi `appsettings.json`'da tutmuyoruz secret manager tools'ta tutuyoruz. 
+
+- Bu dosya içerisine yazılan değerler her ne olursa olsun uygulama publish edildiği taktirde çıktıdan erişilebilir vaziyette olacaktır.
+
+- Dolayısıyla bizler static verilerimizi `appsettings.json` içerisinde tutabiliriz lakin kritik arz eden veriler için burasının pekte ehemmietli bir yer olmadığı aşikardır diyebiliriz.
+
+<img src="16.png" width="auto">
+<img src="17.png" width="auto">
+
+## appsettings.json Üzerinde Tutulan Hassas Verilerin Riskini Gözlemleyelim
+- Benim inanılmaz derecede önemli olan verilerimi `appsettings.json`'a koyduğum zaman biz bunu production'a gönderecek hale getirmiş oluyoruz. Nihayetinde `appsettings.json` bu uygulamanı publish ettiğin zaman çıktılarda bulunabilecek ve tıklandığı zaman açılıpta içindeki değerleri gösterebilecek bir konuma sahip.
+
+
+```JSON
+//************************ appsettings.json ************************
+{
+    "MailBilgileri": {
+        "Kullanici": "musa@gmail.com",
+        "Sifre": "12345"
+    }
+}
+```
+
+## Secret Manager Çalışma Mantığı
+- Sen bu uygulamayı geliştirdiğin development ortamı senin bilgisayarın değil mi? Bu uygulamayla ilgili eğer ki Secret Manager'ı kullanıyorsan (`secret.json`) visual studio üzerinde bu dosyayı kullanırken bu bilgisayarda belirli bir dizinde bu konfigürasyonel dosya tutulur. Bu dosya her bir uygulamaya özel bir secret id değeriyle beraber tutulur ki uygulamalar arasında fark yaratabilmek için. Dolayısıyla senin buraya koymuş oldğun kritik değerler development ortamında sadece erişilebilir production ortamına çıkarken `secret.json` dediğimiz dosya publish neticesinde ilgili çıktılarda bulunmayacağından dolayı production'da bu dosylaar bu konfigürasyonlar gönderilmeyecektir. Haliyle senin için kritik arz eden verilerin production ortamına sunulmayacağından dolayı riski minimize etmiş olacaksın. yani en azından kendi ellerinle çaldırmayacaksın. Diyeceksin kardeşim eğer derdin benim verilerimi elde etmekse daha farklı yöntemler denemen gerekiyor. Yani hap bilgi olarak benim için riskli olan değerleri vermiyorum. `appsettings.json`dan göndermiyorum diyeceksin.
+
+- `secret.json`'a yazdığımız değerler bizim için daha güvenli olacağından dolayı production'a gönderilmiş olmayacak. Ama bu veriler sadece development ortamında geçerli olmuş olacak. O yüzden production'da ise biz o değerleri environment değişken olarak vereceğiz. Production'da ortam değişkeni olarak sisteme dahil edeceğiz. Sisteme bu şekilde dahil ettiğimizde kötü niyetli kullanıcı sunucuyu elde etse bile environment değişkenleri göremeyeceğinden dolayı haliyle elde edilen sadece kod dosyaları olacak. Ama ana kritik bilgiler elde edilememiş olacak.
+
+- Sen hem development ortamında kritik verilerini `secret.json`da tutarak development ortamında geliştirmeni hızlı bir şekilde yapabiliyorsun hem de production'a aldığın zamanda production'da da buradaki kritik verilerini environment olarak verdiğinden dolayı production'daki riski de minimize etmiş oluyorsun `appsettings.json` da sadece kritik arz etmeyen ana konfigürasyonel verilerin kalıyor.
+
+- `secret.json` dediğimiz dosya development ortamında konfigürasyonel kritik verileri tutan bir dosya bunu publish ettiğinde publish dosyalarıonın arasında bulunmaz haliyle production ortamına bu gönderilmez haliyle production ortamında çalınabilme riski olan kritik verilerin oraya gönderilmediği için veriler minimize edilmiş olur buradaki risk. Bu verileri production ortamında kullanabilmek için bir zahmet environment değişkenler olarak oraya vereceğiz.
+
+<img src="18.png" width="auto">
+
+## Secret Manager Nasıl ve Nereden Açılır? (secrets.json)
+
+<img src="19.png" width="auto">
+
+## Secrets Id Nedir?
+- Orada binlerce dosya olabilir bunların arasından hangisi uygulamaya özeldir bunu development ortamında ayırabilmek için Secrets Id'yi kullanıyoruz.
+
+<img src="20.png" width="auto">
+
+## secrets.json'da ki Verilere Nasıl Erişebilirim?
+- Erişim dediğiniz yapılanmaların hepsi yine IConfiguration üzerinden geçerli olacaktır. Yani `appsettings.json`'a nasıl erişiyorsanız `secrets.json`a da birebir aynı şekilde erişebilirsiniz. IConfiguration interface'ini kullanarak.
+
+- Options Pattern'ıda burada birebir kullanabiliyorsunuz.
+
+```JSON
+//************************ secrets.json ************************
+{
+  "MailBilgileri": {
+    "Kullanici": "musa@gmail.com",
+    "Sifre": "12345"
+  }
+}
+```
+
+## Konfigürasyonel Yapılanmalardaki Yaşam Döngüsü Nasıldır?
+- Konfigürasyonel yapılanmada `appsettings.json` diyorsun ki sen ya kardeşim IConfiguration interface'i ile ben herhangi bir aramada bulunduğumda herhangi bir konfigürasyonel değeri elde etmeye çalıştığımda  `appsettings.json`'dan getirir. Bilki `appsettings.json`'dan önce `secret.json`a bakar. Eğer burada yoksa `appsettings.json`'dan getirir. Benzer mantıkla öncelikle environment'a bakar. Environment'te yoksa `secret.json`a bakar `secret.json`da yoksa `appsettings.json`a bakar.
+
+- Aslında konfigürasyon değerini elde etme davranışı `appsettings.json`da nasılsa birebir hepsinde aynı Options Pattern mı kullanmak istiyorsun hepsinde birebir kullanabiliyorsun. Bütün yazılımsal davranışların hepsi hepsinde bütün konfigürasyonel yapılanmalarda aynı olacaktır.
+
+## secrets.json'dan Veri Okuma
+- İkisinde de aynı değerler varsa eğer hangisi öncelikle tetikleniyorsa onu getirir. Yani environment -> secret.json -> appsettings.json
+
+
+```C#
+//************************ HomesController ************************
+readonly IConfiguration _configuration;
+
+public HomesController(IConfiguration configuration)
+{
+    _configuration = configuration;
+}
+
+public void Index()
+{
+    string kullanici = _configuration["MailBilgileri:Kullanici"];
+    string sifre = _configuration["MailBilgileri:Sifre"];
+}
+```
+
+
+## Secret Manager Verileri Nerede Depolamaktadır?
+- `C:\Users\{username}\AppData\Roaming\Microsoft\UserSecrets\{secret id}`
+
+- `C:\Users\{username}\AppData\Roaming\Microsoft\UserSecrets\{secret id}` => buranın altında uygulamanıza ait development ortamındaki secret manager dosyalarını bulabilirsiniz.
+
+## secrets.json Üzerinde Tutulan Hassas Verilerin Protection'a Gönderilmemesini İnceleyelim
+## Production'da Hassas/Kritik Veriler Nasıl Girilecek Sorunsalı?
+- Sen sunucuda uygulamanı ayağa kaldırdın ya sunucuda bizim environment değişkenlerimiz var. Buradan bu değerleri diyecez ki biz al gardaşım sana mail bilgisi al gardaşım connection string'i al sana client secret'ın al sana facebook'tan aldığın bilmem ne değerin yani biz environment değişken olarak vereceğiz kötü niyetli eleman sunucuya sızdığı zaman environment değişkenlerini göremeyeceğinden dolayı çünkü bu yazılımsal olarak sunucunun belleğinde tutulacağından dolayı fiziksel bir dosya olarak göremeyeceğimizden dolayı buradaki kritik bilgilere yine erişemeyecektir.
+
+<img src="21.png" width="auto">
+
+## SqlConnectionStringBuilder Sınıfının Kullanımı(Genel Kültür)
+- Dağınık connectionstring  değerlerini development ortamında SqlConnectionStringBuilder sınıfı sayesinde de hızlı bir şekilde toparlayabilirsiniz
+
+```C#
+//************************ HomesController ************************
+#region SqlConnectionStringBuilder Sınıfının Kullanımı(Genel Kültür)
+private readonly IConfiguration _configuration;
+
+public HomesController(IConfiguration configuration)
+{
+    _configuration = configuration;
+}
+
+public void Index2()
+{
+    string connection = _configuration.GetConnectionString("SQL");
+    SqlConnectionStringBuilder builder = new(connection);
+    builder.UserID = _configuration["SQL:KullaniciAdi"];
+    builder.Password = _configuration["SQL:Sifre"];
+
+    string x = builder.ConnectionString;
+} 
+#endregion
+
+//************************ appsettings.json ************************
+"ConnectionStrings": {
+  "SQL": "Server=123.123.123.123;Database=ExampleDB;"
+}
+//************************ secret.json ************************
+"SQL": {
+  "Sifre": "12345",
+  "KullaniciAdi": "musa"
+}
+```
+
+## C# Examples
+```C#
+//************************ secret.json ************************
+{
+  "MailBilgileri": {
+    "Kullanici": "musa@gmail.com",
+    "Sifre": "12345"
+  },
+  "SQL": {
+    "Sifre": "12345",
+    "KullaniciAdi": "musa"
+  }
+}
+
+//************************ appsettings.json ************************
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "SQL": "Server=123.123.123.123;Database=ExampleDB;"
+  }
+  
+}
+
+//************************ HomesController ************************
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Data.SqlClient;
+
+#region Secret Manager Verileri Nerede Depolamaktadır?
+//C:\Users\{username}\AppData\Roaming\Microsoft\UserSecrets\{secret id} buranın altında uygulamanıza ait development ortamındaki secret manager dosyalarını bulabilirsiniz. 
+#endregion
+
+namespace SecretManagerExample.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HomesController : ControllerBase
+    {
+        #region secrets.json'dan Veri Okuma
+        //readonly IConfiguration _configuration;
+
+        //public HomesController(IConfiguration configuration)
+        //{
+        //    _configuration = configuration;
+        //}
+
+        //public void Index()
+        //{
+        //    string kullanici = _configuration["MailBilgileri:Kullanici"];
+        //    string sifre = _configuration["MailBilgileri:Sifre"];
+        //} 
+        #endregion
+        #region SqlConnectionStringBuilder Sınıfının Kullanımı(Genel Kültür)
+        private readonly IConfiguration _configuration;
+
+        public HomesController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public void Index2()
+        {
+            string connection = _configuration.GetConnectionString("SQL");
+            SqlConnectionStringBuilder builder = new(connection);
+            builder.UserID = _configuration["SQL:KullaniciAdi"];
+            builder.Password = _configuration["SQL:Sifre"];
+
+            string x = builder.ConnectionString;
+        } 
+        #endregion
+    }
+}
 ```
