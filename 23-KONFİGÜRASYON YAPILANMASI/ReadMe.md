@@ -1,5 +1,5 @@
 ---
-modified: 2023-10-06T10:08:06.462Z
+modified: 2023-10-11T11:32:13.753Z
 title: 45) Asp.NET Core 5.0 - appsettings.json Dosyası Nedir? Ne İse Yarar?
 ---
 
@@ -793,3 +793,321 @@ namespace SecretManagerExample.Controllers
     }
 }
 ```
+
+***
+# 48) Asp.NET Core 5.0 - Environment Nedir? Nasıl Kullanılır? (Docker Üzerinden Örneklendirme)
+
+<img src="22.png" width="auto">
+
+## Environment Nedir?
+- Environment bir ihtiyaca istinaden kullanılan bir yapılanma.
+
+- Bir web uygulamasında, uygulamanın bulunduğu aşamalara dayalı, davranışı kontrol etmek ve yönlendirmek isteyebiliriz.
+
+- Biz bir uygulamayı geliştirirken o uygulamanın gelişim sürecinde kullandığımız gelişim süreci olan bir noktası var.Ardından bu uygulamayı belirli testlere tabi tutacağımız bir alan bir zaman olacak. Bir de bu uygulamanın yayınlandığı zaman olacak. İşte biz bu zamanlara aşamalar diyelim. Benim uygulamayı geliştirdiğim aşama yayınladığım aşama yayına çıkmadan önce gerekli kontrollerin testlerin yapıldığı aşama. Biz bu aşamalara environment aşama yahut ortam diyeceğiz. 
+
+- Uygulamayı geliştiriyorsunuz gerekli planları projeleri yapıyorsunuz algoritmalarınızı yapıyorsunuz şimdi uygulamayla ilgili bir inşa sürecindeysen inşa ortamı diyebilirsin. Ya da geliştirme ortamı diyebilirsin. Bu ortama adamlar demişler ki ya kardeşim evrensel bir isim verelim ne olsun Development olsun. 
+
+- Development ortamında yapacağımız bütün çalışmalarımız bitti artık ne yapacaksın yayına çıkacaksın. Yayına çıkarken istersen sen buna sunum ortamı de istersen yayın ortamı de istersen ahmet ortamı de farketmiyor ama adamlar demişler ki kardeşim biz buna Production ortamı diyelim. 
+
+- Development ortamından Production ortamına çıkarken arada belirli testler/kontroller/hazırlık süreçleri yapman gerekecek. Haliyle biz buna da Staging ortamı diyoruz. Yani staj ortamı yani hazırlık süreci.
+
+- Temelde 3 tane ortam bunun dışında da ortam oluşturabilirsin. Kendine göre farklı ortamlar oluşturabilirsin.
+
+- Uygulama geliştirme sürecinde mi yayın sürecinde mi yoksa bir test/staj sürecinde mi bunlardan hangisindeysen aşamasına göre davranışı farklı şekilde kontrol etmek yahut farklı yönlendirmeler yapmak isteyebilirsin. Dolayısıyla biz bu tarz çalışmaları Environment dediğimiz yapılanma sayesinde gerçekleştiriyoruz.
+
+- Benim bir tane veritabanım var. Bu uygulama da Hepsiburada.com olsun. Hepsiburada.com'un sunucudaki/serverdaki bir tane SQL veritabanı olsun. Eğer ki sen Production ortamında kullanılan veritabanını development ya da staging ortamlarında kullanmaya çalışırsan muhtemelen büyük rezillik yaşama şansın var. Şimdi development geliştirme sürecinde sen gerçek yayındaki ana uygulamanın şu anda herkesin erişebildiği hepsiburada uygulamasının veritabanına ulaşabiliyorsan eğer development sürecinde yapmış olduğun herhangi bir yanlışlıkta orası etkilecektir. Ya da uygulamayı yazdım test edeyim dediğinde baktığında gerçek veritabanı üzerinde ekleme yapacak ya da silme yapacak. Dolayısıyla böyle durumlarda deriz ki kardeşim sen development ortamındaysan git local'deki SQL Server'ı kullan eğer ki Staging'teysen de git şuradaki SQL Server'ı kullan ama bu uygulama artık production'daysa gerçek sunucudaki SQL Server'ı kullan deriz. Dolayısıyla bunu ayırabilmek için environment'ı kullanmamız gerekiyor. Kodun içinde bunu ayırabilmek için hangi ortamda çalılıyorsa o kod ona göre yönlendirme yapmak istiyorsan environment yapılanmasını kullanman gerekiyor. 
+
+- Zaten environment'ın karşılığı ortam/çevre demek. Sen yazılımın hangi çevredeyse o çevreye göre davranışını şekillendirmesi gerekiyor ki bu lazım olan bişeydir. Yani bir uygulama development sürecinde kullandığı veritabanıyla production ortamındaki kullandığı veritabanı eğer ki aynıysa büyük risk taşıyor demektir.
+
+- Environment'larınızda hangi ortamdaysanız uygulamada o ortama göre veritabanını tercih edebilirsiniz. İstediğin herhangi bir environment değişken belirleyerek ortamına göre farklı operasyonlar gerçekleştirebiliriz.
+ 
+- İşte bunun Environment dediğimiz değişkenler mevcuttur.
+
+<img src="23.png" width="auto">
+
+## Environment Variables Nedir?
+- Asp.NET Core uygulamalarının runtime'da ki davranışını belirlememizi sağlayan değişkenlerdir. 
+
+- Ortamına göre farklı değişkenler devreye sokabiliyorsunuz.
+
+- Development süreci Production süreci var. İkisinin farklı veritabanlarını kullanması gerekiyor değil mi? İşte bu veritabanlarının ortamına göre bilgilerini connection string'lerini tutuyorsanız biz buna environment değişkenler diyoruz. Development ortamındaki connection string'in ahanda budur Production ortamına geçiyorsan eğer connection string'in ahanda budur diyorsan eğer bunu diyebilmeni sağlayacak olan değişkenler environment değişkenlerdir.
+
+<img src="24.png" width="auto">
+<img src="25.png" width="auto">
+
+- Properties/launchSettings.json dosyasından da envrionment'lara erişebilirsiniz.
+
+## ASPNETCORE_ENVIRONMENT Nedir?
+- ASPNETCORE_ENVIRONMENT => Uygulamanın hangi ortamda olduğunu uygulamanın ayağa kalktığı ortamın hangisi olduğunu bildiren environment değişkendir. 
+
+- Uygulamayı Production'a aldığında yani publish ettiğinde gerekli işlemleri yapıp uygulamanın çıktısını aldığında uygulamanın kendi fıtratında ASPNETCORE_ENVIRONMENT değişken otomatik Production olarak algılanacaktır. Nihayetinde senin publish ettiğin dosyayı gidip herhangi bir hostinge ya da cloud yapılanmasına atıp orada yayına çıkacağından dolayı ilgili alanda ilgili ortamın ASPNETCORE_ENVIRONMENT bilgisi Production olarak olduğunu görebilirsin. Amma velakin development ortamında da varsayılan Development olarak geldiğini bilesin. Staging yapmak için yazman gerekecektir. Yani müdahale etmen gerekecektir.
+
+- Uygulama development ortamında ayağa kalktı haliyle ben bunda veritabanına bağlanacaksam Local'imdeki veritabanına bağlanmam en doğrusu olacaktır. Eğer ki ben bunun çıktısını aldım yani publish ettim. Publish edipte ilgili cloud ya da hosting'e koyduğum zaman hosting environment'ı production olacaktır. Production'sa da şu connection string'e git bağlan dememiz gerekecektir.
+
+- ASPNETCORE_ENVIRONMENT değişkeni İlgili uygulamanın hangi ortamda ayağa kalkacağını ifade eden bir environment variable'dır.
+
+<img src="26.png" width="auto">
+
+## IWebHostEnvironment Arayüzü İle Runtime Environment Ortamına Erişim
+- Uygulamanın hangi environment'ta olduğuna dair bilgileri `IWebHostEnvironment` arayüzü ile alabiliriz.
+
+- `IWebHostEnvironment` arayüzü ile runtime'da hangi environment'aysanız o environment'a dair bilgiler edinebilirsiniz.
+
+- `IWebHostEnvironment` arayüzü Asp.NET Core çekirdeğinde dahili gelen bir arayüzdür ve IoC mekanizmasında direkt kullanabiliyorsunuz. Ioc'den dependency injection ile talepte bulunabiliyorsunuz.
+
+- Environment sayesinde akışta yönlendirme/kontrol yapılanması/davranış değişiklikleri yapabilirsiniz.
+
+```C#
+// ****************** HomeController ******************
+private IWebHostEnvironment _webHostEnvironment;
+public HomeController(IWebHostEnvironment webHostEnvironment)
+{
+    _webHostEnvironment = webHostEnvironment;
+}
+
+public IActionResult Index()
+{
+    #region IWebHostEnvironment Arayüzü İle Runtime Environment Ortamına Erişim
+
+    if (_webHostEnvironment.IsDevelopment())
+    {
+        ViewBag.Env = "Development";
+    }
+    else if (_webHostEnvironment.IsProduction())
+    {
+        ViewBag.Env = "Production";
+    }
+    else if (_webHostEnvironment.IsStaging())
+    {
+        ViewBag.Env = "Staging";
+    }
+    else if (_webHostEnvironment.IsEnvironment("Ahmet"))
+    {
+        ViewBag.Env = "Ahmet";
+    }
+
+    _webHostEnvironment.IsDevelopment();// uygulamanın çalıştığı ortamı bu şekilde öğrenebilmekteyiz.
+    _webHostEnvironment.IsEnvironment("Ahmet"); 
+    #endregion
+
+    return View();
+}
+
+// ****************** Index.cshtml ******************
+<h3>@ViewBag.Env</h3>
+```
+
+<img src="27.png" width="auto">
+
+## Environment​ Değişkenlerin secrets.json ve appsettings.json Dosyalarını Ezmesi ​
+- Environment'lar secret.json dosyasındaki konfigürasyonel değerler ve appsettings.json dosyasındaki konfigürasyonel değerlerin hepsi aynı şekilde okunmaktadır. Yani sen gelip `IConfiguration` arayüzünden bir referans oluşturursun. Oluşturduğun bu referans üzerinden zaten bir değişkenin değerini okumak istiyorsan o değişken hangisindeyse oradan gelecektir.
+
+- `IConfiguration` üzerinden bir referansla `configuration["a"]` dediğin zaman gidecek herşeyden önce Environment Variable'lar arasından bakacak. Burada yoksa gidecek `secret.json` dan bakacak. Eğer burada da yoksa `appsettings.json` üzerinde arayacaktır. Bunda da yoksa ilgili değer gelmeyecektir.
+
+- Environment değişkenler `secret.json` ve `appsettings.json` tanımlamalarını ezerler. 
+
+- Environment değişkenler bu dosyaları eziyorlar. Çünkü bu değişkenler bu dosyaların altında tanımlanmış aynı benzer isimlere karşılık gelen değerleri/variable'ları/konfigürasyonel tanımları ezip kendilerindeki değerleri döndüreceklerdir.
+
+- Kritik verilerimiz bizim için Environment ortamlarında tutulması gereken verilerdir. Kritik veriler her daim envrionment'larda tutulmalı çünkü environment'ler çıktı olarak Production'a gönderilmez. Production'da da verilmesi gereken değerlerdir.
+
+- Sen environment tutuyorsun uygulamanın publish'ini aldığın zaman publish çıktılarında bulunmaz ya da cloud'da vermen gerekiyor buradaki değerleri. Sanal bir şekilde verdiğin için haliyle bu değerler hiçbir zaman ulaşılabilir değerler olmayacaktır. Uygulama ayakta olduğu sürece kullanılabilir memory'deki değerler olacaktır. Kötü niyetli kişiler tarafından erişilebilir değerlerimizi environment'tan vermemiz her daim en dorğusu olacak. Nihayetinde `appsettings.json`da çalışmanın riskini biliyorsunuz. Secret Manager'da development ortamında kullanılıyor-. Dolayısıyla Secret Manager'daki tuttuğunuz değerler konfigürasyonel değerler development ortamındaki bilgisayarda kalacak. Haliyle sizin bunları production ortamına çekebilmeniz orada çağırabilmeniz için en doğrusu envrionment'ları kullanmanız gerekecektir.
+ 
+<img src="29.png" width="auto">
+
+```C#
+// ****************** HomeController ******************
+#region Environment​ Değişkenlerin secrets.json ve appsettings.json Dosyalarını Ezmesi ​
+private IWebHostEnvironment _webHostEnvironment;
+private IConfiguration _configuration;
+public HomeController(IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+{
+    _webHostEnvironment = webHostEnvironment;
+    _configuration = configuration;
+}
+public IActionResult Index()
+{
+    string? aDegeri = _configuration["a"];
+    return View();
+}
+
+
+// ****************** Environment Variables ******************
+|a| => A Environment|
+// ****************** secret.json ******************
+{
+  "a": "A Secret"
+}
+// ****************** appsettings.json ******************
+{
+    "a": "A appsettings"
+}
+#endregion
+
+```
+
+<img src="28.png" width="auto">
+
+## .cshtml'de Environment Kontrolü​
+
+```C#
+// ****************** index.cshtml ******************
+#region .cshtml'de Environment Kontrolü​
+<environment names="Development, Production"> 
+    Development veya Production Ortamındayız
+</environment>
+
+<environment names="Ahmet">
+    Ahmet Ortamındayız
+</environment>
+#endregion
+```
+
+<img src="30.png" width="auto">
+
+## Docker Üzerinden Örnek
+- Uygulamayı dockerize etmemiz gerekiyor. Bunun için uygulamada docker'a bu uygulamayı taşıabilmemiz için bize yardımcı olacak olan bir dosya eklememiz lazım Docker file isminde.
+
+- Image dosyası docker yapılanmasında uygulamayı docker'da ayağa kaldırabilmemizi sağlayacak olan temel yapılanmadır. Container'larımızın temel yapılanmasıdır.
+
+- `docker build -t webuygulamasi:v1 .` 
+
+- `docker run -p 1071:1453 ---name cont1 webuygulamasi:v1`
+
+<img src="31.png" width="auto">
+
+```bash
+FROM mcr.microsoft.com/dotnet/sdk # bu talimatlarda kullanacağımız bir image dosyası olacak bu image dosyasında kullanılacak bir image'imiz olacak sdk image'i bunun sayesinde ben docker kısmında docker'da container'larımda ilgili uygulama üzerinde gerekli bir build/publish/restore işlemlerini gerçekleştirebileceğim
+WORKDIR /app # docker ortamında bir klasör oluşturup içine gireceğiz. 
+COPY . . # Şu anda bulunan dosyalarımızı o anki içinde girdiğimiz klasörün içine kopyalayacağız.
+RUN dotnet restore # Ardından restore edeceğiz.
+RUN dotnet publish EnvironmentExample.csproj -c Release -o out # Ardından publish edeceğiz. Publish ederken dikkat edin bu uygulamanın .csproj dosyasını publish ediyoruz. ve release olarak bir çıktısını alıyorum.
+WORKDIR out # Ardından yeniden bir klasör oluşturuyoruz. Bu klasörün içine giriyoruz.
+ENV ASNETCORE_URLS="http://*:1453" # Klasör içinde uygulamayı ayağa kaldırıyorum 1453 portunda 
+ENTRYPOINT ["dotnet", "EnvironmentExample.dll"] # ve ENTRYPOINT talimatıyla bu dll'i dotnet'le ayağa kaldırıyorum.
+```
+
+## C# Examples
+```C#
+// ****************** index.cshtml ******************
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<h3>@ViewBag.Env</h3>
+
+#region .cshtml'de Environment Kontrolü​
+<environment names="Development, Production"> 
+    Development veya Production Ortamındayız
+</environment>
+
+
+<environment names="Ahmet">
+    Ahmet Ortamındayız
+</environment>
+#endregion
+
+// ****************** Environment Variables ******************
+|a| => A Environment|
+
+// ****************** secret.json ******************
+{
+  "a": "A Secret"
+}
+// ****************** appsettings.json ******************
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "a": "A appsettings"
+}
+
+// ****************** HomeController ******************
+using EnvironmentExample.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+
+namespace EnvironmentExample.Controllers
+{
+    public class HomeController : Controller
+    {
+        #region IWebHostEnvironment Arayüzü İle Runtime Environment Ortamına Erişim
+        //private IWebHostEnvironment _webHostEnvironment;
+
+        //public HomeController(IWebHostEnvironment webHostEnvironment){
+        //    _webHostEnvironment = webHostEnvironment;
+        //} 
+        #endregion
+        #region Environment​ Değişkenlerin secrets.json ve appsettings.json Dosyalarını Ezmesi ​
+        private IWebHostEnvironment _webHostEnvironment;
+        private IConfiguration _configuration;
+        public HomeController(IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        {
+            _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
+        }
+        #endregion
+        public IActionResult Index()
+        {
+            string? aDegeri = _configuration["a"];
+
+            #region IWebHostEnvironment Arayüzü İle Runtime Environment Ortamına Erişim
+
+            //if (_webHostEnvironment.IsDevelopment())
+            //{
+            //    ViewBag.Env = "Development";
+            //}
+            //else if (_webHostEnvironment.IsProduction())
+            //{
+            //    ViewBag.Env = "Production";
+            //}
+            //else if (_webHostEnvironment.IsStaging())
+            //{
+            //    ViewBag.Env = "Staging";
+            //}
+            //else if (_webHostEnvironment.IsEnvironment("Ahmet"))
+            //{
+            //    ViewBag.Env = "Ahmet";
+            //}
+
+            //_webHostEnvironment.IsDevelopment();// uygulamanın çalıştığı ortamı bu şekilde öğrenebilmekteyiz.
+            //_webHostEnvironment.IsEnvironment("Ahmet");
+            #endregion
+
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+// ****************** DockerFile ******************
+FROM mcr.microsoft.com/dotnet/sdk # bu talimatlarda kullanacağımız bir image dosyası olacak bu image dosyasında kullanılacak bir image'imiz olacak sdk image'i bunun sayesinde ben docker kısmında docker'da container'larımda ilgili uygulama üzerinde gerekli bir build/publish/restore işlemlerini gerçekleştirebileceğim
+WORKDIR /app # docker ortamında bir klasör oluşturup içine gireceğiz. 
+COPY . . # Şu anda bulunan dosyalarımızı o anki içinde girdiğimiz klasörün içine kopyalayacağız.
+RUN dotnet restore # Ardından restore edeceğiz.
+RUN dotnet publish EnvironmentExample.csproj -c Release -o out # Ardından publish edeceğiz. Publish ederken dikkat edin bu uygulamanın .csproj dosyasını publish ediyoruz. ve release olarak bir çıktısını alıyorum.
+WORKDIR out # Ardından yeniden bir klasör oluşturuyoruz. Bu klasörün içine giriyoruz.
+ENV ASNETCORE_URLS="http://*:1453" # Klasör içinde uygulamayı ayağa kaldırıyorum 1453 portunda 
+ENTRYPOINT ["dotnet", "EnvironmentExample.dll"] # ve ENTRYPOINT talimatıyla bu dll'i dotnet'le ayağa kaldırıyorum.
+```
+

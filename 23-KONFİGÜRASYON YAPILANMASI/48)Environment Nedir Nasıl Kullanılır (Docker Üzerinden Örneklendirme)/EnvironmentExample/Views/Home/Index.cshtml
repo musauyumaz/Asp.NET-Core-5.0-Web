@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<h3>@ViewBag.Mesaj</h3>
+
+<h3>@ViewBag.Env</h3>
+
+#region .cshtml'de Environment Kontrolü​
+<environment names="Development, Production"> 
+    Development veya Production Ortamındayız
+</environment>
+
+
+<environment names="Ahmet">
+    Ahmet Ortamındayız
+</environment>
+#endregion

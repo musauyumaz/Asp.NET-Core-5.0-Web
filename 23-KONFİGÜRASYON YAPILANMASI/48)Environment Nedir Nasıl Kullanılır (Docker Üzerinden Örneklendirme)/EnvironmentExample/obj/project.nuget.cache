@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "yz7xrxjI1z4LTMiKw8AWZrtOsEW0xE4uxYPU11JoRqhIlVYo4hafiwGDPZ2R8bfVUJPbnQQMiU1BkKH0iW2+5Q==",
+  "success": true,
+  "projectFilePath": "D:\\Github\\Asp.NET-Core-5.0-Web\\23-KONFİGÜRASYON YAPILANMASI\\48)Environment Nedir Nasıl Kullanılır (Docker Üzerinden Örneklendirme)\\EnvironmentExample\\EnvironmentExample.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TCMUYUMAZ\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.4\\microsoft.visualstudio.azure.containers.tools.targets.1.19.4.nupkg.sha512"
+  ],
+  "logs": []
+}
