@@ -1,8 +1,4 @@
----
-modified: 2023-10-11T11:32:13.753Z
-title: 45) Asp.NET Core 5.0 - appsettings.json Dosyası Nedir? Ne İse Yarar?
----
-
+***
 # 45) Asp.NET Core 5.0 - appsettings.json Dosyası Nedir? Ne İse Yarar?
 - Asp.Net Core uygulamalarını yapılandırmamızı sağlayan appsettings.json dosyası üzerine konuşuyor olacağız.
 
