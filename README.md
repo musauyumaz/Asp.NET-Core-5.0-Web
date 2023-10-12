@@ -26,3 +26,4 @@
 - ## [DEPENDENCY INJECTİON - IOC YAPILANMASI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/20-DEPENDENCY%20INJECT%C4%B0ON%20-%20IOC%20YAPILANMASI/ReadMe.md)
 - ## [AREAS](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/21-AREAS/ReadMe.md)
 - ## [VİEWMODEL & DTO](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/22-V%C4%B0EWMODEL%20%26%20DTO/ReadMe.md)
+- ## [KONFİGÜRASYON YAPILANMASI](https://github.com/musauyumaz/Asp.NET-Core-5.0-Web/blob/main/23-KONF%C4%B0G%C3%9CRASYON%20YAPILANMASI/ReadMe.md)
